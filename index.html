@@ -150,6 +150,67 @@
              Future Calculators
         ========================== -->
 
+        <section class="calculator-section">
+    <h2>Electrical Power Calculator</h2>
+    <p class="section-description">
+        Calculate electrical power using different formulas.
+    </p>
+
+    <div class="input-group">
+        <label for="power-mode">Calculation Type</label>
+        <select id="power-mode">
+            <option value="dc">Basic / DC Power</option>
+            <option value="single-phase">Single-Phase AC Power</option>
+            <option value="apparent">Apparent Power</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label for="power-voltage">Voltage (V)</label>
+        <input
+            type="number"
+            id="power-voltage"
+            placeholder="Enter voltage"
+            step="any"
+        >
+    </div>
+
+    <div class="input-group">
+        <label for="power-current">Current (A)</label>
+        <input
+            type="number"
+            id="power-current"
+            placeholder="Enter current"
+            step="any"
+        >
+    </div>
+
+    <div class="input-group" id="power-factor-group">
+        <label for="power-pf">Power Factor</label>
+        <input
+            type="number"
+            id="power-pf"
+            placeholder="Enter PF (0–1)"
+            step="any"
+            min="0"
+            max="1"
+        >
+    </div>
+
+    <div class="button-group">
+        <button id="calculate-power">Calculate</button>
+        <button id="reset-power" class="secondary-button">Reset</button>
+    </div>
+
+    <p id="power-message" class="message"></p>
+
+    <div id="power-result" class="result">
+        <h3>Result</h3>
+        <p id="power-result-value"></p>
+        <p id="power-result-formula"></p>
+    </div>
+        </section>
+        
         <section class="calculator-grid">
 
             <article class="calculator-card coming-soon">
