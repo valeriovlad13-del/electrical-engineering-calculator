@@ -722,3 +722,1473 @@
                             </label>
 
                             <input
+                                type="number"
+                                id="power-current"
+                                placeholder="e.g. 10"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+
+                        <div
+                            class="input-group"
+                            id="power-factor-group"
+                        >
+
+                            <label for="power-pf">
+                                Power Factor
+                                <span>(0–1)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="power-pf"
+                                placeholder="e.g. 0.8"
+                                min="0"
+                                max="1"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="power-message"
+                        class="message"
+                        aria-live="polite"
+                    ></div>
+
+
+                    <div
+                        id="power-result"
+                        class="result-panel hidden"
+                    >
+
+                        <span class="result-label">
+                            RESULT
+                        </span>
+
+                        <strong id="power-result-value">
+                            —
+                        </strong>
+
+                        <p id="power-result-formula">
+                            —
+                        </p>
+
+                    </div>
+
+
+                    <div class="button-row">
+
+                        <button
+                            type="button"
+                            id="calculate-power"
+                            class="btn btn-primary"
+                        >
+                            Calculate
+                        </button>
+
+                        <button
+                            type="button"
+                            id="reset-power"
+                            class="btn btn-secondary"
+                        >
+                            Reset
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- =================================================
+                     3. ENERGY
+                     ================================================= -->
+
+                <article
+                    class="calculator-card"
+                    id="energy"
+                >
+
+                    <div class="calculator-header">
+
+                        <div class="calculator-title-wrap">
+
+                            <div class="calculator-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"
+                                    />
+                                </svg>
+
+                            </div>
+
+                            <div>
+
+                                <span class="calculator-number">
+                                    03
+                                </span>
+
+                                <h2>
+                                    Energy
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="calculator-description">
+                        Calculate electrical energy consumption and
+                        estimate the corresponding electricity cost.
+                    </p>
+
+
+                    <div class="formula-box">
+
+                        <strong>
+                            E = P × t
+                        </strong>
+
+                        <div class="formula-variables">
+
+                            <span>
+                                E = Energy (kWh)
+                            </span>
+
+                            <span>
+                                P = Power (kW)
+                            </span>
+
+                            <span>
+                                t = Time (h)
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-grid">
+
+                        <div class="input-group">
+
+                            <label for="energy-power">
+                                Power
+                                <span>(kW)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="energy-power"
+                                placeholder="e.g. 2"
+                                min="0"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="energy-time">
+                                Time
+                                <span>(hours)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="energy-time"
+                                placeholder="e.g. 5"
+                                min="0"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="energy-rate">
+                                Electricity Rate
+                                <span>(₱/kWh)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="energy-rate"
+                                value="10.659"
+                                min="0"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="energy-message"
+                        class="message"
+                        aria-live="polite"
+                    ></div>
+
+
+                    <div
+                        id="energy-result"
+                        class="result-panel hidden"
+                    >
+
+                        <span class="result-label">
+                            ENERGY CONSUMPTION
+                        </span>
+
+                        <strong id="energy-result-value">
+                            —
+                        </strong>
+
+
+                        <div class="secondary-result">
+
+                            <span>
+                                Estimated Cost
+                            </span>
+
+                            <strong id="energy-cost">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <p id="energy-result-formula">
+                            —
+                        </p>
+
+                    </div>
+
+
+                    <div class="button-row">
+
+                        <button
+                            type="button"
+                            id="calculate-energy"
+                            class="btn btn-primary"
+                        >
+                            Calculate
+                        </button>
+
+                        <button
+                            type="button"
+                            id="reset-energy"
+                            class="btn btn-secondary"
+                        >
+                            Reset
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- =================================================
+                     4. POWER FACTOR
+                     ================================================= -->
+
+                <article
+                    class="calculator-card"
+                    id="power-factor"
+                >
+
+                    <div class="calculator-header">
+
+                        <div class="calculator-title-wrap">
+
+                            <div class="calculator-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="8"
+                                    />
+
+                                    <path
+                                        d="M12 12l6-5M12 12V4"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                            <div>
+
+                                <span class="calculator-number">
+                                    04
+                                </span>
+
+                                <h2>
+                                    Power Factor
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="calculator-description">
+                        Determine power factor from real power and
+                        apparent power.
+                    </p>
+
+
+                    <div class="formula-box">
+
+                        <strong>
+                            PF = P / S
+                        </strong>
+
+                        <div class="formula-variables">
+
+                            <span>
+                                PF = Power Factor
+                            </span>
+
+                            <span>
+                                P = Real Power (W)
+                            </span>
+
+                            <span>
+                                S = Apparent Power (VA)
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-grid">
+
+                        <div class="input-group">
+
+                            <label for="pf-real-power">
+                                Real Power
+                                <span>(W)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="pf-real-power"
+                                placeholder="e.g. 1840"
+                                min="0"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="pf-apparent-power">
+                                Apparent Power
+                                <span>(VA)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="pf-apparent-power"
+                                placeholder="e.g. 2300"
+                                min="0"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="pf-message"
+                        class="message"
+                        aria-live="polite"
+                    ></div>
+
+
+                    <div
+                        id="pf-result"
+                        class="result-panel hidden"
+                    >
+
+                        <span class="result-label">
+                            POWER FACTOR
+                        </span>
+
+                        <strong id="pf-result-value">
+                            —
+                        </strong>
+
+                        <p id="pf-result-formula">
+                            —
+                        </p>
+
+                    </div>
+
+
+                    <div class="button-row">
+
+                        <button
+                            type="button"
+                            id="calculate-pf"
+                            class="btn btn-primary"
+                        >
+                            Calculate
+                        </button>
+
+                        <button
+                            type="button"
+                            id="reset-pf"
+                            class="btn btn-secondary"
+                        >
+                            Reset
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- =================================================
+                     5. THREE-PHASE POWER
+                     ================================================= -->
+
+                <article
+                    class="calculator-card"
+                    id="three-phase"
+                >
+
+                    <div class="calculator-header">
+
+                        <div class="calculator-title-wrap">
+
+                            <div class="calculator-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M4 18V6M12 18V6M20 18V6"
+                                    />
+
+                                    <path
+                                        d="M2 9h4M10 9h4M18 9h4"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                            <div>
+
+                                <span class="calculator-number">
+                                    05
+                                </span>
+
+                                <h2>
+                                    Three-Phase Power
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="calculator-description">
+                        Calculate balanced three-phase real power using
+                        line voltage, line current, and power factor.
+                    </p>
+
+
+                    <div class="formula-box">
+
+                        <strong>
+                            P = √3 × V<sub>L</sub> × I<sub>L</sub> × PF
+                        </strong>
+
+                        <div class="formula-variables">
+
+                            <span>
+                                P = Real Power
+                            </span>
+
+                            <span>
+                                V<sub>L</sub> = Line Voltage (V)
+                            </span>
+
+                            <span>
+                                I<sub>L</sub> = Line Current (A)
+                            </span>
+
+                            <span>
+                                PF = Power Factor
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-grid">
+
+                        <div class="input-group">
+
+                            <label for="three-phase-voltage">
+                                Line Voltage
+                                <span>(V)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="three-phase-voltage"
+                                placeholder="e.g. 400"
+                                min="0"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="three-phase-current">
+                                Line Current
+                                <span>(A)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="three-phase-current"
+                                placeholder="e.g. 10"
+                                min="0"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="three-phase-pf">
+                                Power Factor
+                                <span>(0–1)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="three-phase-pf"
+                                placeholder="e.g. 0.8"
+                                min="0"
+                                max="1"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="three-phase-message"
+                        class="message"
+                        aria-live="polite"
+                    ></div>
+
+
+                    <div
+                        id="three-phase-result"
+                        class="result-panel hidden"
+                    >
+
+                        <span class="result-label">
+                            REAL POWER
+                        </span>
+
+                        <strong id="three-phase-result-value">
+                            —
+                        </strong>
+
+                        <p id="three-phase-result-formula">
+                            —
+                        </p>
+
+                    </div>
+
+
+                    <div class="button-row">
+
+                        <button
+                            type="button"
+                            id="calculate-three-phase"
+                            class="btn btn-primary"
+                        >
+                            Calculate
+                        </button>
+
+                        <button
+                            type="button"
+                            id="reset-three-phase"
+                            class="btn btn-secondary"
+                        >
+                            Reset
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- =================================================
+                     6. TRANSFORMER
+                     ================================================= -->
+
+                <article
+                    class="calculator-card"
+                    id="transformer"
+                >
+
+                    <div class="calculator-header">
+
+                        <div class="calculator-title-wrap">
+
+                            <div class="calculator-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+                                    <circle
+                                        cx="8"
+                                        cy="12"
+                                        r="5"
+                                    />
+
+                                    <circle
+                                        cx="16"
+                                        cy="12"
+                                        r="5"
+                                    />
+
+                                    <path
+                                        d="M3 12h10M11 12h10"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                            <div>
+
+                                <span class="calculator-number">
+                                    06
+                                </span>
+
+                                <h2>
+                                    Transformer
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="calculator-description">
+                        Calculate ideal transformer secondary voltage
+                        and secondary current from turns ratio.
+                    </p>
+
+
+                    <div class="formula-box">
+
+                        <strong>
+                            V₁ / V₂ = N₁ / N₂
+                        </strong>
+
+                        <div class="formula-variables">
+
+                            <span>
+                                V₁ = Primary Voltage
+                            </span>
+
+                            <span>
+                                V₂ = Secondary Voltage
+                            </span>
+
+                            <span>
+                                N₁ = Primary Turns
+                            </span>
+
+                            <span>
+                                N₂ = Secondary Turns
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-grid">
+
+                        <div class="input-group">
+
+                            <label for="transformer-v1">
+                                Primary Voltage
+                                <span>(V)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="transformer-v1"
+                                placeholder="e.g. 230"
+                                min="0"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="transformer-n1">
+                                Primary Turns
+                                <span>(N₁)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="transformer-n1"
+                                placeholder="e.g. 1000"
+                                min="0"
+                                step="any"
+                                inputmode="numeric"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="transformer-n2">
+                                Secondary Turns
+                                <span>(N₂)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="transformer-n2"
+                                placeholder="e.g. 100"
+                                min="0"
+                                step="any"
+                                inputmode="numeric"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="transformer-primary-current">
+                                Primary Current
+                                <span>(A)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="transformer-primary-current"
+                                placeholder="Optional"
+                                min="0"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="transformer-message"
+                        class="message"
+                        aria-live="polite"
+                    ></div>
+
+
+                    <div
+                        id="transformer-result"
+                        class="result-panel hidden"
+                    >
+
+                        <span class="result-label">
+                            TRANSFORMER RESULTS
+                        </span>
+
+
+                        <div class="secondary-result">
+
+                            <span>
+                                Secondary Voltage
+                            </span>
+
+                            <strong id="transformer-voltage-result">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="secondary-result">
+
+                            <span>
+                                Secondary Current
+                            </span>
+
+                            <strong id="transformer-current-result">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <p id="transformer-result-formula">
+                            —
+                        </p>
+
+                    </div>
+
+
+                    <div class="button-row">
+
+                        <button
+                            type="button"
+                            id="calculate-transformer"
+                            class="btn btn-primary"
+                        >
+                            Calculate
+                        </button>
+
+                        <button
+                            type="button"
+                            id="reset-transformer"
+                            class="btn btn-secondary"
+                        >
+                            Reset
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- =================================================
+                     7. VOLTAGE DROP
+                     ================================================= -->
+
+                <article
+                    class="calculator-card"
+                    id="voltage-drop"
+                >
+
+                    <div class="calculator-header">
+
+                        <div class="calculator-title-wrap">
+
+                            <div class="calculator-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M4 5v14M20 5v14"
+                                    />
+
+                                    <path
+                                        d="M4 12h16"
+                                    />
+
+                                    <path
+                                        d="M8 8l-4 4 4 4M16 8l4 4-4 4"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                            <div>
+
+                                <span class="calculator-number">
+                                    07
+                                </span>
+
+                                <h2>
+                                    Voltage Drop
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="calculator-description">
+                        Estimate voltage drop using current and circuit
+                        resistance. An optional system voltage can be
+                        used to calculate percentage voltage drop.
+                    </p>
+
+
+                    <div class="formula-box">
+
+                        <strong>
+                            VD = I × R
+                        </strong>
+
+                        <div class="formula-variables">
+
+                            <span>
+                                VD = Voltage Drop (V)
+                            </span>
+
+                            <span>
+                                I = Current (A)
+                            </span>
+
+                            <span>
+                                R = Resistance (Ω)
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-grid">
+
+                        <div class="input-group">
+
+                            <label for="voltage-drop-current">
+                                Current
+                                <span>(A)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="voltage-drop-current"
+                                placeholder="e.g. 10"
+                                min="0"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="voltage-drop-resistance">
+                                Resistance
+                                <span>(Ω)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="voltage-drop-resistance"
+                                placeholder="e.g. 0.5"
+                                min="0"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="voltage-drop-system-voltage">
+                                System Voltage
+                                <span>(V) — optional</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="voltage-drop-system-voltage"
+                                placeholder="e.g. 230"
+                                min="0"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="voltage-drop-message"
+                        class="message"
+                        aria-live="polite"
+                    ></div>
+
+
+                    <div
+                        id="voltage-drop-result"
+                        class="result-panel hidden"
+                    >
+
+                        <span class="result-label">
+                            VOLTAGE DROP
+                        </span>
+
+                        <strong id="voltage-drop-result-value">
+                            —
+                        </strong>
+
+
+                        <div class="secondary-result">
+
+                            <span>
+                                Percentage Voltage Drop
+                            </span>
+
+                            <strong id="voltage-drop-percentage">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <p id="voltage-drop-result-formula">
+                            —
+                        </p>
+
+                    </div>
+
+
+                    <div class="button-row">
+
+                        <button
+                            type="button"
+                            id="calculate-voltage-drop"
+                            class="btn btn-primary"
+                        >
+                            Calculate
+                        </button>
+
+                        <button
+                            type="button"
+                            id="reset-voltage-drop"
+                            class="btn btn-secondary"
+                        >
+                            Reset
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- =================================================
+                     8. UNIT CONVERTER
+                     ================================================= -->
+
+                <article
+                    class="calculator-card"
+                    id="unit-converter"
+                >
+
+                    <div class="calculator-header">
+
+                        <div class="calculator-title-wrap">
+
+                            <div class="calculator-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M7 7h13l-3-3M17 17H4l3 3"
+                                    />
+
+                                    <path
+                                        d="M20 7l-3-3M4 17l3 3"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                            <div>
+
+                                <span class="calculator-number">
+                                    08
+                                </span>
+
+                                <h2>
+                                    Unit Converter
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="calculator-description">
+                        Convert common electrical engineering units
+                        quickly and consistently.
+                    </p>
+
+
+                    <div class="formula-box">
+
+                        <strong>
+                            Unit Conversion
+                        </strong>
+
+                        <div class="formula-variables">
+
+                            <span>
+                                Power: W ↔ kW
+                            </span>
+
+                            <span>
+                                Energy: Wh ↔ kWh
+                            </span>
+
+                            <span>
+                                Apparent Power: VA ↔ kVA
+                            </span>
+
+                            <span>
+                                Voltage, Current, Resistance
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-grid">
+
+                        <div class="input-group full-width">
+
+                            <label for="converter-type">
+                                Conversion
+                            </label>
+
+                            <select id="converter-type">
+
+                                <option value="w-kw">
+                                    W → kW
+                                </option>
+
+                                <option value="kw-w">
+                                    kW → W
+                                </option>
+
+                                <option value="wh-kwh">
+                                    Wh → kWh
+                                </option>
+
+                                <option value="kwh-wh">
+                                    kWh → Wh
+                                </option>
+
+                                <option value="va-kva">
+                                    VA → kVA
+                                </option>
+
+                                <option value="kva-va">
+                                    kVA → VA
+                                </option>
+
+                                <option value="v-kv">
+                                    V → kV
+                                </option>
+
+                                <option value="kv-v">
+                                    kV → V
+                                </option>
+
+                                <option value="a-ma">
+                                    A → mA
+                                </option>
+
+                                <option value="ma-a">
+                                    mA → A
+                                </option>
+
+                                <option value="ohm-kohm">
+                                    Ω → kΩ
+                                </option>
+
+                                <option value="kohm-ohm">
+                                    kΩ → Ω
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group full-width">
+
+                            <label for="converter-value">
+                                Value
+                            </label>
+
+                            <input
+                                type="number"
+                                id="converter-value"
+                                placeholder="Enter value"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="converter-message"
+                        class="message"
+                        aria-live="polite"
+                    ></div>
+
+
+                    <div
+                        id="converter-result"
+                        class="result-panel hidden"
+                    >
+
+                        <span class="result-label">
+                            CONVERTED VALUE
+                        </span>
+
+                        <strong id="converter-result-value">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="button-row">
+
+                        <button
+                            type="button"
+                            id="calculate-conversion"
+                            class="btn btn-primary"
+                        >
+                            Convert
+                        </button>
+
+                        <button
+                            type="button"
+                            id="reset-converter"
+                            class="btn btn-secondary"
+                        >
+                            Reset
+                        </button>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             HISTORY
+             ================================================= -->
+
+        <section
+            class="history-section"
+            id="history"
+        >
+
+            <div class="container">
+
+                <div class="section-heading history-heading">
+
+                    <div>
+
+                        <span class="section-label">
+                            CALCULATION HISTORY
+                        </span>
+
+                        <h2>
+                            Recent Calculations
+                        </h2>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="clear-history"
+                        class="btn btn-secondary btn-small"
+                    >
+                        Clear History
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="history-list"
+                    class="history-list"
+                >
+
+                    <div class="history-empty">
+                        No calculations yet.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ENGINEERING NOTE
+             ================================================= -->
+
+        <section class="note-section">
+
+            <div class="container">
+
+                <div class="engineering-note">
+
+                    <div class="note-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="9"
+                            />
+
+                            <path
+                                d="M12 10v6M12 7h.01"
+                            />
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Engineering Note
+                        </h3>
+
+                        <p>
+                            These calculators are intended for educational
+                            and estimation purposes. The voltage-drop
+                            calculator uses the basic relationship
+                            <strong>VD = I × R</strong> and does not account
+                            for conductor material, conductor size,
+                            temperature, reactance, installation method,
+                            or electrical-code requirements. Always verify
+                            engineering calculations against applicable
+                            standards and project requirements.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="site-footer">
+
+        <div class="container footer-content">
+
+            <div>
+
+                <strong>
+                    Electrical Engineering Calculator
+                </strong>
+
+                <p>
+                    A portfolio project by Blademir Rubia.
+                </p>
+
+            </div>
+
+
+            <p class="footer-credit">
+                Built with HTML, CSS &amp; JavaScript.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="script.js"></script>
+
+</body>
+</html>
