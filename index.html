@@ -2,520 +2,723 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <meta
         name="description"
-        content="Electrical Engineering Calculator for Ohm's Law, power, energy, power factor, three-phase systems, transformers, voltage drop, and unit conversion."
+        content="Electrical Engineering Calculator - A practical browser-based calculator for electrical engineering computations."
+    >
+
+    <meta
+        name="author"
+        content="Blademir Rubia"
     >
 
     <title>Electrical Engineering Calculator</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 </head>
 
 <body>
 
-    <!-- ================= HEADER ================= -->
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
     <header class="site-header">
-        <div class="container header-content">
 
-            <a href="#top" class="brand">
-                <span class="brand-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"></path>
+        <div class="header-container">
+
+            <a
+                href="#top"
+                class="brand"
+                aria-label="Electrical Engineering Calculator home"
+            >
+
+                <div class="brand-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"
+                        />
                     </svg>
-                </span>
 
-                <span>
-                    <strong>Electrical Calculator</strong>
-                    <small>Engineering Tools</small>
-                </span>
+                </div>
+
+                <div class="brand-text">
+
+                    <span class="brand-title">
+                        Electrical Engineering
+                    </span>
+
+                    <span class="brand-subtitle">
+                        Calculator
+                    </span>
+
+                </div>
+
             </a>
 
-            <div class="header-actions">
-                <button
-                    id="theme-toggle"
-                    class="icon-button"
-                    type="button"
-                    aria-label="Toggle dark mode"
-                    title="Toggle dark mode"
-                >
-                    <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="12" cy="12" r="4"></circle>
-                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
-                    </svg>
 
-                    <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path>
-                    </svg>
-                </button>
-            </div>
+            <button
+                type="button"
+                id="theme-toggle"
+                class="theme-toggle"
+                aria-label="Switch to dark mode"
+                title="Switch to dark mode"
+            >
+
+                <svg
+                    class="theme-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M21 12.79A9 9 0 1 1 11.21 3
+                        7 7 0 0 0 21 12.79z"
+                    />
+                </svg>
+
+            </button>
 
         </div>
+
     </header>
 
 
-    <!-- ================= NAVIGATION ================= -->
-    <nav class="calculator-nav">
-        <div class="container nav-inner">
-
-            <a href="#ohms">
-                <span class="nav-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M4 12h4"></path>
-                        <path d="M16 12h4"></path>
-                        <path d="M8 12c0-3 1.5-5 4-5s4 2 4 5-1.5 5-4 5-4-2-4-5Z"></path>
-                    </svg>
-                </span>
-                Ohm's Law
-            </a>
-
-            <a href="#power">
-                <span class="nav-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"></path>
-                    </svg>
-                </span>
-                Power
-            </a>
-
-            <a href="#energy">
-                <span class="nav-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="8"></circle>
-                        <path d="M12 7v5l3 2"></path>
-                    </svg>
-                </span>
-                Energy
-            </a>
-
-            <a href="#power-factor">
-                <span class="nav-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M4 19V5"></path>
-                        <path d="M4 19h16"></path>
-                        <path d="m7 15 4-5 3 3 5-7"></path>
-                    </svg>
-                </span>
-                Power Factor
-            </a>
-
-            <a href="#three-phase">
-                <span class="nav-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="8"></circle>
-                        <path d="M12 4v16M4.5 8l15 8M4.5 16l15-8"></path>
-                    </svg>
-                </span>
-                Three-Phase
-            </a>
-
-            <a href="#transformer">
-                <span class="nav-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M8 4v16M16 4v16"></path>
-                        <path d="M5 7c3 0 3 10 0 10M19 7c-3 0-3 10 0 10"></path>
-                    </svg>
-                </span>
-                Transformer
-            </a>
-
-            <a href="#voltage-drop">
-                <span class="nav-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M4 12h16"></path>
-                        <path d="m8 8-4 4 4 4"></path>
-                        <path d="m16 8 4 4-4 4"></path>
-                    </svg>
-                </span>
-                Voltage Drop
-            </a>
-
-            <a href="#converter">
-                <span class="nav-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M7 7h13l-3-3"></path>
-                        <path d="M17 17H4l3 3"></path>
-                        <path d="M20 7v5"></path>
-                        <path d="M4 12v5"></path>
-                    </svg>
-                </span>
-                Converter
-            </a>
-
-        </div>
-    </nav>
-
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
 
     <main id="top">
 
-        <!-- ================= HERO ================= -->
+        <!-- =================================================
+             HERO
+             ================================================= -->
+
         <section class="hero">
-            <div class="container hero-content">
 
-                <div class="hero-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"></path>
-                    </svg>
-                </div>
+            <div class="container">
 
-                <div>
-                    <span class="eyebrow">ENGINEERING TOOLKIT</span>
+                <span class="eyebrow">
+                    ENGINEERING TOOL
+                </span>
 
-                    <h1>Electrical Engineering Calculator</h1>
+                <h1>
+                    Electrical Engineering Calculator
+                </h1>
 
-                    <p>
-                        Practical calculators for common electrical engineering
-                        formulas, measurements, and unit conversions.
-                    </p>
-                </div>
+                <p class="hero-description">
+                    A practical collection of electrical engineering
+                    calculators for common power, circuit, transformer,
+                    voltage drop, energy, and unit conversion calculations.
+                </p>
 
             </div>
+
         </section>
 
 
-        <div class="container calculator-container">
+        <!-- =================================================
+             QUICK NAVIGATION
+             ================================================= -->
 
-            <!-- ================= OHM'S LAW ================= -->
-            <section class="calculator-section" id="ohms">
+        <section class="quick-nav-section">
 
-                <div class="section-heading">
-                    <div class="section-icon">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M4 12h4"></path>
-                            <path d="M16 12h4"></path>
-                            <path d="M8 12c0-3 1.5-5 4-5s4 2 4 5-1.5 5-4 5-4-2-4-5Z"></path>
-                        </svg>
-                    </div>
-
-                    <div>
-                        <span class="section-number">01</span>
-                        <h2>Ohm's Law</h2>
-                        <p>Calculate voltage, current, or resistance.</p>
-                    </div>
-                </div>
-
-                <div class="formula-box">
-                    <strong>Formula</strong>
-                    <code>V = I × R</code>
-                    <span>Provide any two known values.</span>
-                </div>
-
-                <div class="input-grid">
-
-                    <div class="input-group">
-                        <label for="voltage">Voltage <span>(V)</span></label>
-                        <input type="number" id="voltage" step="any" min="0" placeholder="e.g. 12">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="current">Current <span>(A)</span></label>
-                        <input type="number" id="current" step="any" min="0" placeholder="e.g. 2">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="resistance">Resistance <span>(Ω)</span></label>
-                        <input type="number" id="resistance" step="any" min="0" placeholder="e.g. 6">
-                    </div>
-
-                </div>
-
-                <div class="button-row">
-                    <button id="calculate-ohms" class="primary-button" type="button">
-                        Calculate
-                    </button>
-
-                    <button id="reset-ohms" class="secondary-button" type="button">
-                        Reset
-                    </button>
-                </div>
-
-                <div id="ohms-message" class="message"></div>
-
-                <div id="ohms-result" class="result-card hidden">
-                    <span class="result-label">RESULT</span>
-                    <strong id="result-value"></strong>
-                    <span id="result-formula" class="result-formula"></span>
-                </div>
-
-            </section>
-
-
-            <!-- ================= POWER ================= -->
-            <section class="calculator-section" id="power">
+            <div class="container">
 
                 <div class="section-heading">
-                    <div class="section-icon">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"></path>
-                        </svg>
-                    </div>
 
-                    <div>
-                        <span class="section-number">02</span>
-                        <h2>Electrical Power</h2>
-                        <p>Calculate real or apparent electrical power.</p>
-                    </div>
-                </div>
+                    <span class="section-label">
+                        QUICK NAVIGATION
+                    </span>
 
-                <div class="formula-box">
-                    <strong>Formula</strong>
-                    <code>P = V × I</code>
-                    <span>AC single-phase calculations include power factor.</span>
-                </div>
-
-                <div class="input-grid">
-
-                    <div class="input-group full-width">
-                        <label for="power-mode">Calculation Type</label>
-
-                        <select id="power-mode">
-                            <option value="dc">DC / Basic Power</option>
-                            <option value="single-phase">Single-Phase AC</option>
-                            <option value="apparent">Apparent Power</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="power-voltage">Voltage <span>(V)</span></label>
-                        <input type="number" id="power-voltage" step="any" min="0" placeholder="e.g. 230">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="power-current">Current <span>(A)</span></label>
-                        <input type="number" id="power-current" step="any" min="0" placeholder="e.g. 10">
-                    </div>
-
-                    <div class="input-group" id="power-factor-group">
-                        <label for="power-pf">Power Factor</label>
-                        <input type="number" id="power-pf" step="any" min="0" max="1" placeholder="e.g. 0.8">
-                    </div>
+                    <h2>
+                        Choose a calculator
+                    </h2>
 
                 </div>
 
-                <div class="button-row">
-                    <button id="calculate-power" class="primary-button" type="button">
-                        Calculate
-                    </button>
 
-                    <button id="reset-power" class="secondary-button" type="button">
-                        Reset
-                    </button>
-                </div>
+                <nav
+                    class="calculator-nav"
+                    aria-label="Calculator navigation"
+                >
 
-                <div id="power-message" class="message"></div>
+                    <a
+                        href="#ohms-law"
+                        class="nav-card"
+                    >
 
-                <div id="power-result" class="result-card hidden">
-                    <span class="result-label">RESULT</span>
-                    <strong id="power-result-value"></strong>
-                    <span id="power-result-formula" class="result-formula"></span>
-                </div>
+                        <span class="nav-icon">
 
-            </section>
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M4 12h16M7 8l-3 4 3 4M17 8l3 4-3 4"
+                                />
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Ohm's Law
+                        </span>
+
+                    </a>
 
 
-            <!-- ================= ENERGY ================= -->
-            <section class="calculator-section" id="energy">
+                    <a
+                        href="#electrical-power"
+                        class="nav-card"
+                    >
 
-                <div class="section-heading">
-                    <div class="section-icon">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="12" cy="12" r="8"></circle>
-                            <path d="M12 7v5l3 2"></path>
-                        </svg>
+                        <span class="nav-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"
+                                />
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Power
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="#energy"
+                        class="nav-card"
+                    >
+
+                        <span class="nav-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"
+                                />
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Energy
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="#power-factor"
+                        class="nav-card"
+                    >
+
+                        <span class="nav-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="8"
+                                />
+
+                                <path
+                                    d="M12 12l6-5M12 12V4"
+                                />
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Power Factor
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="#three-phase"
+                        class="nav-card"
+                    >
+
+                        <span class="nav-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M4 18V6M12 18V6M20 18V6"
+                                />
+
+                                <path
+                                    d="M2 9h4M10 9h4M18 9h4"
+                                />
+
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Three-Phase
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="#transformer"
+                        class="nav-card"
+                    >
+
+                        <span class="nav-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <circle
+                                    cx="8"
+                                    cy="12"
+                                    r="5"
+                                />
+
+                                <circle
+                                    cx="16"
+                                    cy="12"
+                                    r="5"
+                                />
+
+                                <path
+                                    d="M3 12h10M11 12h10"
+                                />
+
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Transformer
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="#voltage-drop"
+                        class="nav-card"
+                    >
+
+                        <span class="nav-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M4 5v14M20 5v14"
+                                />
+
+                                <path
+                                    d="M4 12h16"
+                                />
+
+                                <path
+                                    d="M8 8l-4 4 4 4M16 8l4 4-4 4"
+                                />
+
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Voltage Drop
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="#unit-converter"
+                        class="nav-card"
+                    >
+
+                        <span class="nav-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M7 7h13l-3-3M17 17H4l3 3"
+                                />
+
+                                <path
+                                    d="M20 7l-3-3M4 17l3 3"
+                                />
+
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Unit Converter
+                        </span>
+
+                    </a>
+
+                </nav>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CALCULATORS
+             ================================================= -->
+
+        <section class="calculators-section">
+
+            <div class="container calculator-grid">
+
+
+                <!-- =================================================
+                     1. OHM'S LAW
+                     ================================================= -->
+
+                <article
+                    class="calculator-card"
+                    id="ohms-law"
+                >
+
+                    <div class="calculator-header">
+
+                        <div class="calculator-title-wrap">
+
+                            <div class="calculator-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M4 12h16M7 8l-3 4 3 4M17 8l3 4-3 4"
+                                    />
+                                </svg>
+
+                            </div>
+
+                            <div>
+
+                                <span class="calculator-number">
+                                    01
+                                </span>
+
+                                <h2>
+                                    Ohm's Law
+                                </h2>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
-                    <div>
-                        <span class="section-number">03</span>
-                        <h2>Energy</h2>
-                        <p>Estimate energy consumption and electricity cost.</p>
-                    </div>
-                </div>
 
-                <div class="formula-box">
-                    <strong>Formula</strong>
-                    <code>E = P × t</code>
-                    <span>Power is entered in kW and time in hours.</span>
-                </div>
+                    <p class="calculator-description">
+                        Calculate voltage, current, or resistance using
+                        the relationship between the three electrical
+                        quantities.
+                    </p>
 
-                <div class="input-grid">
 
-                    <div class="input-group">
-                        <label for="energy-power">Power <span>(kW)</span></label>
-                        <input type="number" id="energy-power" step="any" min="0" placeholder="e.g. 2">
-                    </div>
+                    <div class="formula-box">
 
-                    <div class="input-group">
-                        <label for="energy-time">Time <span>(hours)</span></label>
-                        <input type="number" id="energy-time" step="any" min="0" placeholder="e.g. 5">
-                    </div>
+                        <strong>
+                            V = I × R
+                        </strong>
 
-                    <div class="input-group">
-                        <label for="energy-rate">Electricity Rate <span>(₱/kWh)</span></label>
-                        <input type="number" id="energy-rate" step="any" min="0" value="10.659">
-                    </div>
+                        <div class="formula-variables">
 
-                </div>
+                            <span>
+                                V = Voltage (V)
+                            </span>
 
-                <div class="button-row">
-                    <button id="calculate-energy" class="primary-button" type="button">
-                        Calculate
-                    </button>
+                            <span>
+                                I = Current (A)
+                            </span>
 
-                    <button id="reset-energy" class="secondary-button" type="button">
-                        Reset
-                    </button>
-                </div>
+                            <span>
+                                R = Resistance (Ω)
+                            </span>
 
-                <div id="energy-message" class="message"></div>
+                        </div>
 
-                <div id="energy-result" class="result-card hidden">
-                    <span class="result-label">ENERGY CONSUMPTION</span>
-                    <strong id="energy-result-value"></strong>
-
-                    <div class="result-detail">
-                        <span>Estimated Cost</span>
-                        <strong id="energy-cost"></strong>
                     </div>
 
-                    <span id="energy-result-formula" class="result-formula"></span>
-                </div>
 
-            </section>
+                    <div class="input-grid">
+
+                        <div class="input-group">
+
+                            <label for="voltage">
+                                Voltage
+                                <span>(V)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="voltage"
+                                placeholder="e.g. 12"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
 
 
-            <!-- ================= POWER FACTOR ================= -->
-            <section class="calculator-section" id="power-factor">
+                        <div class="input-group">
 
-                <div class="section-heading">
-                    <div class="section-icon">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M4 19V5"></path>
-                            <path d="M4 19h16"></path>
-                            <path d="m7 15 4-5 3 3 5-7"></path>
-                        </svg>
+                            <label for="current">
+                                Current
+                                <span>(A)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="current"
+                                placeholder="e.g. 2"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="resistance">
+                                Resistance
+                                <span>(Ω)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="resistance"
+                                placeholder="e.g. 6"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
                     </div>
 
-                    <div>
-                        <span class="section-number">04</span>
-                        <h2>Power Factor</h2>
-                        <p>Calculate power factor from real and apparent power.</p>
-                    </div>
-                </div>
 
-                <div class="formula-box">
-                    <strong>Formula</strong>
-                    <code>PF = P / S</code>
-                    <span>Power factor is dimensionless and normally ranges from 0 to 1.</span>
-                </div>
-
-                <div class="input-grid">
-
-                    <div class="input-group">
-                        <label for="pf-real-power">Real Power <span>(W)</span></label>
-                        <input type="number" id="pf-real-power" step="any" min="0" placeholder="e.g. 1840">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="pf-apparent-power">Apparent Power <span>(VA)</span></label>
-                        <input type="number" id="pf-apparent-power" step="any" min="0" placeholder="e.g. 2300">
-                    </div>
-
-                </div>
-
-                <div class="button-row">
-                    <button id="calculate-pf" class="primary-button" type="button">
-                        Calculate
-                    </button>
-
-                    <button id="reset-pf" class="secondary-button" type="button">
-                        Reset
-                    </button>
-                </div>
-
-                <div id="pf-message" class="message"></div>
-
-                <div id="pf-result" class="result-card hidden">
-                    <span class="result-label">POWER FACTOR</span>
-                    <strong id="pf-result-value"></strong>
-                    <span id="pf-result-formula" class="result-formula"></span>
-                </div>
-
-            </section>
+                    <div
+                        id="ohms-message"
+                        class="message"
+                        aria-live="polite"
+                    ></div>
 
 
-            <!-- ================= THREE PHASE ================= -->
-            <section class="calculator-section" id="three-phase">
+                    <div
+                        id="ohms-result"
+                        class="result-panel hidden"
+                    >
 
-                <div class="section-heading">
-                    <div class="section-icon">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="12" cy="12" r="8"></circle>
-                            <path d="M12 4v16M4.5 8l15 8M4.5 16l15-8"></path>
-                        </svg>
+                        <span class="result-label">
+                            RESULT
+                        </span>
+
+                        <strong id="result-value">
+                            —
+                        </strong>
+
+                        <p id="result-formula">
+                            —
+                        </p>
+
                     </div>
 
-                    <div>
-                        <span class="section-number">05</span>
-                        <h2>Three-Phase Power</h2>
-                        <p>Calculate balanced three-phase real power.</p>
-                    </div>
-                </div>
 
-                <div class="formula-box">
-                    <strong>Formula</strong>
-                    <code>P = √3 × VL × IL × PF</code>
-                    <span>Uses line-to-line voltage and line current.</span>
-                </div>
+                    <div class="button-row">
 
-                <div class="input-grid">
+                        <button
+                            type="button"
+                            id="calculate-ohms"
+                            class="btn btn-primary"
+                        >
+                            Calculate
+                        </button>
 
-                    <div class="input-group">
-                        <label for="three-phase-voltage">Line Voltage <span>(V)</span></label>
-                        <input type="number" id="three-phase-voltage" step="any" min="0" placeholder="e.g. 400">
-                    </div>
+                        <button
+                            type="button"
+                            id="reset-ohms"
+                            class="btn btn-secondary"
+                        >
+                            Reset
+                        </button>
 
-                    <div class="input-group">
-                        <label for="three-phase-current">Line Current <span>(A)</span></label>
-                        <input type="number" id="three-phase-current" step="any" min="0" placeholder="e.g. 10">
                     </div>
 
-                    <div class="input-group">
-                        <label for="three-phase-pf">Power Factor</label>
-                        <input type="number" id="three-phase-pf" step="any" min="0" max="1" placeholder="e.g. 0.8">
+                </article>
+
+
+                <!-- =================================================
+                     2. ELECTRICAL POWER
+                     ================================================= -->
+
+                <article
+                    class="calculator-card"
+                    id="electrical-power"
+                >
+
+                    <div class="calculator-header">
+
+                        <div class="calculator-title-wrap">
+
+                            <div class="calculator-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"
+                                    />
+                                </svg>
+
+                            </div>
+
+                            <div>
+
+                                <span class="calculator-number">
+                                    02
+                                </span>
+
+                                <h2>
+                                    Electrical Power
+                                </h2>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
-                </div>
 
-                <div class="button-row">
-                    <button id="calculate-three-phase" class="primary-button" type="button">
-                        Calculate
-                    </button>
-
-                    <button id="reset-three-phase" class="secondary-button" type="button">
-                        Reset
-                    </button>
-                </div>
-
-                <div id="three-phase-message" class="message"></div>
-
-                <div id="three-phase-result" class="result-card hidden">
-                    <span class="result-label">RESULT</span>
-                    <strong id="three-phase-result-value"></strong>
-                    <span id="three-phase-result-formula" class="result-formula"></span>
-                </div>
-
-            </section>
+                    <p class="calculator-description">
+                        Calculate real power for DC or single-phase AC
+                        systems, or calculate apparent power.
+                    </p>
 
 
-            <!-- ================= TRANSFORMER ================= -->
-            <section class="calculator-section" id="transformer">
+                    <div class="formula-box">
 
-                <div class="section-heading">
-                    <div class="section-icon">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M8 4v16M16 4v16"></path>
-                            <path d="M5 7c3 0 3 10 0 10M19 7c-3 0-3 10 0 10"></path>
-                        </svg>
-              
+                        <strong>
+                            P = V × I
+                        </strong>
+
+                        <div class="formula-variables">
+
+                            <span>
+                                P = Power (W)
+                            </span>
+
+                            <span>
+                                V = Voltage (V)
+                            </span>
+
+                            <span>
+                                I = Current (A)
+                            </span>
+
+                            <span>
+                                PF = Power Factor
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-grid">
+
+                        <div class="input-group full-width">
+
+                            <label for="power-mode">
+                                Calculation Type
+                            </label>
+
+                            <select id="power-mode">
+
+                                <option value="dc">
+                                    DC / Basic Power
+                                </option>
+
+                                <option value="single-phase">
+                                    Single-Phase AC
+                                </option>
+
+                                <option value="apparent">
+                                    Apparent Power
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="power-voltage">
+                                Voltage
+                                <span>(V)</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="power-voltage"
+                                placeholder="e.g. 230"
+                                step="any"
+                                inputmode="decimal"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="power-current">
+                                Current
+                                <span>(A)</span>
+                            </label>
+
+                            <input
