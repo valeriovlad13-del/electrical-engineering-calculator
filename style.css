@@ -1,6 +1,6 @@
-/* ================================
-   General
-================================ */
+/* =========================
+   GLOBAL
+========================= */
 
 * {
     box-sizing: border-box;
@@ -8,11 +8,32 @@
     padding: 0;
 }
 
+:root {
+    --primary: #1565c0;
+    --primary-dark: #0d47a1;
+    --background: #f4f7fb;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #667085;
+    --border: #d0d5dd;
+    --success: #087443;
+    --error: #b42318;
+    --result-background: #eef6ff;
+}
+
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f5f7fa;
-    color: #1f2937;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: var(--background);
+    color: var(--text);
     line-height: 1.6;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
 .container {
@@ -21,286 +42,371 @@ body {
 }
 
 
-/* ================================
-   Header
-================================ */
+/* =========================
+   HEADER
+========================= */
 
 .site-header {
-    background: #111827;
+    background: var(--primary);
     color: white;
-    padding: 2.5rem 0;
+    padding: 24px 0;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
 }
 
 .site-header h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+    margin-bottom: 5px;
 }
 
 .site-header p {
-    color: #d1d5db;
+    opacity: 0.9;
+}
+
+.theme-button {
+    background: white;
+    color: var(--primary-dark);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 
-/* ================================
-   Hero
-================================ */
+/* =========================
+   HERO
+========================= */
 
 .hero {
-    padding: 2.5rem 0 1.5rem;
+    text-align: center;
+    padding: 40px 20px 30px;
 }
 
 .hero h2 {
-    font-size: 1.7rem;
-    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    margin-bottom: 10px;
 }
 
 .hero p {
-    color: #6b7280;
-}
-
-
-/* ================================
-   Calculator Grid
-================================ */
-
-.calculator-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-    padding-bottom: 3rem;
-}
-
-
-/* ================================
-   Calculator Cards
-================================ */
-
-.calculator-card {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 1.5rem;
-
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-    transition: transform 0.2s ease,
-                box-shadow 0.2s ease;
-}
-
-.calculator-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-}
-
-.card-icon {
-    font-size: 2rem;
-    margin-bottom: 0.75rem;
-}
-
-.calculator-card h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-}
-
-.calculator-card p {
-    color: #6b7280;
-    margin-bottom: 1rem;
-}
-
-.calculator-card .formula {
-    font-family: "Courier New", monospace;
-    font-weight: bold;
-    color: #111827;
-    background: #f3f4f6;
-    padding: 0.7rem;
-    border-radius: 6px;
-}
-
-
-/* ================================
-   Buttons
-================================ */
-
-button {
-    border: none;
-    border-radius: 7px;
-    padding: 0.75rem 1rem;
-
-    background: #111827;
-    color: white;
-
-    font-size: 0.95rem;
-    font-weight: bold;
-
-    cursor: pointer;
-}
-
-button:hover {
-    background: #374151;
-}
-
-button:disabled {
-    background: #d1d5db;
-    color: #6b7280;
-    cursor: not-allowed;
-}
-
-
-/* ================================
-   Coming Soon
-================================ */
-
-.coming-soon {
-    opacity: 0.85;
-}
-
-
-/* ================================
-   Footer
-================================ */
-
-.site-footer {
-    background: #111827;
-    color: #d1d5db;
-    text-align: center;
-    padding: 1.5rem 0;
-}
-
-.site-footer p {
-    margin: 0.25rem 0;
-}
-
-
-/* ================================
-   Tablet / Mobile
-================================ */
-
-@media (max-width: 700px) {
-
-    .site-header h1 {
-        font-size: 1.6rem;
-    }
-
-    .calculator-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .hero {
-        padding-top: 2rem;
-    }
-
-    .calculator-card {
-        padding: 1.25rem;
-    }
-}
-
-/* ================================
-   Calculator Section
-================================ */
-
-.calculator-section {
-    padding-bottom: 2rem;
-}
-
-.calculator-section .calculator-card {
+    color: var(--muted);
     max-width: 700px;
     margin: 0 auto;
 }
 
 
-/* ================================
-   Input Groups
-================================ */
+/* =========================
+   CALCULATOR SECTIONS
+========================= */
+
+.calculator-section {
+    background: var(--card);
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    padding: 28px;
+    margin-bottom: 25px;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.calculator-section h2 {
+    color: var(--primary-dark);
+    margin-bottom: 6px;
+}
+
+.section-description {
+    color: var(--muted);
+    margin-bottom: 22px;
+}
+
+
+/* =========================
+   INPUTS
+========================= */
 
 .input-group {
-    margin-bottom: 1rem;
+    margin-bottom: 17px;
 }
 
 .input-group label {
     display: block;
     font-weight: bold;
-    margin-bottom: 0.4rem;
+    margin-bottom: 7px;
 }
 
-.input-group input {
+.input-group input,
+.input-group select {
     width: 100%;
-    padding: 0.8rem;
 
-    border: 1px solid #d1d5db;
-    border-radius: 7px;
+    padding: 12px 13px;
 
-    font-size: 1rem;
-}
-
-.input-group input:focus {
-    outline: 2px solid #9ca3af;
-    border-color: #6b7280;
-}
-
-select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border);
     border-radius: 8px;
+
     font-size: 1rem;
-    background-color: white;
+
+    background: var(--card);
+    color: var(--text);
+
+    outline: none;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(21, 101, 192, 0.12);
 }
 
 
-/* ================================
-   Button Group
-================================ */
+/* =========================
+   BUTTONS
+========================= */
 
 .button-group {
     display: flex;
-    gap: 0.75rem;
-    margin-top: 1.25rem;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+button {
+    border: none;
+
+    background: var(--primary);
+    color: white;
+
+    padding: 12px 18px;
+
+    border-radius: 8px;
+
+    font-size: 1rem;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.1s ease;
+}
+
+button:hover {
+    background: var(--primary-dark);
+}
+
+button:active {
+    transform: scale(0.98);
 }
 
 .secondary-button {
-    background: #6b7280;
+    background: #667085;
 }
 
 .secondary-button:hover {
-    background: #4b5563;
+    background: #475467;
 }
 
 
-/* ================================
-   Messages
-================================ */
+/* =========================
+   MESSAGES
+========================= */
 
 .message {
-    margin-top: 1rem;
+    min-height: 24px;
+
+    margin-top: 15px;
+
     font-weight: bold;
 }
 
+.message.error {
+    color: var(--error);
+}
 
-/* ================================
-   Results
-================================ */
+.message.success {
+    color: var(--success);
+}
+
+
+/* =========================
+   RESULTS
+========================= */
 
 .result {
-    margin-top: 1.5rem;
-    padding: 1.25rem;
+    display: none;
 
-    background: #f3f4f6;
+    margin-top: 20px;
+
+    padding: 18px;
+
+    background: var(--result-background);
+
+    border-left: 5px solid var(--primary);
+
     border-radius: 8px;
-
-    border-left: 4px solid #111827;
 }
 
-.result h4 {
-    margin-bottom: 0.5rem;
+.result.show {
+    display: block;
 }
 
-#result-value {
+.result h3 {
+    margin-bottom: 8px;
+}
+
+.result p {
+    margin-bottom: 5px;
+}
+
+.result-value {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #111827;
 }
 
-#result-formula {
-    margin-top: 0.5rem;
-    font-family: "Courier New", monospace;
+
+/* =========================
+   HISTORY
+========================= */
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.history-list {
+    margin-top: 15px;
+}
+
+.empty-history {
+    color: var(--muted);
+}
+
+.history-item {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    padding: 12px;
+    margin-bottom: 10px;
+
+    background: var(--background);
+}
+
+.history-item strong {
+    color: var(--primary-dark);
+}
+
+.history-item small {
+    display: block;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.site-footer {
+    margin-top: 40px;
+
+    padding: 30px 0;
+
+    text-align: center;
+
+    background: #111827;
+    color: white;
+}
+
+.site-footer p {
+    margin-bottom: 5px;
+}
+
+
+/* =========================
+   DARK MODE
+========================= */
+
+body.dark-mode {
+    --background: #101828;
+    --card: #1d2939;
+    --text: #f2f4f7;
+    --muted: #98a2b3;
+    --border: #344054;
+    --result-background: #172b4d;
+}
+
+body.dark-mode .theme-button {
+    background: #344054;
+    color: white;
+}
+
+body.dark-mode .input-group input,
+body.dark-mode .input-group select {
+    background: #101828;
+    color: #f2f4f7;
+}
+
+body.dark-mode .history-item {
+    background: #101828;
+}
+
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+@media (max-width: 700px) {
+
+    .header-content {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .theme-button {
+        width: 100%;
+    }
+
+    .site-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero {
+        padding-top: 30px;
+    }
+
+    .hero h2 {
+        font-size: 1.5rem;
+    }
+
+    .calculator-section {
+        padding: 20px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .button-group button {
+        width: 100%;
+    }
+
+    .history-header {
+        flex-direction: column;
+    }
+
+    .history-header button {
+        width: 100%;
+    }
 }
