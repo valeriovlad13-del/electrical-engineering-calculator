@@ -10,7 +10,7 @@ interface that works on desktop, tablet, and mobile devices.
 
 ## Live Demo
 
-**Vercel:** Add your deployed Vercel URL here
+**Vercel:** https://electrical-engineering-calculator-rho.vercel.app
 
 ## Features
 
@@ -235,13 +235,13 @@ Possible future enhancements include:
 
 **Blademir Rubia**
 
-Electrical Engineer \| Computer Science Student
+Electrical Engineer \| Computer Science
 
-GitHub: Add your GitHub profile link here
+GitHub: https://github.com/valeriovlad13-del
 
-LinkedIn: Add your LinkedIn profile link here
+LinkedIn: https://www.linkedin.com/in/blademir-rubia-12305426a
 
-Portfolio: https://engineerxcscience-portfolio.vercel.app/
+Portfolio: https://engineerxcscience-portfolio.vercel.app
 
 ## License
 
