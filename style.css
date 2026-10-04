@@ -1,1 +1,195 @@
+/* ================================
+   General
+================================ */
 
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fa;
+    color: #1f2937;
+    line-height: 1.6;
+}
+
+.container {
+    width: min(1100px, 92%);
+    margin: 0 auto;
+}
+
+
+/* ================================
+   Header
+================================ */
+
+.site-header {
+    background: #111827;
+    color: white;
+    padding: 2.5rem 0;
+}
+
+.site-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.site-header p {
+    color: #d1d5db;
+}
+
+
+/* ================================
+   Hero
+================================ */
+
+.hero {
+    padding: 2.5rem 0 1.5rem;
+}
+
+.hero h2 {
+    font-size: 1.7rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero p {
+    color: #6b7280;
+}
+
+
+/* ================================
+   Calculator Grid
+================================ */
+
+.calculator-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    padding-bottom: 3rem;
+}
+
+
+/* ================================
+   Calculator Cards
+================================ */
+
+.calculator-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.calculator-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.card-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.calculator-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.calculator-card p {
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+.calculator-card .formula {
+    font-family: "Courier New", monospace;
+    font-weight: bold;
+    color: #111827;
+    background: #f3f4f6;
+    padding: 0.7rem;
+    border-radius: 6px;
+}
+
+
+/* ================================
+   Buttons
+================================ */
+
+button {
+    border: none;
+    border-radius: 7px;
+    padding: 0.75rem 1rem;
+
+    background: #111827;
+    color: white;
+
+    font-size: 0.95rem;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+button:hover {
+    background: #374151;
+}
+
+button:disabled {
+    background: #d1d5db;
+    color: #6b7280;
+    cursor: not-allowed;
+}
+
+
+/* ================================
+   Coming Soon
+================================ */
+
+.coming-soon {
+    opacity: 0.85;
+}
+
+
+/* ================================
+   Footer
+================================ */
+
+.site-footer {
+    background: #111827;
+    color: #d1d5db;
+    text-align: center;
+    padding: 1.5rem 0;
+}
+
+.site-footer p {
+    margin: 0.25rem 0;
+}
+
+
+/* ================================
+   Tablet / Mobile
+================================ */
+
+@media (max-width: 700px) {
+
+    .site-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .calculator-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        padding-top: 2rem;
+    }
+
+    .calculator-card {
+        padding: 1.25rem;
+    }
+}
