@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta
+        name="description"
+        content="Electrical Engineering Calculator for electrical power, energy, transformers, voltage drop, power factor, and more."
+    >
+
     <title>Electrical Engineering Calculator</title>
 
     <link rel="stylesheet" href="style.css">
@@ -11,362 +16,750 @@
 
 <body>
 
-    <header class="site-header">
-        <div class="container">
+<header class="site-header">
+    <div class="container header-content">
+        <div>
             <h1>⚡ Electrical Engineering Calculator</h1>
-            <p>Practical tools for common electrical engineering calculations.</p>
+            <p>Practical calculators for electrical engineering applications.</p>
         </div>
-    </header>
+
+        <button id="theme-toggle" class="theme-button" type="button">
+            🌙 Dark Mode
+        </button>
+    </div>
+</header>
 
 
-    <main class="container">
+<main class="container">
 
-        <section class="hero">
-            <h2>Engineering Calculators</h2>
-            <p>
-                Select a calculator to perform common electrical engineering
-                calculations.
-            </p>
-        </section>
+    <!-- HERO -->
+    <section class="hero">
+        <h2>Engineering Calculations Made Simple</h2>
+        <p>
+            Calculate common electrical engineering values quickly and
+            accurately using standard formulas.
+        </p>
+    </section>
 
 
-        <!-- =========================
-             Ohm's Law Calculator
-        ========================== -->
+    <!-- ========================= -->
+    <!-- OHM'S LAW -->
+    <!-- ========================= -->
 
-        <section class="calculator-section">
+    <section class="calculator-section">
 
-            <div class="calculator-card">
+        <h2>Ohm's Law Calculator</h2>
 
-                <div class="card-icon">⚡</div>
+        <p class="section-description">
+            Enter exactly two known values to calculate the missing value.
+        </p>
 
-                <h3>Ohm's Law Calculator</h3>
+        <div class="input-group">
+            <label for="voltage">Voltage (V)</label>
+            <input
+                type="number"
+                id="voltage"
+                placeholder="Enter voltage"
+                step="any"
+            >
+        </div>
 
-                <p>
-                    Enter any two values and calculate the third value.
+        <div class="input-group">
+            <label for="current">Current (A)</label>
+            <input
+                type="number"
+                id="current"
+                placeholder="Enter current"
+                step="any"
+            >
+        </div>
+
+        <div class="input-group">
+            <label for="resistance">Resistance (Ω)</label>
+            <input
+                type="number"
+                id="resistance"
+                placeholder="Enter resistance"
+                step="any"
+            >
+        </div>
+
+        <div class="button-group">
+            <button id="calculate-ohms" type="button">
+                Calculate
+            </button>
+
+            <button
+                id="reset-ohms"
+                class="secondary-button"
+                type="button"
+            >
+                Reset
+            </button>
+        </div>
+
+        <p id="ohms-message" class="message"></p>
+
+        <div id="ohms-result" class="result">
+            <h3>Result</h3>
+            <p id="result-value"></p>
+            <p id="result-formula"></p>
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- ELECTRICAL POWER -->
+    <!-- ========================= -->
+
+    <section class="calculator-section">
+
+        <h2>Electrical Power Calculator</h2>
+
+        <p class="section-description">
+            Calculate real power or apparent power for common electrical
+            applications.
+        </p>
+
+        <div class="input-group">
+            <label for="power-mode">Calculation Type</label>
+
+            <select id="power-mode">
+                <option value="dc">Basic / DC Power</option>
+                <option value="single-phase">
+                    Single-Phase AC Power
+                </option>
+                <option value="apparent">
+                    Apparent Power
+                </option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="power-voltage">Voltage (V)</label>
+
+            <input
+                type="number"
+                id="power-voltage"
+                placeholder="Enter voltage"
+                step="any"
+            >
+        </div>
+
+        <div class="input-group">
+            <label for="power-current">Current (A)</label>
+
+            <input
+                type="number"
+                id="power-current"
+                placeholder="Enter current"
+                step="any"
+            >
+        </div>
+
+        <div
+            class="input-group"
+            id="power-factor-group"
+        >
+            <label for="power-pf">Power Factor</label>
+
+            <input
+                type="number"
+                id="power-pf"
+                placeholder="Enter PF (0–1)"
+                step="any"
+                min="0"
+                max="1"
+            >
+        </div>
+
+        <div class="button-group">
+            <button id="calculate-power" type="button">
+                Calculate
+            </button>
+
+            <button
+                id="reset-power"
+                class="secondary-button"
+                type="button"
+            >
+                Reset
+            </button>
+        </div>
+
+        <p id="power-message" class="message"></p>
+
+        <div id="power-result" class="result">
+            <h3>Result</h3>
+            <p id="power-result-value"></p>
+            <p id="power-result-formula"></p>
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- ENERGY -->
+    <!-- ========================= -->
+
+    <section class="calculator-section">
+
+        <h2>Energy & Cost Calculator</h2>
+
+        <p class="section-description">
+            Calculate electrical energy consumption and estimated electricity
+            cost.
+        </p>
+
+        <div class="input-group">
+            <label for="energy-power">Power (kW)</label>
+
+            <input
+                type="number"
+                id="energy-power"
+                placeholder="Enter power"
+                step="any"
+            >
+        </div>
+
+        <div class="input-group">
+            <label for="energy-time">Operating Time (hours)</label>
+
+            <input
+                type="number"
+                id="energy-time"
+                placeholder="Enter hours"
+                step="any"
+            >
+        </div>
+
+        <div class="input-group">
+            <label for="energy-rate">
+                Electricity Rate (₱/kWh)
+            </label>
+
+            <input
+                type="number"
+                id="energy-rate"
+                placeholder="Enter electricity rate"
+                value="10.659"
+                step="any"
+            >
+        </div>
+
+        <div class="button-group">
+            <button id="calculate-energy" type="button">
+                Calculate
+            </button>
+
+            <button
+                id="reset-energy"
+                class="secondary-button"
+                type="button"
+            >
+                Reset
+            </button>
+        </div>
+
+        <p id="energy-message" class="message"></p>
+
+        <div id="energy-result" class="result">
+            <h3>Result</h3>
+
+            <p id="energy-result-value"></p>
+
+            <p id="energy-cost"></p>
+
+            <p id="energy-result-formula"></p>
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- POWER FACTOR -->
+    <!-- ========================= -->
+
+    <section class="calculator-section">
+
+        <h2>Power Factor Calculator</h2>
+
+        <p class="section-description">
+            Calculate power factor from real and apparent power.
+        </p>
+
+        <div class="input-group">
+            <label for="pf-real-power">
+                Real Power (W)
+            </label>
+
+            <input
+                type="number"
+                id="pf-real-power"
+                placeholder="Enter real power"
+                step="any"
+            >
+        </div>
+
+        <div class="input-group">
+            <label for="pf-apparent-power">
+                Apparent Power (VA)
+            </label>
+
+            <input
+                type="number"
+                id="pf-apparent-power"
+                placeholder="Enter apparent power"
+                step="any"
+            >
+        </div>
+
+        <div class="button-group">
+            <button id="calculate-pf" type="button">
+                Calculate
+            </button>
+
+            <button
+                id="reset-pf"
+                class="secondary-button"
+                type="button"
+            >
+                Reset
+            </button>
+        </div>
+
+        <p id="pf-message" class="message"></p>
+
+        <div id="pf-result" class="result">
+            <h3>Result</h3>
+
+            <p id="pf-result-value"></p>
+
+            <p id="pf-result-formula"></p>
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- THREE PHASE -->
+    <!-- ========================= -->
+
+    <section class="calculator-section">
+
+        <h2>Three-Phase Power Calculator</h2>
+
+        <p class="section-description">
+            Calculate three-phase real power using line voltage, line current,
+            and power factor.
+        </p>
+
+        <div class="input-group">
+            <label for="three-phase-voltage">
+                Line Voltage (V)
+            </label>
+
+            <input
+                type="number"
+                id="three-phase-voltage"
+                placeholder="Enter line voltage"
+                step="any"
+            >
+        </div>
+
+        <div class="input-group">
+            <label for="three-phase-current">
+                Line Current (A)
+            </label>
+
+            <input
+                type="number"
+                id="three-phase-current"
+                placeholder="Enter line current"
+                step="any"
+            >
+        </div>
+
+        <div class="input-group">
+            <label for="three-phase-pf">
+                Power Factor
+            </label>
+
+            <input
+                type="number"
+                id="three-phase-pf"
+                placeholder="Enter PF (0–1)"
+                step="any"
+                min="0"
+                max="1"
+            >
+        </div>
+
+        <div class="button-group">
+            <button id="calculate-three-phase" type="button">
+                Calculate
+            </button>
+
+            <button
+                id="reset-three-phase"
+                class="secondary-button"
+                type="button"
+            >
+                Reset
+            </button>
+        </div>
+
+        <p id="three-phase-message" class="message"></p>
+
+        <div id="three-phase-result" class="result">
+            <h3>Result</h3>
+
+            <p id="three-phase-result-value"></p>
+
+            <p id="three-phase-result-formula"></p>
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- TRANSFORMER -->
+    <!-- ========================= -->
+
+    <section class="calculator-section">
+
+        <h2>Transformer Calculator</h2>
+
+        <p class="section-description">
+            Calculate transformer secondary voltage and ideal secondary
+            current using transformer ratios.
+        </p>
+
+        <div class="input-group">
+            <label for="transformer-v1">
+                Primary Voltage V₁ (V)
+            </label>
+
+            <input
+                type="number"
+                id="transformer-v1"
+                placeholder="Enter primary voltage"
+                step="any"
+            >
+        </div>
+
+        <div class="input-group">
+            <label for="transformer-n1">
+                Primary Turns N₁
+            </label>
+
+            <input
+                type="number"
+                id="transformer-n1"
+                placeholder="Enter primary turns"
+                step="any"
+            >
+        </div>
+
+        <div class="input-group">
+            <label for="transformer-n2">
+                Secondary Turns N₂
+            </label>
+
+            <input
+                type="number"
+                id="transformer-n2"
+                placeholder="Enter secondary turns"
+                step="any"
+            >
+        </div>
+
+        <div class="input-group">
+            <label for="transformer-primary-current">
+                Primary Current I₁ (A) — Optional
+            </label>
+
+            <input
+                type="number"
+                id="transformer-primary-current"
+                placeholder="Optional"
+                step="any"
+            >
+        </div>
+
+        <div class="button-group">
+            <button id="calculate-transformer" type="button">
+                Calculate
+            </button>
+
+            <button
+                id="reset-transformer"
+                class="secondary-button"
+                type="button"
+            >
+                Reset
+            </button>
+        </div>
+
+        <p id="transformer-message" class="message"></p>
+
+        <div id="transformer-result" class="result">
+            <h3>Result</h3>
+
+            <p id="transformer-voltage-result"></p>
+
+            <p id="transformer-current-result"></p>
+
+            <p id="transformer-result-formula"></p>
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- VOLTAGE DROP -->
+    <!-- ========================= -->
+
+    <section class="calculator-section">
+
+        <h2>Voltage Drop Calculator</h2>
+
+        <p class="section-description">
+            Calculate voltage drop using current and resistance.
+        </p>
+
+        <div class="input-group">
+            <label for="voltage-drop-current">
+                Current (A)
+            </label>
+
+            <input
+                type="number"
+                id="voltage-drop-current"
+                placeholder="Enter current"
+                step="any"
+            >
+        </div>
+
+        <div class="input-group">
+            <label for="voltage-drop-resistance">
+                Resistance (Ω)
+            </label>
+
+            <input
+                type="number"
+                id="voltage-drop-resistance"
+                placeholder="Enter resistance"
+                step="any"
+            >
+        </div>
+
+        <div class="input-group">
+            <label for="voltage-drop-system-voltage">
+                System Voltage (V) — Optional
+            </label>
+
+            <input
+                type="number"
+                id="voltage-drop-system-voltage"
+                placeholder="Optional"
+                step="any"
+            >
+        </div>
+
+        <div class="button-group">
+            <button id="calculate-voltage-drop" type="button">
+                Calculate
+            </button>
+
+            <button
+                id="reset-voltage-drop"
+                class="secondary-button"
+                type="button"
+            >
+                Reset
+            </button>
+        </div>
+
+        <p id="voltage-drop-message" class="message"></p>
+
+        <div id="voltage-drop-result" class="result">
+            <h3>Result</h3>
+
+            <p id="voltage-drop-result-value"></p>
+
+            <p id="voltage-drop-percentage"></p>
+
+            <p id="voltage-drop-result-formula"></p>
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- UNIT CONVERTER -->
+    <!-- ========================= -->
+
+    <section class="calculator-section">
+
+        <h2>Electrical Unit Converter</h2>
+
+        <p class="section-description">
+            Convert common electrical engineering units.
+        </p>
+
+        <div class="input-group">
+            <label for="converter-type">
+                Conversion
+            </label>
+
+            <select id="converter-type">
+
+                <option value="w-kw">
+                    W → kW
+                </option>
+
+                <option value="kw-w">
+                    kW → W
+                </option>
+
+                <option value="wh-kwh">
+                    Wh → kWh
+                </option>
+
+                <option value="kwh-wh">
+                    kWh → Wh
+                </option>
+
+                <option value="va-kva">
+                    VA → kVA
+                </option>
+
+                <option value="kva-va">
+                    kVA → VA
+                </option>
+
+                <option value="v-kv">
+                    V → kV
+                </option>
+
+                <option value="kv-v">
+                    kV → V
+                </option>
+
+                <option value="a-ma">
+                    A → mA
+                </option>
+
+                <option value="ma-a">
+                    mA → A
+                </option>
+
+                <option value="ohm-kohm">
+                    Ω → kΩ
+                </option>
+
+                <option value="kohm-ohm">
+                    kΩ → Ω
+                </option>
+
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="converter-value">
+                Value
+            </label>
+
+            <input
+                type="number"
+                id="converter-value"
+                placeholder="Enter value"
+                step="any"
+            >
+        </div>
+
+        <div class="button-group">
+            <button id="calculate-conversion" type="button">
+                Convert
+            </button>
+
+            <button
+                id="reset-converter"
+                class="secondary-button"
+                type="button"
+            >
+                Reset
+            </button>
+        </div>
+
+        <p id="converter-message" class="message"></p>
+
+        <div id="converter-result" class="result">
+            <h3>Result</h3>
+
+            <p id="converter-result-value"></p>
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- HISTORY -->
+    <!-- ========================= -->
+
+    <section class="calculator-section history-section">
+
+        <div class="history-header">
+
+            <div>
+                <h2>Calculation History</h2>
+
+                <p class="section-description">
+                    Your recent calculations are stored locally in your browser.
                 </p>
-
-                <p class="formula">
-                    V = I × R
-                </p>
-
-
-                <div class="input-group">
-
-                    <label for="voltage">
-                        Voltage (V)
-                    </label>
-
-                    <input
-                        type="number"
-                        id="voltage"
-                        placeholder="Enter voltage"
-                        step="any"
-                    >
-
-                </div>
-
-
-                <div class="input-group">
-
-                    <label for="current">
-                        Current (A)
-                    </label>
-
-                    <input
-                        type="number"
-                        id="current"
-                        placeholder="Enter current"
-                        step="any"
-                    >
-
-                </div>
-
-
-                <div class="input-group">
-
-                    <label for="resistance">
-                        Resistance (Ω)
-                    </label>
-
-                    <input
-                        type="number"
-                        id="resistance"
-                        placeholder="Enter resistance"
-                        step="any"
-                    >
-
-                </div>
-
-
-                <div class="button-group">
-
-                    <button
-                        type="button"
-                        id="calculate-ohms"
-                    >
-                        Calculate
-                    </button>
-
-                    <button
-                        type="button"
-                        id="reset-ohms"
-                        class="secondary-button"
-                    >
-                        Reset
-                    </button>
-
-                </div>
-
-
-                <div
-                    id="ohms-message"
-                    class="message"
-                    aria-live="polite"
-                ></div>
-
-
-                <div
-                    id="ohms-result"
-                    class="result"
-                >
-
-                    <h4>Result</h4>
-
-                    <p id="result-value">
-                        Enter two values to calculate the third.
-                    </p>
-
-                    <p id="result-formula"></p>
-
-                </div>
-
             </div>
 
-        </section>
-
-
-        <!-- =========================
-             Future Calculators
-        ========================== -->
-
-        <section class="calculator-section">
-    <h2>Electrical Power Calculator</h2>
-    <p class="section-description">
-        Calculate electrical power using different formulas.
-    </p>
-
-    <div class="input-group">
-        <label for="power-mode">Calculation Type</label>
-        <select id="power-mode">
-            <option value="dc">Basic / DC Power</option>
-            <option value="single-phase">Single-Phase AC Power</option>
-            <option value="apparent">Apparent Power</option>
-        </select>
-    </div>
-
-    <div class="input-group">
-        <label for="power-voltage">Voltage (V)</label>
-        <input
-            type="number"
-            id="power-voltage"
-            placeholder="Enter voltage"
-            step="any"
-        >
-    </div>
-
-    <div class="input-group">
-        <label for="power-current">Current (A)</label>
-        <input
-            type="number"
-            id="power-current"
-            placeholder="Enter current"
-            step="any"
-        >
-    </div>
-
-    <div class="input-group" id="power-factor-group">
-        <label for="power-pf">Power Factor</label>
-        <input
-            type="number"
-            id="power-pf"
-            placeholder="Enter PF (0–1)"
-            step="any"
-            min="0"
-            max="1"
-        >
-    </div>
-
-    <div class="button-group">
-        <button id="calculate-power">Calculate</button>
-        <button id="reset-power" class="secondary-button">Reset</button>
-    </div>
-
-    <p id="power-message" class="message"></p>
-
-    <div id="power-result" class="result">
-        <h3>Result</h3>
-        <p id="power-result-value"></p>
-        <p id="power-result-formula"></p>
-    </div>
-        </section>
-        
-        <section class="calculator-grid">
-
-            <article class="calculator-card coming-soon">
-
-                <div class="card-icon">🔌</div>
-
-                <h3>Electrical Power</h3>
-
-                <p>
-                    Calculate electrical power using voltage,
-                    current, and power factor.
-                </p>
-
-                <p class="formula">
-                    P = V × I
-                </p>
-
-                <button type="button" disabled>
-                    Coming Soon
-                </button>
-
-            </article>
-
-
-            <article class="calculator-card coming-soon">
-
-                <div class="card-icon">⚡</div>
-
-                <h3>Energy</h3>
-
-                <p>
-                    Calculate energy consumption and estimated
-                    electricity cost.
-                </p>
-
-                <p class="formula">
-                    E = P × t
-                </p>
-
-                <button type="button" disabled>
-                    Coming Soon
-                </button>
-
-            </article>
-
-
-            <article class="calculator-card coming-soon">
-
-                <div class="card-icon">📐</div>
-
-                <h3>Power Factor</h3>
-
-                <p>
-                    Calculate real power, apparent power,
-                    and power factor.
-                </p>
-
-                <p class="formula">
-                    PF = P / S
-                </p>
-
-                <button type="button" disabled>
-                    Coming Soon
-                </button>
-
-            </article>
-
-
-            <article class="calculator-card coming-soon">
-
-                <div class="card-icon">🔋</div>
-
-                <h3>Three-Phase Power</h3>
-
-                <p>
-                    Calculate power in balanced three-phase systems.
-                </p>
-
-                <p class="formula">
-                    P = √3 × V × I × PF
-                </p>
-
-                <button type="button" disabled>
-                    Coming Soon
-                </button>
-
-            </article>
-
-
-            <article class="calculator-card coming-soon">
-
-                <div class="card-icon">🔄</div>
-
-                <h3>Transformer</h3>
-
-                <p>
-                    Calculate transformer voltage, current,
-                    and turns ratios.
-                </p>
-
-                <p class="formula">
-                    V₁/V₂ = N₁/N₂
-                </p>
-
-                <button type="button" disabled>
-                    Coming Soon
-                </button>
-
-            </article>
-
-
-            <article class="calculator-card coming-soon">
-
-                <div class="card-icon">📏</div>
-
-                <h3>Voltage Drop</h3>
-
-                <p>
-                    Estimate voltage drop and percentage
-                    voltage drop.
-                </p>
-
-                <p class="formula">
-                    V<sub>D</sub> = I × R
-                </p>
-
-                <button type="button" disabled>
-                    Coming Soon
-                </button>
-
-            </article>
-
-        </section>
-
-    </main>
-
-
-    <footer class="site-footer">
-
-        <div class="container">
-
-            <p>
-                Electrical Engineering Calculator
-            </p>
-
-            <p>
-                Built with HTML, CSS, and JavaScript.
-            </p>
+            <button
+                id="clear-history"
+                class="secondary-button"
+                type="button"
+            >
+                Clear History
+            </button>
 
         </div>
 
-    </footer>
+        <div id="history-list" class="history-list">
+            <p class="empty-history">
+                No calculations yet.
+            </p>
+        </div>
+
+    </section>
+
+</main>
 
 
-    <!-- JavaScript -->
-    <script src="script.js"></script>
+<footer class="site-footer">
+
+    <div class="container">
+
+        <p>
+            Electrical Engineering Calculator
+        </p>
+
+        <p>
+            Built with HTML, CSS, and JavaScript.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
