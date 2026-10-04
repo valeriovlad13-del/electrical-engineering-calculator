@@ -237,6 +237,15 @@ button:disabled {
     border-color: #6b7280;
 }
 
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: white;
+}
+
 
 /* ================================
    Button Group
