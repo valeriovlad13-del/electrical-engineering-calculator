@@ -10,7 +10,7 @@ interface that works on desktop, tablet, and mobile devices.
 
 ## Live Demo
 
-**Vercel:** https://electrical-engineering-calculator-rho.vercel.app
+**Vercel:** https://electrical-engineering-calculator-rho.vercel.app/
 
 ## Features
 
