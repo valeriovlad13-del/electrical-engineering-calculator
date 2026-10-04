@@ -30,36 +30,137 @@
         </section>
 
 
-        <section class="calculator-grid">
+        <!-- =========================
+             Ohm's Law Calculator
+        ========================== -->
 
-            <article class="calculator-card">
+        <section class="calculator-section">
+
+            <div class="calculator-card">
+
                 <div class="card-icon">⚡</div>
 
-                <h3>Ohm's Law</h3>
+                <h3>Ohm's Law Calculator</h3>
 
                 <p>
-                    Calculate voltage, current, or resistance using
-                    Ohm's Law.
+                    Enter any two values and calculate the third value.
                 </p>
 
                 <p class="formula">
                     V = I × R
                 </p>
 
-                <button type="button">
-                    Open Calculator
-                </button>
-            </article>
 
+                <div class="input-group">
+
+                    <label for="voltage">
+                        Voltage (V)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="voltage"
+                        placeholder="Enter voltage"
+                        step="any"
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="current">
+                        Current (A)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="current"
+                        placeholder="Enter current"
+                        step="any"
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="resistance">
+                        Resistance (Ω)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="resistance"
+                        placeholder="Enter resistance"
+                        step="any"
+                    >
+
+                </div>
+
+
+                <div class="button-group">
+
+                    <button
+                        type="button"
+                        id="calculate-ohms"
+                    >
+                        Calculate
+                    </button>
+
+                    <button
+                        type="button"
+                        id="reset-ohms"
+                        class="secondary-button"
+                    >
+                        Reset
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="ohms-message"
+                    class="message"
+                    aria-live="polite"
+                ></div>
+
+
+                <div
+                    id="ohms-result"
+                    class="result"
+                >
+
+                    <h4>Result</h4>
+
+                    <p id="result-value">
+                        Enter two values to calculate the third.
+                    </p>
+
+                    <p id="result-formula"></p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             Future Calculators
+        ========================== -->
+
+        <section class="calculator-grid">
 
             <article class="calculator-card coming-soon">
+
                 <div class="card-icon">🔌</div>
 
                 <h3>Electrical Power</h3>
 
                 <p>
-                    Calculate electrical power using voltage, current,
-                    and power factor.
+                    Calculate electrical power using voltage,
+                    current, and power factor.
                 </p>
 
                 <p class="formula">
@@ -69,10 +170,12 @@
                 <button type="button" disabled>
                     Coming Soon
                 </button>
+
             </article>
 
 
             <article class="calculator-card coming-soon">
+
                 <div class="card-icon">⚡</div>
 
                 <h3>Energy</h3>
@@ -89,17 +192,19 @@
                 <button type="button" disabled>
                     Coming Soon
                 </button>
+
             </article>
 
 
             <article class="calculator-card coming-soon">
+
                 <div class="card-icon">📐</div>
 
                 <h3>Power Factor</h3>
 
                 <p>
-                    Calculate real power, apparent power, and
-                    power factor.
+                    Calculate real power, apparent power,
+                    and power factor.
                 </p>
 
                 <p class="formula">
@@ -109,10 +214,12 @@
                 <button type="button" disabled>
                     Coming Soon
                 </button>
+
             </article>
 
 
             <article class="calculator-card coming-soon">
+
                 <div class="card-icon">🔋</div>
 
                 <h3>Three-Phase Power</h3>
@@ -128,17 +235,19 @@
                 <button type="button" disabled>
                     Coming Soon
                 </button>
+
             </article>
 
 
             <article class="calculator-card coming-soon">
+
                 <div class="card-icon">🔄</div>
 
                 <h3>Transformer</h3>
 
                 <p>
-                    Calculate transformer voltage, current, and
-                    turns ratios.
+                    Calculate transformer voltage, current,
+                    and turns ratios.
                 </p>
 
                 <p class="formula">
@@ -148,17 +257,19 @@
                 <button type="button" disabled>
                     Coming Soon
                 </button>
+
             </article>
 
 
             <article class="calculator-card coming-soon">
+
                 <div class="card-icon">📏</div>
 
                 <h3>Voltage Drop</h3>
 
                 <p>
-                    Estimate voltage drop and percentage voltage drop
-                    in a circuit.
+                    Estimate voltage drop and percentage
+                    voltage drop.
                 </p>
 
                 <p class="formula">
@@ -168,6 +279,7 @@
                 <button type="button" disabled>
                     Coming Soon
                 </button>
+
             </article>
 
         </section>
@@ -176,7 +288,9 @@
 
 
     <footer class="site-footer">
+
         <div class="container">
+
             <p>
                 Electrical Engineering Calculator
             </p>
@@ -184,8 +298,14 @@
             <p>
                 Built with HTML, CSS, and JavaScript.
             </p>
+
         </div>
+
     </footer>
+
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
 
 </body>
 </html>
