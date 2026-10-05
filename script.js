@@ -1,13 +1,3 @@
-/* =========================================================
-   ELECTRICAL ENGINEERING CALCULATOR
-   Final Calculation Logic
-   ========================================================= */
-
-
-/* =========================================================
-   1. GENERAL HELPERS
-   ========================================================= */
-
 function getNumber(id) {
     const element = document.getElementById(id);
 
@@ -92,10 +82,6 @@ function isPositive(value) {
     return value !== null && value > 0;
 }
 
-
-/* =========================================================
-   2. CALCULATION HISTORY
-   ========================================================= */
 
 const HISTORY_KEY = "electricalCalculatorHistory";
 const MAX_HISTORY = 20;
@@ -447,10 +433,6 @@ if (resetOhms) {
 }
 
 
-/* =========================================================
-   4. ELECTRICAL POWER
-   ========================================================= */
-
 const powerMode =
     document.getElementById("power-mode");
 
@@ -707,11 +689,6 @@ if (resetPower) {
 }
 
 
-/* =========================================================
-   5. ENERGY
-   E = P × t
-   ========================================================= */
-
 const calculateEnergy =
     document.getElementById(
         "calculate-energy"
@@ -865,11 +842,6 @@ if (resetEnergy) {
 }
 
 
-/* =========================================================
-   6. POWER FACTOR
-   PF = P / S
-   ========================================================= */
-
 const calculatePF =
     document.getElementById(
         "calculate-pf"
@@ -1007,11 +979,6 @@ if (resetPF) {
     );
 }
 
-
-/* =========================================================
-   7. THREE-PHASE POWER
-   P = √3 × VL × IL × PF
-   ========================================================= */
 
 const calculateThreePhase =
     document.getElementById(
@@ -1168,12 +1135,6 @@ if (resetThreePhase) {
     );
 }
 
-
-/* =========================================================
-   8. TRANSFORMER
-   V1 / V2 = N1 / N2
-   I1 / I2 = N2 / N1
-   ========================================================= */
 
 const calculateTransformer =
     document.getElementById(
@@ -1354,11 +1315,6 @@ if (resetTransformer) {
 }
 
 
-/* =========================================================
-   9. VOLTAGE DROP
-   VD = I × R
-   ========================================================= */
-
 const calculateVoltageDrop =
     document.getElementById(
         "calculate-voltage-drop"
@@ -1533,10 +1489,6 @@ if (resetVoltageDrop) {
     );
 }
 
-
-/* =========================================================
-   10. UNIT CONVERTER
-   ========================================================= */
 
 const calculateConversion =
     document.getElementById(
@@ -1806,10 +1758,6 @@ if (resetConverter) {
 }
 
 
-/* =========================================================
-   11. DARK MODE
-   ========================================================= */
-
 const themeToggle =
     document.getElementById(
         "theme-toggle"
@@ -1922,10 +1870,6 @@ try {
     updateThemeIcon();
 }
 
-
-/* =========================================================
-   12. STARTUP
-   ========================================================= */
 
 displayHistory();
 updatePowerMode();
