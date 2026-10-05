@@ -17,7 +17,7 @@ function getNumber(id) {
 }
 
 
-function formatNumber(number, decimals = 4) {
+function formatNumber(number, decimals = 3) {
     if (!Number.isFinite(number)) {
         return "—";
     }
@@ -762,7 +762,7 @@ if (calculateEnergy) {
 
 
             const costText =
-                `₱${formatNumber(cost, 2)}`;
+                `₱${formatNumber(cost, 3)}`;
 
 
             const formula =
@@ -933,7 +933,7 @@ if(calculateTriangle)calculateTriangle.addEventListener("click",()=>{
   document.getElementById("triangle-result-q").textContent=`${formatNumber(v.Q)} VAR`;
   document.getElementById("triangle-result-s").textContent=`${formatNumber(v.S)} VA`;
   document.getElementById("triangle-result-pf").textContent=formatNumber(v.PF,3);
-  document.getElementById("triangle-result-theta").textContent=`${formatNumber(v.theta,2)}°`;
+  document.getElementById("triangle-result-theta").textContent=`${formatNumber(v.theta, 3)}°`;
   const pText=`P = ${formatNumber(v.P,3)} W`;
   const qText=`Q = ${formatNumber(v.Q,3)} VAR`;
   const sText=`S = ${formatNumber(v.S,3)} VA`;
@@ -950,7 +950,7 @@ if(calculateTriangle)calculateTriangle.addEventListener("click",()=>{
   document.getElementById("triangle-theta-value").textContent="";
   document.getElementById("triangle-result-formula").textContent="S² = P² + Q² | PF = P / S | θ = cos⁻¹(PF)";
   renderPowerTriangle(v.P,v.Q,v.theta);showResult("triangle-result");
-  saveHistory("Power Triangle",`${t1} = ${v1} | ${t2} = ${v2}`,`P = ${formatNumber(v.P)} W | Q = ${formatNumber(v.Q)} VAR | S = ${formatNumber(v.S)} VA | PF = ${formatNumber(v.PF,4)} | θ = ${formatNumber(v.theta,2)}°`);
+  saveHistory("Power Triangle",`${t1} = ${v1} | ${t2} = ${v2}`,`P = ${formatNumber(v.P)} W | Q = ${formatNumber(v.Q)} VAR | S = ${formatNumber(v.S)} VA | PF = ${formatNumber(v.PF, 3)} | θ = ${formatNumber(v.theta, 3)}°`);
  }catch(error){showMessage("triangle-message",error.message,"error")}
 });
 const resetTriangle=document.getElementById("reset-triangle");
@@ -1387,7 +1387,7 @@ if (calculateVoltageDrop) {
 
 
                 percentageText =
-                    `${formatNumber(percentage, 2)} %`;
+                    `${formatNumber(percentage, 3)} %`;
             }
 
 
