@@ -895,7 +895,7 @@ function renderPowerTriangle(P,Q,theta){
  setTriangle("triangle-s-value",{x:sx,y:sy,transform:"rotate("+(-theta)+" "+sx+" "+sy+")"});
  setTriangle("triangle-theta-value",{x:bx+r*1.65,y:by-r*.28});
  const d=document.getElementById("power-triangle-svg-desc");
- if(d)d.textContent=`Power triangle showing ${formatNumber(P)} W real power, ${formatNumber(Q)} VAR reactive power, and a phase angle of ${formatNumber(theta,2)} degrees.`;
+ if(d)d.textContent=`Power triangle showing ${formatNumber(P,3)} W real power, ${formatNumber(Q,3)} VAR reactive power, and a phase angle of ${formatNumber(theta,3)} degrees.`;
 }
 function calculatePowerTriangleValues(t1,v1,t2,v2){
  if(t1===t2)throw new Error("Select two different quantities.");
@@ -932,12 +932,12 @@ if(calculateTriangle)calculateTriangle.addEventListener("click",()=>{
   document.getElementById("triangle-result-p").textContent=`${formatNumber(v.P)} W`;
   document.getElementById("triangle-result-q").textContent=`${formatNumber(v.Q)} VAR`;
   document.getElementById("triangle-result-s").textContent=`${formatNumber(v.S)} VA`;
-  document.getElementById("triangle-result-pf").textContent=formatNumber(v.PF,4);
+  document.getElementById("triangle-result-pf").textContent=formatNumber(v.PF,3);
   document.getElementById("triangle-result-theta").textContent=`${formatNumber(v.theta,2)}°`;
-  const pText=`P = ${formatNumber(v.P)} W`;
-  const qText=`Q = ${formatNumber(v.Q)} VAR`;
-  const sText=`S = ${formatNumber(v.S)} VA`;
-  const thetaText=`θ = ${formatNumber(v.theta,2)}°`;
+  const pText=`P = ${formatNumber(v.P,3)} W`;
+  const qText=`Q = ${formatNumber(v.Q,3)} VAR`;
+  const sText=`S = ${formatNumber(v.S,3)} VA`;
+  const thetaText=`θ = ${formatNumber(v.theta,3)}°`;
 
   document.getElementById("triangle-p-label").textContent=pText;
   document.getElementById("triangle-q-label").textContent=qText;
