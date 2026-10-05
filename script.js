@@ -842,144 +842,102 @@ if (resetEnergy) {
 }
 
 
-const calculatePF =
-    document.getElementById(
-        "calculate-pf"
-    );
+/* =========================================================
+   POWER TRIANGLE
+   ========================================================= */
+const triangleInput1=document.getElementById("triangle-input-1");
+const triangleInput2=document.getElementById("triangle-input-2");
+const triangleValue1=document.getElementById("triangle-value-1");
+const triangleValue2=document.getElementById("triangle-value-2");
+const triangleUnit1=document.getElementById("triangle-unit-1");
+const triangleUnit2=document.getElementById("triangle-unit-2");
 
+const triangleMeta={
+ P:{unit:"W",placeholder:"e.g. 1840",min:"0"},
+ Q:{unit:"VAR",placeholder:"e.g. 1380",min:"0"},
+ S:{unit:"VA",placeholder:"e.g. 2300",min:"0"},
+ PF:{unit:"0–1",placeholder:"e.g. 0.8",min:"0",max:"1"}
+};
 
-if (calculatePF) {
-
-    calculatePF.addEventListener(
-        "click",
-        () => {
-
-            clearMessage(
-                "pf-message"
-            );
-
-            hideResult(
-                "pf-result"
-            );
-
-
-            const realPower =
-                getNumber(
-                    "pf-real-power"
-                );
-
-
-            const apparentPower =
-                getNumber(
-                    "pf-apparent-power"
-                );
-
-
-            if (
-                !isNonNegative(realPower) ||
-                !isPositive(apparentPower)
-            ) {
-
-                showMessage(
-                    "pf-message",
-                    "Enter valid real and apparent power values. Apparent power must be greater than zero.",
-                    "error"
-                );
-
-                return;
-            }
-
-
-            if (
-                realPower >
-                apparentPower
-            ) {
-
-                showMessage(
-                    "pf-message",
-                    "Real power cannot be greater than apparent power.",
-                    "error"
-                );
-
-                return;
-            }
-
-
-            const pf =
-                realPower /
-                apparentPower;
-
-
-            const resultText =
-                formatNumber(pf, 4);
-
-
-            const formula =
-                `PF = P / S = ${realPower} / ${apparentPower}`;
-
-
-            document.getElementById(
-                "pf-result-value"
-            ).textContent =
-                resultText;
-
-
-            document.getElementById(
-                "pf-result-formula"
-            ).textContent =
-                formula;
-
-
-            showResult(
-                "pf-result"
-            );
-
-
-            saveHistory(
-                "Power Factor",
-                formula,
-                resultText
-            );
-        }
-    );
+function updateTriangleInput(select,input,unit){
+ if(!select||!input||!unit)return;
+ const meta=triangleMeta[select.value];
+ unit.textContent="("+meta.unit+")";
+ input.placeholder=meta.placeholder;
+ input.min=meta.min;
+ if(meta.max===undefined) input.removeAttribute("max"); else input.max=meta.max;
 }
-
-
-const resetPF =
-    document.getElementById(
-        "reset-pf"
-    );
-
-
-if (resetPF) {
-
-    resetPF.addEventListener(
-        "click",
-        () => {
-
-            document.getElementById(
-                "pf-real-power"
-            ).value = "";
-
-
-            document.getElementById(
-                "pf-apparent-power"
-            ).value = "";
-
-
-            clearMessage(
-                "pf-message"
-            );
-
-
-            hideResult(
-                "pf-result"
-            );
-        }
-    );
+function updateTriangleInputs(){
+ updateTriangleInput(triangleInput1,triangleValue1,triangleUnit1);
+ updateTriangleInput(triangleInput2,triangleValue2,triangleUnit2);
 }
-
-
+function setTriangle(id,attrs){
+ const el=document.getElementById(id); if(!el)return;
+ Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,String(v)));
+}
+function renderPowerTriangle(P,Q,theta){
+ const bx=75,by=278,maxW=315,maxH=190,m=Math.max(P,Q,1),scale=Math.min(maxW/m,maxH/m);
+ const w=P*scale,h=Q*scale,tx=bx+w,ty=by-h,mx=bx+w/2;
+ setTriangle("triangle-p-line",{x1:bx,y1:by,x2:tx,y2:by});
+ setTriangle("triangle-q-line",{x1:tx,y1:by,x2:tx,y2:ty});
+ setTriangle("triangle-s-line",{x1:bx,y1:by,x2:tx,y2:ty});
+ const r=Math.max(16,Math.min(34,Math.min(Math.max(w,16),Math.max(h,16))*.3)),rad=theta*Math.PI/180;
+ setTriangle("triangle-angle-arc",{d:`M ${bx+r} ${by} A ${r} ${r} 0 0 0 ${bx+r*Math.cos(rad)} ${by-r*Math.sin(rad)}`});
+ setTriangle("triangle-right-angle",{d:`M ${tx-12} ${by} L ${tx-12} ${by-12} L ${tx} ${by-12}`});
+ setTriangle("triangle-p-label",{x:mx,y:by+28});
+ setTriangle("triangle-q-label",{x:tx+42,y:Math.max(ty+h/2,85)});
+ const sx=bx+w*.55,sy=by-h*.55-8;
+ setTriangle("triangle-s-label",{x:sx,y:sy,transform:`rotate(${-theta} ${sx} ${sy})`});
+ setTriangle("triangle-angle-label",{x:bx+r*1.45,y:by-r*.22});
+ const d=document.getElementById("power-triangle-svg-desc");
+ if(d)d.textContent=`Power triangle showing ${formatNumber(P)} W real power, ${formatNumber(Q)} VAR reactive power, and a phase angle of ${formatNumber(theta,2)} degrees.`;
+}
+function calculatePowerTriangleValues(t1,v1,t2,v2){
+ if(t1===t2)throw new Error("Select two different quantities.");
+ const v={P:null,Q:null,S:null,PF:null};
+ v[t1]=v1;v[t2]=v2;
+ if(v.P!==null&&v.P<0)throw new Error("Real power cannot be negative.");
+ if(v.Q!==null&&v.Q<0)throw new Error("Reactive power cannot be negative.");
+ if(v.S!==null&&v.S<=0)throw new Error("Apparent power must be greater than zero.");
+ if(v.PF!==null&&(v.PF<=0||v.PF>1))throw new Error("Power factor must be greater than 0 and no greater than 1.");
+ const p=v.P!==null,q=v.Q!==null,s=v.S!==null,pf=v.PF!==null;
+ if(p&&q){v.S=Math.hypot(v.P,v.Q);v.PF=v.P/v.S}
+ else if(p&&s){if(v.P>v.S)throw new Error("Real power cannot be greater than apparent power.");v.Q=Math.sqrt(Math.max(0,v.S*v.S-v.P*v.P));v.PF=v.P/v.S}
+ else if(q&&s){if(v.Q>v.S)throw new Error("Reactive power cannot be greater than apparent power.");v.P=Math.sqrt(Math.max(0,v.S*v.S-v.Q*v.Q));v.PF=v.P/v.S}
+ else if(p&&pf){if(v.P<=0)throw new Error("Real power must be greater than zero when power factor is provided.");v.S=v.P/v.PF;v.Q=Math.sqrt(Math.max(0,v.S*v.S-v.P*v.P))}
+ else if(s&&pf){v.P=v.S*v.PF;v.Q=v.S*Math.sqrt(Math.max(0,1-v.PF*v.PF))}
+ else if(q&&pf){if(v.Q<=0)throw new Error("Reactive power must be greater than zero when power factor is provided.");if(v.PF>=1)throw new Error("A power factor of 1 requires reactive power to be zero.");v.S=v.Q/Math.sqrt(1-v.PF*v.PF);v.P=v.S*v.PF}
+ else throw new Error("Select a valid pair of quantities.");
+ if(![v.P,v.Q,v.S,v.PF].every(Number.isFinite))throw new Error("The selected values produced an invalid result.");
+ v.PF=Math.min(1,Math.max(0,v.PF));
+ v.theta=Math.acos(v.PF)*180/Math.PI;
+ return v;
+}
+const calculateTriangle=document.getElementById("calculate-triangle");
+if(triangleInput1)triangleInput1.addEventListener("change",updateTriangleInputs);
+if(triangleInput2)triangleInput2.addEventListener("change",updateTriangleInputs);
+updateTriangleInputs();
+if(calculateTriangle)calculateTriangle.addEventListener("click",()=>{
+ clearMessage("triangle-message");hideResult("triangle-result");
+ const t1=triangleInput1.value,t2=triangleInput2.value,v1=getNumber("triangle-value-1"),v2=getNumber("triangle-value-2");
+ if(v1===null||v2===null){showMessage("triangle-message","Enter values for both selected quantities.","error");return}
+ try{
+  const v=calculatePowerTriangleValues(t1,v1,t2,v2);
+  document.getElementById("triangle-result-p").textContent=`${formatNumber(v.P)} W`;
+  document.getElementById("triangle-result-q").textContent=`${formatNumber(v.Q)} VAR`;
+  document.getElementById("triangle-result-s").textContent=`${formatNumber(v.S)} VA`;
+  document.getElementById("triangle-result-pf").textContent=formatNumber(v.PF,4);
+  document.getElementById("triangle-result-theta").textContent=`${formatNumber(v.theta,2)}°`;
+  document.getElementById("triangle-result-formula").textContent="S² = P² + Q² | PF = P / S | θ = cos⁻¹(PF)";
+  renderPowerTriangle(v.P,v.Q,v.theta);showResult("triangle-result");
+  saveHistory("Power Triangle",`${t1} = ${v1} | ${t2} = ${v2}`,`P = ${formatNumber(v.P)} W | Q = ${formatNumber(v.Q)} VAR | S = ${formatNumber(v.S)} VA | PF = ${formatNumber(v.PF,4)} | θ = ${formatNumber(v.theta,2)}°`);
+ }catch(error){showMessage("triangle-message",error.message,"error")}
+});
+const resetTriangle=document.getElementById("reset-triangle");
+if(resetTriangle)resetTriangle.addEventListener("click",()=>{
+ triangleInput1.value="PF";triangleInput2.value="P";triangleValue1.value="";triangleValue2.value="";
+ updateTriangleInputs();clearMessage("triangle-message");hideResult("triangle-result");
+});
 const calculateThreePhase =
     document.getElementById(
         "calculate-three-phase"

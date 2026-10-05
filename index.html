@@ -216,7 +216,7 @@
 
 
                     <a
-                        href="#power-factor"
+                        href="#power-triangle"
                         class="nav-card"
                     >
 
@@ -240,7 +240,7 @@
                         </span>
 
                         <span>
-                            Power Factor
+                            Power Triangle
                         </span>
 
                     </a>
@@ -975,172 +975,97 @@
                 </article>
 
 
-                <article
-                    class="calculator-card"
-                    id="power-factor"
-                >
-
+                <article class="calculator-card" id="power-triangle">
                     <div class="calculator-header">
-
                         <div class="calculator-title-wrap">
-
                             <div class="calculator-icon">
-
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                >
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="8"
-                                    />
-
-                                    <path
-                                        d="M12 12l6-5M12 12V4"
-                                    />
-
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M4 18h16L12 6 4 18z"/>
+                                    <path d="M12 6v12M4 18h16"/>
                                 </svg>
-
                             </div>
-
                             <div>
-
-                                <span class="calculator-number">
-                                    04
-                                </span>
-
-                                <h2>
-                                    Power Factor
-                                </h2>
-
+                                <span class="calculator-number">04</span>
+                                <h2>Power Triangle</h2>
                             </div>
-
                         </div>
-
                     </div>
-
-
                     <p class="calculator-description">
-                        Determine power factor from real power and
-                        apparent power.
+                        Calculate real, reactive, and apparent power,
+                        power factor, and phase angle using the power
+                        triangle relationship.
                     </p>
-
-
                     <div class="formula-box">
-
-                        <strong>
-                            PF = P / S
-                        </strong>
-
+                        <strong>S² = P² + Q²</strong>
                         <div class="formula-variables">
-
-                            <span>
-                                PF = Power Factor
-                            </span>
-
-                            <span>
-                                P = Real Power (W)
-                            </span>
-
-                            <span>
-                                S = Apparent Power (VA)
-                            </span>
-
+                            <span>P = Real Power (W)</span>
+                            <span>Q = Reactive Power (VAR)</span>
+                            <span>S = Apparent Power (VA)</span>
+                            <span>PF = Power Factor</span>
+                            <span>θ = Phase Angle (°)</span>
                         </div>
-
                     </div>
-
-
                     <div class="input-grid">
-
                         <div class="input-group">
-
-                            <label for="pf-real-power">
-                                Real Power
-                                <span>(W)</span>
-                            </label>
-
-                            <input
-                                type="number"
-                                id="pf-real-power"
-                                placeholder="e.g. 1840"
-                                min="0"
-                                step="any"
-                                inputmode="decimal"
-                            >
-
+                            <label for="triangle-input-1">Quantity 1</label>
+                            <select id="triangle-input-1">
+                                <option value="P">Real Power (P)</option>
+                                <option value="Q">Reactive Power (Q)</option>
+                                <option value="S">Apparent Power (S)</option>
+                                <option value="PF" selected>Power Factor (PF)</option>
+                            </select>
                         </div>
-
-
                         <div class="input-group">
-
-                            <label for="pf-apparent-power">
-                                Apparent Power
-                                <span>(VA)</span>
-                            </label>
-
-                            <input
-                                type="number"
-                                id="pf-apparent-power"
-                                placeholder="e.g. 2300"
-                                min="0"
-                                step="any"
-                                inputmode="decimal"
-                            >
-
+                            <label for="triangle-value-1">Value <span id="triangle-unit-1">(0–1)</span></label>
+                            <input type="number" id="triangle-value-1" placeholder="e.g. 0.8" min="0" max="1" step="any" inputmode="decimal">
                         </div>
-
+                        <div class="input-group">
+                            <label for="triangle-input-2">Quantity 2</label>
+                            <select id="triangle-input-2">
+                                <option value="P" selected>Real Power (P)</option>
+                                <option value="Q">Reactive Power (Q)</option>
+                                <option value="S">Apparent Power (S)</option>
+                                <option value="PF">Power Factor (PF)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="triangle-value-2">Value <span id="triangle-unit-2">(W)</span></label>
+                            <input type="number" id="triangle-value-2" placeholder="e.g. 1840" min="0" step="any" inputmode="decimal">
+                        </div>
                     </div>
-
-
-                    <div
-                        id="pf-message"
-                        class="message"
-                        aria-live="polite"
-                    ></div>
-
-
-                    <div
-                        id="pf-result"
-                        class="result-panel hidden"
-                    >
-
-                        <span class="result-label">
-                            POWER FACTOR
-                        </span>
-
-                        <strong id="pf-result-value">
-                            —
-                        </strong>
-
-                        <p id="pf-result-formula">
-                            —
-                        </p>
-
+                    <div id="triangle-message" class="message" aria-live="polite"></div>
+                    <div id="triangle-result" class="result-panel hidden">
+                        <span class="result-label">POWER TRIANGLE RESULTS</span>
+                        <div class="triangle-layout">
+                            <div class="triangle-visual">
+                                <svg id="power-triangle-svg" class="power-triangle-svg" viewBox="0 0 520 340" role="img" aria-labelledby="power-triangle-svg-title">
+                                    <title id="power-triangle-svg-title">Power triangle</title>
+                                    <desc id="power-triangle-svg-desc">Power triangle diagram.</desc>
+                                    <line id="triangle-p-line" class="triangle-line triangle-p-line"/>
+                                    <line id="triangle-q-line" class="triangle-line triangle-q-line"/>
+                                    <line id="triangle-s-line" class="triangle-line triangle-s-line"/>
+                                    <path id="triangle-angle-arc" class="triangle-angle-arc"/>
+                                    <path id="triangle-right-angle" class="triangle-right-angle"/>
+                                    <text id="triangle-p-label" class="triangle-label">P</text>
+                                    <text id="triangle-q-label" class="triangle-label">Q</text>
+                                    <text id="triangle-s-label" class="triangle-label">S</text>
+                                    <text id="triangle-angle-label" class="triangle-angle-label">θ</text>
+                                </svg>
+                            </div>
+                            <div class="triangle-values">
+                                <div class="triangle-result-item"><span>Real Power</span><strong id="triangle-result-p">—</strong></div>
+                                <div class="triangle-result-item"><span>Reactive Power</span><strong id="triangle-result-q">—</strong></div>
+                                <div class="triangle-result-item"><span>Apparent Power</span><strong id="triangle-result-s">—</strong></div>
+                                <div class="triangle-result-item"><span>Power Factor</span><strong id="triangle-result-pf">—</strong></div>
+                                <div class="triangle-result-item"><span>Phase Angle</span><strong id="triangle-result-theta">—</strong></div>
+                            </div>
+                        </div>
+                        <p id="triangle-result-formula">—</p>
                     </div>
-
-
                     <div class="button-row">
-
-                        <button
-                            type="button"
-                            id="calculate-pf"
-                            class="btn btn-primary"
-                        >
-                            Calculate
-                        </button>
-
-                        <button
-                            type="button"
-                            id="reset-pf"
-                            class="btn btn-secondary"
-                        >
-                            Reset
-                        </button>
-
+                        <button type="button" id="calculate-triangle" class="btn btn-primary">Calculate</button>
+                        <button type="button" id="reset-triangle" class="btn btn-secondary">Reset</button>
                     </div>
-
                 </article>
 
 
