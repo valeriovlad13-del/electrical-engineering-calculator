@@ -255,7 +255,7 @@ Possible future enhancements include:
 
 ## Author
 
-**Blademir Rubia**
+**Engr. Blademir Rubia**
 
 Electrical Engineer \| Computer Science
 
