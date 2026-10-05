@@ -876,7 +876,7 @@ function setTriangle(id,attrs){
  Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,String(v)));
 }
 function renderPowerTriangle(P,Q,theta){
- const bx=75,by=278,maxW=315,maxH=190,m=Math.max(P,Q,1),scale=Math.min(maxW/m,maxH/m);
+ const bx=55,by=305,maxW=400,maxH=250,m=Math.max(P,Q,1),scale=Math.min(maxW/m,maxH/m);
  const w=P*scale,h=Q*scale,tx=bx+w,ty=by-h,mx=bx+w/2;
  setTriangle("triangle-p-line",{x1:bx,y1:by,x2:tx,y2:by});
  setTriangle("triangle-q-line",{x1:tx,y1:by,x2:tx,y2:ty});
@@ -1722,6 +1722,12 @@ const themeToggle =
     );
 
 
+const themeIcon =
+    document.querySelector(
+        "#theme-toggle .theme-icon"
+    );
+
+
 const DARK_MODE_KEY =
     "calculatorDarkMode";
 
@@ -1753,6 +1759,31 @@ function updateThemeIcon() {
             ? "Switch to light mode"
             : "Switch to dark mode"
     );
+
+
+    if (themeIcon) {
+
+        themeIcon.innerHTML = darkMode
+            ? `
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="4"
+                ></circle>
+
+                <path
+                    d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41
+                    M17.66 17.66l1.41 1.41M2 12h2M20 12h2
+                    M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+                ></path>
+            `
+            : `
+                <path
+                    d="M21 12.79A9 9 0 1 1 11.21 3
+                    7 7 0 0 0 21 12.79z"
+                ></path>
+            `;
+    }
 }
 
 
