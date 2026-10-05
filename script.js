@@ -885,16 +885,15 @@ function renderPowerTriangle(P,Q,theta){
  const r=Math.max(16,Math.min(34,Math.min(Math.max(w,16),Math.max(h,16))*.3)),rad=theta*Math.PI/180;
  setTriangle("triangle-angle-arc",{d:`M ${bx+r} ${by} A ${r} ${r} 0 0 0 ${bx+r*Math.cos(rad)} ${by-r*Math.sin(rad)}`});
  setTriangle("triangle-right-angle",{d:`M ${tx-12} ${by} L ${tx-12} ${by-12} L ${tx} ${by-12}`});
- setTriangle("triangle-p-label",{x:mx,y:by+28});
- setTriangle("triangle-q-label",{x:tx+42,y:Math.max(ty+h/2,85)});
- const sx=bx+w*.55,sy=by-h*.55-8;
- setTriangle("triangle-s-label",{x:sx,y:sy,transform:`rotate(${-theta} ${sx} ${sy})`});
- setTriangle("triangle-angle-label",{x:bx+r*1.45,y:by-r*.22});
- const pValueY=by+48,qValueY=Math.max(ty+h/2+20,105),sValueX=bx+w*.55,sValueY=by-h*.55+12;
- setTriangle("triangle-p-value",{x:mx,y:pValueY});
- setTriangle("triangle-q-value",{x:tx+42,y:qValueY});
- setTriangle("triangle-s-value",{x:sValueX,y:sValueY,transform:"rotate("+(-theta)+" "+sValueX+" "+sValueY+")"});
- setTriangle("triangle-theta-value",{x:bx+r*1.45,y:by-r*.22+20});
+ setTriangle("triangle-p-label",{x:mx,y:by+30});
+ setTriangle("triangle-q-label",{x:tx+50,y:Math.max(ty+h/2,85)});
+ const sx=bx+w*.55,sy=by-h*.55-10;
+ setTriangle("triangle-s-label",{x:sx,y:sy,transform:"rotate("+(-theta)+" "+sx+" "+sy+")"});
+ setTriangle("triangle-angle-label",{x:bx+r*1.65,y:by-r*.28});
+ setTriangle("triangle-p-value",{x:mx,y:by+30});
+ setTriangle("triangle-q-value",{x:tx+50,y:Math.max(ty+h/2,85)});
+ setTriangle("triangle-s-value",{x:sx,y:sy,transform:"rotate("+(-theta)+" "+sx+" "+sy+")"});
+ setTriangle("triangle-theta-value",{x:bx+r*1.65,y:by-r*.28});
  const d=document.getElementById("power-triangle-svg-desc");
  if(d)d.textContent=`Power triangle showing ${formatNumber(P)} W real power, ${formatNumber(Q)} VAR reactive power, and a phase angle of ${formatNumber(theta,2)} degrees.`;
 }
@@ -935,10 +934,20 @@ if(calculateTriangle)calculateTriangle.addEventListener("click",()=>{
   document.getElementById("triangle-result-s").textContent=`${formatNumber(v.S)} VA`;
   document.getElementById("triangle-result-pf").textContent=formatNumber(v.PF,4);
   document.getElementById("triangle-result-theta").textContent=`${formatNumber(v.theta,2)}°`;
-  document.getElementById("triangle-p-value").textContent=`P = ${formatNumber(v.P)} W`;
-  document.getElementById("triangle-q-value").textContent=`Q = ${formatNumber(v.Q)} VAR`;
-  document.getElementById("triangle-s-value").textContent=`S = ${formatNumber(v.S)} VA`;
-  document.getElementById("triangle-theta-value").textContent=`θ = ${formatNumber(v.theta,2)}°`;
+  const pText=`P = ${formatNumber(v.P)} W`;
+  const qText=`Q = ${formatNumber(v.Q)} VAR`;
+  const sText=`S = ${formatNumber(v.S)} VA`;
+  const thetaText=`θ = ${formatNumber(v.theta,2)}°`;
+
+  document.getElementById("triangle-p-label").textContent=pText;
+  document.getElementById("triangle-q-label").textContent=qText;
+  document.getElementById("triangle-s-label").textContent=sText;
+  document.getElementById("triangle-angle-label").textContent=thetaText;
+
+  document.getElementById("triangle-p-value").textContent="";
+  document.getElementById("triangle-q-value").textContent="";
+  document.getElementById("triangle-s-value").textContent="";
+  document.getElementById("triangle-theta-value").textContent="";
   document.getElementById("triangle-result-formula").textContent="S² = P² + Q² | PF = P / S | θ = cos⁻¹(PF)";
   renderPowerTriangle(v.P,v.Q,v.theta);showResult("triangle-result");
   saveHistory("Power Triangle",`${t1} = ${v1} | ${t2} = ${v2}`,`P = ${formatNumber(v.P)} W | Q = ${formatNumber(v.Q)} VAR | S = ${formatNumber(v.S)} VA | PF = ${formatNumber(v.PF,4)} | θ = ${formatNumber(v.theta,2)}°`);
