@@ -856,7 +856,8 @@ const triangleMeta={
  P:{unit:"W",placeholder:"e.g. 1840",min:"0"},
  Q:{unit:"VAR",placeholder:"e.g. 1380",min:"0"},
  S:{unit:"VA",placeholder:"e.g. 2300",min:"0"},
- PF:{unit:"0–1",placeholder:"e.g. 0.8",min:"0",max:"1"}
+ PF:{unit:"0–1",placeholder:"e.g. 0.8",min:"0",max:"1"},
+ Theta:{unit:"°",placeholder:"e.g. 36.87",min:"0",max:"90"}
 };
 
 function updateTriangleInput(select,input,unit){
@@ -889,29 +890,35 @@ function renderPowerTriangle(P,Q,theta){
  const sx=bx+w*.55,sy=by-h*.55-8;
  setTriangle("triangle-s-label",{x:sx,y:sy,transform:`rotate(${-theta} ${sx} ${sy})`});
  setTriangle("triangle-angle-label",{x:bx+r*1.45,y:by-r*.22});
+ const pValueY=by+48,qValueY=Math.max(ty+h/2+20,105),sValueX=bx+w*.55,sValueY=by-h*.55+12;
+ setTriangle("triangle-p-value",{x:mx,y:pValueY});
+ setTriangle("triangle-q-value",{x:tx+42,y:qValueY});
+ setTriangle("triangle-s-value",{x:sValueX,y:sValueY,transform:"rotate("+(-theta)+" "+sValueX+" "+sValueY+")"});
+ setTriangle("triangle-theta-value",{x:bx+r*1.45,y:by-r*.22+20});
  const d=document.getElementById("power-triangle-svg-desc");
  if(d)d.textContent=`Power triangle showing ${formatNumber(P)} W real power, ${formatNumber(Q)} VAR reactive power, and a phase angle of ${formatNumber(theta,2)} degrees.`;
 }
 function calculatePowerTriangleValues(t1,v1,t2,v2){
  if(t1===t2)throw new Error("Select two different quantities.");
- const v={P:null,Q:null,S:null,PF:null};
- v[t1]=v1;v[t2]=v2;
+ const v={P:null,Q:null,S:null,PF:null,Theta:null};v[t1]=v1;v[t2]=v2;
  if(v.P!==null&&v.P<0)throw new Error("Real power cannot be negative.");
  if(v.Q!==null&&v.Q<0)throw new Error("Reactive power cannot be negative.");
  if(v.S!==null&&v.S<=0)throw new Error("Apparent power must be greater than zero.");
  if(v.PF!==null&&(v.PF<=0||v.PF>1))throw new Error("Power factor must be greater than 0 and no greater than 1.");
- const p=v.P!==null,q=v.Q!==null,s=v.S!==null,pf=v.PF!==null;
- if(p&&q){v.S=Math.hypot(v.P,v.Q);v.PF=v.P/v.S}
- else if(p&&s){if(v.P>v.S)throw new Error("Real power cannot be greater than apparent power.");v.Q=Math.sqrt(Math.max(0,v.S*v.S-v.P*v.P));v.PF=v.P/v.S}
- else if(q&&s){if(v.Q>v.S)throw new Error("Reactive power cannot be greater than apparent power.");v.P=Math.sqrt(Math.max(0,v.S*v.S-v.Q*v.Q));v.PF=v.P/v.S}
- else if(p&&pf){if(v.P<=0)throw new Error("Real power must be greater than zero when power factor is provided.");v.S=v.P/v.PF;v.Q=Math.sqrt(Math.max(0,v.S*v.S-v.P*v.P))}
- else if(s&&pf){v.P=v.S*v.PF;v.Q=v.S*Math.sqrt(Math.max(0,1-v.PF*v.PF))}
- else if(q&&pf){if(v.Q<=0)throw new Error("Reactive power must be greater than zero when power factor is provided.");if(v.PF>=1)throw new Error("A power factor of 1 requires reactive power to be zero.");v.S=v.Q/Math.sqrt(1-v.PF*v.PF);v.P=v.S*v.PF}
- else throw new Error("Select a valid pair of quantities.");
+ if(v.Theta!==null&&(v.Theta<0||v.Theta>=90))throw new Error("Phase angle must be at least 0° and less than 90°.");
+ const hasP=v.P!==null,hasQ=v.Q!==null,hasS=v.S!==null,hasPF=v.PF!==null,hasTheta=v.Theta!==null,radTheta=hasTheta?v.Theta*Math.PI/180:null;
+ if(hasP&&hasQ){v.S=Math.hypot(v.P,v.Q);v.PF=v.S===0?1:v.P/v.S}
+ else if(hasP&&hasS){if(v.P>v.S)throw new Error("Real power cannot be greater than apparent power.");v.Q=Math.sqrt(Math.max(0,v.S*v.S-v.P*v.P));v.PF=v.P/v.S}
+ else if(hasQ&&hasS){if(v.Q>v.S)throw new Error("Reactive power cannot be greater than apparent power.");v.P=Math.sqrt(Math.max(0,v.S*v.S-v.Q*v.Q));v.PF=v.P/v.S}
+ else if(hasP&&hasPF){if(v.P<=0)throw new Error("Real power must be greater than zero when power factor is provided.");v.S=v.P/v.PF;v.Q=Math.sqrt(Math.max(0,v.S*v.S-v.P*v.P))}
+ else if(hasS&&hasPF){v.P=v.S*v.PF;v.Q=v.S*Math.sqrt(Math.max(0,1-v.PF*v.PF))}
+ else if(hasQ&&hasPF){if(v.Q<=0)throw new Error("Reactive power must be greater than zero when power factor is provided.");if(v.PF>=1)throw new Error("A power factor of 1 requires reactive power to be zero.");v.S=v.Q/Math.sqrt(1-v.PF*v.PF);v.P=v.S*v.PF}
+ else if(hasP&&hasTheta){if(v.P<=0)throw new Error("Real power must be greater than zero when phase angle is provided.");v.S=v.P/Math.cos(radTheta);v.Q=v.P*Math.tan(radTheta);v.PF=Math.cos(radTheta)}
+ else if(hasQ&&hasTheta){if(v.Q<=0)throw new Error("Reactive power must be greater than zero when phase angle is provided.");if(v.Theta<=0)throw new Error("A zero phase angle requires reactive power to be zero.");v.P=v.Q/Math.tan(radTheta);v.S=v.Q/Math.sin(radTheta);v.PF=Math.cos(radTheta)}
+ else if(hasS&&hasTheta){v.P=v.S*Math.cos(radTheta);v.Q=v.S*Math.sin(radTheta);v.PF=Math.cos(radTheta)}
+ else throw new Error("Select a valid pair. Phase angle can be used with real, reactive, or apparent power.");
  if(![v.P,v.Q,v.S,v.PF].every(Number.isFinite))throw new Error("The selected values produced an invalid result.");
- v.PF=Math.min(1,Math.max(0,v.PF));
- v.theta=Math.acos(v.PF)*180/Math.PI;
- return v;
+ v.PF=Math.min(1,Math.max(0,v.PF));v.theta=hasTheta?v.Theta:Math.acos(v.PF)*180/Math.PI;return v;
 }
 const calculateTriangle=document.getElementById("calculate-triangle");
 if(triangleInput1)triangleInput1.addEventListener("change",updateTriangleInputs);
@@ -928,6 +935,10 @@ if(calculateTriangle)calculateTriangle.addEventListener("click",()=>{
   document.getElementById("triangle-result-s").textContent=`${formatNumber(v.S)} VA`;
   document.getElementById("triangle-result-pf").textContent=formatNumber(v.PF,4);
   document.getElementById("triangle-result-theta").textContent=`${formatNumber(v.theta,2)}°`;
+  document.getElementById("triangle-p-value").textContent=`P = ${formatNumber(v.P)} W`;
+  document.getElementById("triangle-q-value").textContent=`Q = ${formatNumber(v.Q)} VAR`;
+  document.getElementById("triangle-s-value").textContent=`S = ${formatNumber(v.S)} VA`;
+  document.getElementById("triangle-theta-value").textContent=`θ = ${formatNumber(v.theta,2)}°`;
   document.getElementById("triangle-result-formula").textContent="S² = P² + Q² | PF = P / S | θ = cos⁻¹(PF)";
   renderPowerTriangle(v.P,v.Q,v.theta);showResult("triangle-result");
   saveHistory("Power Triangle",`${t1} = ${v1} | ${t2} = ${v2}`,`P = ${formatNumber(v.P)} W | Q = ${formatNumber(v.Q)} VAR | S = ${formatNumber(v.S)} VA | PF = ${formatNumber(v.PF,4)} | θ = ${formatNumber(v.theta,2)}°`);
