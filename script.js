@@ -877,7 +877,7 @@ function setTriangle(id,attrs){
  Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,String(v)));
 }
 function renderPowerTriangle(P,Q,theta){
- const bx=55,by=305,maxW=400,maxH=250,m=Math.max(P,Q,1),scale=Math.min(maxW/m,maxH/m);
+ const bx=25,by=325,maxW=470,maxH=295,m=Math.max(P,Q,1),scale=Math.min(maxW/m,maxH/m);
  const w=P*scale,h=Q*scale,tx=bx+w,ty=by-h,mx=bx+w/2;
  setTriangle("triangle-p-line",{x1:bx,y1:by,x2:tx,y2:by});
  setTriangle("triangle-q-line",{x1:tx,y1:by,x2:tx,y2:ty});
