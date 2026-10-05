@@ -32,7 +32,8 @@ interface that works on desktop, tablet, and mobile devices.
     -   `S² = P² + Q²`
     -   Calculate real power, reactive power, and apparent power
     -   Calculate power factor and phase angle
-    -   Visual power triangle diagram
+    -   Supports combinations using P, Q, S, PF, or phase angle
+    -   Visual power triangle diagram with calculated values
 -   **Three-Phase Power**
     -   `P = √3 × VL × IL × PF`
 -   **Transformer**
@@ -52,7 +53,7 @@ interface that works on desktop, tablet, and mobile devices.
 ## Additional Features
 
 -   Responsive desktop, tablet, and mobile layout
--   Dark mode
+-   Dark mode with persistent theme preference
 -   Quick navigation menu
 -   Formula and variable explanations
 -   Calculation history using browser `localStorage`
@@ -87,7 +88,7 @@ electrical-engineering-calculator/
 ### 1. Clone the repository
 
 ``` bash
-git clone https://github.com/YOUR-USERNAME/electrical-engineering-calculator.git
+git clone https://github.com/valeriovlad13-del/electrical-engineering-calculator.git
 ```
 
 ### 2. Open the project
@@ -122,7 +123,7 @@ A 12 V source is connected to a 6 Ω resistor.
 ``` text
 I = V / R
 I = 12 / 6
-I = 2 A
+I = 2.000 A
 ```
 
 ### Single-Phase Power
@@ -132,7 +133,7 @@ A 230 V load draws 10 A at a power factor of 0.8.
 ``` text
 P = V × I × PF
 P = 230 × 10 × 0.8
-P = 1,840 W
+P = 1,840.000 W
 ```
 
 ### Energy Consumption
@@ -142,14 +143,30 @@ A 2 kW appliance operates for 5 hours.
 ``` text
 E = P × t
 E = 2 × 5
-E = 10 kWh
+E = 10.000 kWh
 ```
 
 At an electricity rate of ₱10.659/kWh:
 
 ``` text
 Cost = 10 × ₱10.659
-Cost = ₱106.59
+Cost = ₱106.590
+```
+
+### Power Triangle
+
+A load has 1,840 W of real power and 1,380 VAR of reactive power.
+
+``` text
+S = √(P² + Q²)
+S = √(1,840² + 1,380²)
+S = 2,300.000 VA
+
+PF = P / S
+PF = 0.800
+
+θ = cos⁻¹(PF)
+θ = 36.870°
 ```
 
 ### Three-Phase Power
@@ -161,7 +178,8 @@ P = √3 × VL × IL × PF
 
 P = √3 × 400 × 10 × 0.8
 
-P ≈ 5.5426 kW
+P ≈ 5,542.563 W
+P ≈ 5.543 kW
 ```
 
 ## Engineering Notes
