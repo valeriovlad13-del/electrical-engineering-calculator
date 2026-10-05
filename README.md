@@ -28,8 +28,11 @@ interface that works on desktop, tablet, and mobile devices.
     -   Energy: `E = P × t`
     -   Electricity cost estimation
     -   Editable electricity rate
--   **Power Factor**
-    -   `PF = P / S`
+-   **Power Triangle**
+    -   `S² = P² + Q²`
+    -   Calculate real power, reactive power, and apparent power
+    -   Calculate power factor and phase angle
+    -   Visual power triangle diagram
 -   **Three-Phase Power**
     -   `P = √3 × VL × IL × PF`
 -   **Transformer**
@@ -56,6 +59,7 @@ interface that works on desktop, tablet, and mobile devices.
 -   Input validation and error messages
 -   Reset buttons for each calculator
 -   SVG-based calculator icons
+-   Dynamic power triangle visualization
 -   No backend or database required
 
 ## Technologies Used
