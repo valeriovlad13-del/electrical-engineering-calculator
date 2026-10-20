@@ -381,6 +381,7 @@
                     </a>
 
                     <a href="#resistor-network" class="nav-card"><span class="nav-icon" aria-hidden="true">Ω</span><span>Series / Parallel</span></a>
+                    <a href="#mixed-resistor-network" class="nav-card"><span class="nav-icon" aria-hidden="true">⌘</span><span>Mixed Networks</span></a>
 
                 </nav>
 
@@ -2033,6 +2034,73 @@
             </div>
         </article>
 
+        <article class="calculator-card" id="mixed-resistor-network">
+            <div class="calculator-header">
+                <div class="calculator-title-wrap">
+                    <div class="calculator-icon" aria-hidden="true">⌘</div>
+                    <div><span class="calculator-number">11</span><h2>Mixed Resistor Networks</h2></div>
+                </div>
+            </div>
+            <p class="calculator-description">Analyze networks containing series and parallel combinations, including more complex resistor layouts, using node-voltage analysis.</p>
+            <div class="formula-box">
+                <strong>Kirchhoff's Current Law (KCL)</strong>
+                <p>Σ currents entering a node = Σ currents leaving a node</p>
+                <p>Source is applied between node 1 and ground node 0.</p>
+            </div>
+            <div class="input-grid">
+                <div class="input-group full-width"><label for="mixed-supply-voltage">Supply voltage (V)</label><input type="number" id="mixed-supply-voltage" min="0" step="any" value="12" inputmode="decimal"></div>
+                <div class="full-width mixed-resistor-controls">
+                    <strong>Resistors and node connections</strong>
+                    <p class="field-help">Connect each resistor between two different node numbers. Node 0 is ground; node 1 is the positive supply. Nodes 2–10 are intermediate connection points.</p>
+                </div>
+                <div id="mixed-resistor-list" class="mixed-resistor-list">
+                    <div class="mixed-resistor-row" data-resistor-row>
+                        <strong class="mixed-resistor-title">R1</strong>
+                        <div class="input-group"><label for="mixed-r1">Resistance (Ω)</label><input type="number" id="mixed-r1" class="mixed-resistance" min="0" step="any" value="10" inputmode="decimal"></div>
+                        <div class="input-group"><label for="mixed-a1">Node A</label><select id="mixed-a1" class="mixed-node"><option value="0">0 (Ground)</option><option value="1" selected>1 (Supply)</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select></div>
+                        <div class="input-group"><label for="mixed-b1">Node B</label><select id="mixed-b1" class="mixed-node"><option value="0" selected>0 (Ground)</option><option value="1">1 (Supply)</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select></div>
+                    </div>
+                    <div class="mixed-resistor-row" data-resistor-row>
+                        <strong class="mixed-resistor-title">R2</strong>
+                        <div class="input-group"><label for="mixed-r2">Resistance (Ω)</label><input type="number" id="mixed-r2" class="mixed-resistance" min="0" step="any" value="20" inputmode="decimal"></div>
+                        <div class="input-group"><label for="mixed-a2">Node A</label><select id="mixed-a2" class="mixed-node"><option value="0">0 (Ground)</option><option value="1">1 (Supply)</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select></div>
+                        <div class="input-group"><label for="mixed-b2">Node B</label><select id="mixed-b2" class="mixed-node"><option value="0">0 (Ground)</option><option value="1">1 (Supply)</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select></div>
+                    </div>
+                    <div class="mixed-resistor-row" data-resistor-row>
+                        <strong class="mixed-resistor-title">R3</strong>
+                        <div class="input-group"><label for="mixed-r3">Resistance (Ω)</label><input type="number" id="mixed-r3" class="mixed-resistance" min="0" step="any" value="30" inputmode="decimal"></div>
+                        <div class="input-group"><label for="mixed-a3">Node A</label><select id="mixed-a3" class="mixed-node"><option value="0">0 (Ground)</option><option value="1" selected>1 (Supply)</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select></div>
+                        <div class="input-group"><label for="mixed-b3">Node B</label><select id="mixed-b3" class="mixed-node"><option value="0" selected>0 (Ground)</option><option value="1">1 (Supply)</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select></div>
+                    </div>
+                </div>
+                <div class="full-width mixed-resistor-controls">
+                    <button type="button" id="mixed-add-resistor" class="btn btn-secondary btn-small">+ Add resistor</button>
+                    <button type="button" id="mixed-remove-resistor" class="btn btn-secondary btn-small">− Remove last</button>
+                    <span id="mixed-resistor-count" class="field-help">3 resistors · maximum 30</span>
+                </div>
+            </div>
+            <div class="field-help">Example default: R2 and R1 form a path from supply to ground through node 2? Set node connections to model your own circuit. Every used node must be connected to the network.</div>
+            <div id="mixed-network-message" class="message" role="status" aria-live="polite"></div>
+            <div id="mixed-resistor-result" class="result-panel hidden">
+                <span class="result-label">MIXED NETWORK RESULTS</span>
+                <div class="network-summary-grid">
+                    <div><span class="result-label">Equivalent resistance</span><strong id="mixed-equivalent-result">—</strong></div>
+                    <div><span class="result-label">Source current</span><strong id="mixed-source-current-result">—</strong></div>
+                </div>
+                <div id="mixed-node-results" class="mixed-node-results"></div>
+                <div id="mixed-branch-results" class="network-branch-results"></div>
+                <p id="mixed-result-formula" class="result-formula"></p>
+                <details class="worked-solution" id="mixed-worked-solution">
+                    <summary>Show step-by-step solution</summary>
+                    <div class="solution-content" aria-live="polite"><p class="solution-placeholder">Calculate to see node equations, substitution, and resistor results.</p></div>
+                </details>
+            </div>
+            <div class="button-row">
+                <button type="button" id="calculate-mixed-network" class="btn btn-primary">Calculate</button>
+                <button type="button" id="reset-mixed-network" class="btn btn-secondary">Reset</button>
+            </div>
+        </article>
+
         <section class="formula-reference-section" id="formula-reference">
             <div class="container">
                 <div class="section-heading">
@@ -2048,6 +2116,7 @@
                     <article class="formula-reference-card"><span class="formula-category">Three-phase systems</span><h3>Balanced three-phase power</h3><p class="reference-equation">P = √3 × VL × IL × PF</p><p>Uses line-to-line voltage and line current for a balanced system.</p><p class="reference-units"><strong>Units:</strong> VL (V), IL (A), P (W)</p><a href="#three-phase" class="reference-link">Open three-phase calculator →</a></article>
                     <article class="formula-reference-card"><span class="formula-category">Transformers</span><h3>Ideal transformer ratio</h3><p class="reference-equation">V₂ / V₁ = N₂ / N₁</p><p>Assumes an ideal transformer; real losses and voltage regulation are not included.</p><p class="reference-units"><strong>Units:</strong> Voltage (V), turns (N)</p><a href="#transformer" class="reference-link">Open transformer calculator →</a></article>
                     <article class="formula-reference-card"><span class="formula-category">Circuit estimation</span><h3>Basic voltage drop</h3><p class="reference-equation">VD = I × R</p><p>This simplified relationship uses entered circuit resistance and does not replace conductor-sizing methods.</p><p class="reference-units"><strong>Units:</strong> VD (V), I (A), R (Ω)</p><a href="#voltage-drop" class="reference-link">Open voltage-drop calculator →</a></article>
+                    <article class="formula-reference-card"><span class="formula-category">Resistive circuits</span><h3>Mixed resistor networks</h3><p class="reference-equation">Σ (Vnode − Vneighbor) / R = 0</p><p>Use Kirchhoff’s Current Law and node-voltage analysis for networks containing both series and parallel connections.</p><p class="reference-units"><strong>Units:</strong> Resistance (Ω), voltage (V), current (A)</p><a href="#mixed-resistor-network" class="reference-link">Open mixed-network calculator →</a></article>
                     <article class="formula-reference-card"><span class="formula-category">Resistive circuits</span><h3>Series and parallel resistance</h3><p class="reference-equation">RT(series) = ΣR</p><p>Series resistances add directly. Parallel resistance is the reciprocal of the sum of reciprocal branch resistances.</p><p class="reference-units"><strong>Units:</strong> Resistance (Ω), voltage (V), current (A)</p><a href="#resistor-network" class="reference-link">Open resistor network calculator →</a></article>
                     <article class="formula-reference-card"><span class="formula-category">AC circuits</span><h3>Series RLC impedance</h3><p class="reference-equation">Z = √(R² + X²)</p><p>For a series circuit, X = XL − XC; the phase angle indicates inductive or capacitive behavior.</p><p class="reference-units"><strong>Units:</strong> R and X (Ω), L (H), C (F), f (Hz)</p><a href="#ac-impedance" class="reference-link">Open AC impedance calculator →</a></article>
                     <article class="formula-reference-card"><span class="formula-category">Units</span><h3>Metric prefixes</h3><p class="reference-equation">1 kW = 1,000 W</p><p>Convert between base units and kilo- or milli-units before combining quantities.</p><p class="reference-units"><strong>Reminder:</strong> Keep units consistent throughout a calculation.</p><a href="#unit-converter" class="reference-link">Open unit converter →</a></article>
