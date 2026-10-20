@@ -42,6 +42,10 @@ interface that works on desktop, tablet, and mobile devices.
 -   **Voltage Drop**
     -   Basic voltage drop: `VD = I × R`
     -   Optional percentage voltage drop
+-   **Mixed Resistor Networks**
+    -   Model arbitrary series-parallel and bridge-style resistor connections using node numbers
+    -   Apply node-voltage analysis to calculate equivalent resistance, source current, node voltages, branch currents, and power
+    -   Includes add/remove resistor controls and worked solutions
 -   **Series & Parallel Circuits**
     -   Equivalent resistance for series and parallel resistor networks
     -   Optional supply voltage to calculate total current and individual resistor voltage/current
