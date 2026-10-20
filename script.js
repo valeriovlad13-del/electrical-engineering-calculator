@@ -141,9 +141,6 @@ if (historyList) historyList.addEventListener("click", event => {
             const resistorCount = Object.keys(item.inputs).filter(id => /^network-r\d+$/.test(id)).length;
             if (typeof window.setNetworkResistorCount === "function" && resistorCount >= 2) window.setNetworkResistorCount(resistorCount);
         }
-            const resistorCount = Object.keys(item.inputs).filter(id => /^mixed-r\d+$/.test(id)).length;
-            if (typeof window.setMixedResistorCount === "function" && resistorCount >= 2) window.setMixedResistorCount(resistorCount, item.inputs);
-        }
         Object.entries(item.inputs).forEach(([id, value]) => { const input = document.getElementById(id); if (input) input.value = value; });
         const destinations = {
             "Ohm's Law": ["ohms-law", "calculate-ohms"], "Electrical Power": ["electrical-power", "calculate-power"],
