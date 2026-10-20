@@ -1945,3 +1945,40 @@ const builders={
 const ids={"ohms-result":"calculate-ohms","power-result":"calculate-power","energy-result":"calculate-energy","triangle-result":"calculate-triangle","three-phase-result":"calculate-three-phase","transformer-result":"calculate-transformer","voltage-drop-result":"calculate-voltage-drop","converter-result":"calculate-conversion","ac-impedance-result":"calculate-ac-impedance","resistor-network-result":"calculate-resistor-network","mixed-resistor-result":"calculate-mixed-network"};
 document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(".result-panel"),content=d.querySelector(".solution-content"),button=document.getElementById(ids[panel.id]);if(button)button.addEventListener("click",()=>{if(panel.classList.contains("hidden"))return;const items=builders[panel.id]();content.innerHTML=items.length?items.join(""):'<p class="solution-placeholder">A worked solution is not available for these inputs.</p>';d.open=items.length>0;});});})();
 
+
+
+/* Printable calculation reports: use the browser's Save as PDF workflow. */
+(function initPrintableCalculationReports() {
+    const resultPanels = Array.from(document.querySelectorAll(".result-panel"));
+    if (!resultPanels.length) return;
+    let activeCard = null;
+
+    resultPanels.forEach(panel => {
+        if (panel.querySelector(".print-report-button")) return;
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "btn btn-secondary print-report-button";
+        button.textContent = "Print / Save as PDF";
+        button.addEventListener("click", () => {
+            activeCard = panel.closest(".calculator-card, article");
+            if (!activeCard) return;
+            document.querySelectorAll(".worked-solution").forEach(details => {
+                if (activeCard.contains(details)) details.open = true;
+            });
+            activeCard.classList.add("print-report-target");
+            document.body.classList.add("printing-calculation-report");
+            window.print();
+        });
+        panel.appendChild(button);
+    });
+
+    const cleanup = () => {
+        document.body.classList.remove("printing-calculation-report");
+        document.querySelectorAll(".print-report-target").forEach(card => card.classList.remove("print-report-target"));
+        activeCard = null;
+    };
+    window.addEventListener("afterprint", cleanup);
+    window.addEventListener("focus", () => {
+        if (document.body.classList.contains("printing-calculation-report")) cleanup();
+    });
+})();
