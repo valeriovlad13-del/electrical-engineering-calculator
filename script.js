@@ -1938,11 +1938,14 @@ function setMixedResistorCount(count, saved = null) {
     if (!mixedList) return;
     count = Math.max(2, Math.min(30, Math.floor(Number(count) || 2)));
     const oldRows = Array.from(mixedList.querySelectorAll("[data-resistor-row]"));
-    const previous = oldRows.map((row, i) => ({
-        r: row.querySelector(".mixed-resistance").value,
-        a: Number(row.querySelector(".mixed-node-a").value),
-        b: Number(row.querySelector(".mixed-node-b").value)
-    }));
+    const previous = oldRows.map((row, i) => {
+        const nodeSelects = row.querySelectorAll(".mixed-node");
+        return {
+            r: row.querySelector(".mixed-resistance").value,
+            a: Number((row.querySelector(".mixed-node-a") || nodeSelects[0]).value),
+            b: Number((row.querySelector(".mixed-node-b") || nodeSelects[1]).value)
+        };
+    });
     mixedList.innerHTML = "";
     for (let i = 1; i <= count; i++) {
         const prior = previous[i - 1] || {r: "", a: i === 1 ? 1 : i === 2 ? 2 : 1, b: i === 1 ? 2 : 0};
