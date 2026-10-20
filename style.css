@@ -1770,3 +1770,13 @@ body.dark-mode .footer-content p {
 .history-item-actions .btn{white-space:nowrap}
 @media(max-width:980px){.formula-reference-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.history-item{grid-template-columns:repeat(2,minmax(0,1fr))}.history-date{text-align:left}}
 @media(max-width:560px){.formula-reference-grid{grid-template-columns:1fr}.history-heading{align-items:flex-start;gap:12px}.history-actions{flex-direction:column;align-items:stretch}.history-item{grid-template-columns:1fr}.history-item-actions .btn{flex:1}}
+
+/* AC impedance result layout */
+.ac-impedance-results-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+#ac-impedance .result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+#ac-impedance .result-grid>div{padding:12px;border:1px solid var(--border-color,#dbe4ee);border-radius:9px;background:var(--input-background,#f8fafc);min-width:0}
+#ac-impedance .result-grid .result-label{letter-spacing:.04em;font-size:.66rem}
+#ac-impedance .result-grid strong{font-size:1.08rem;overflow-wrap:anywhere}
+#ac-impedance .result-formula{margin:10px 0;color:var(--muted-text,#667085);font-size:.82rem;overflow-wrap:anywhere}
+#ac-impedance .field-help{margin-top:8px;color:var(--muted-text,#667085);font-size:.78rem}
+@media(max-width:560px){#ac-impedance .result-grid{grid-template-columns:1fr}.calculator-nav{grid-template-columns:repeat(2,minmax(0,1fr))}}
