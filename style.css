@@ -1846,3 +1846,17 @@ body.dark-mode .mixed-circuit-diagram{background:#162333}
 body.dark-mode .mixed-circuit-diagram .mixed-resistor-label-bg{fill:#162333;stroke:#405469}
 body.dark-mode .mixed-circuit-diagram .mixed-node-dot{fill:#162333}
 @media(max-width:560px){.mixed-circuit-visual{padding:12px}.mixed-circuit-diagram svg{min-width:500px}}
+
+/* Mobile legibility and parallel-branch separation for the mixed circuit diagram */
+.mixed-circuit-diagram{overflow-x:auto;overflow-y:hidden}
+.mixed-circuit-diagram svg{display:block;width:100%;min-width:0!important;height:auto;max-height:none!important}
+.mixed-circuit-diagram .mixed-wire{stroke-width:2.5}
+.mixed-circuit-diagram .mixed-resistor-label{font-size:13px;font-weight:700}
+.mixed-circuit-diagram .mixed-node-label{font-size:13px}
+.mixed-circuit-diagram .mixed-source-label{font-size:13px}
+@media(max-width:560px){
+ .mixed-circuit-diagram svg{width:100%;min-width:0!important}
+ .mixed-circuit-diagram .mixed-resistor-label{font-size:14px}
+ .mixed-circuit-diagram .mixed-node-label{font-size:14px}
+ .mixed-circuit-diagram .mixed-source-label{font-size:14px}
+}
