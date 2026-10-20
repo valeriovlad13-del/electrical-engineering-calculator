@@ -1751,3 +1751,22 @@ body.dark-mode .footer-content p {
 
 /* Worked solutions */
 .worked-solution{margin-top:1rem;border:1px solid var(--border-color,#d7e0e8);border-radius:12px;overflow:hidden;background:var(--card-background,transparent)}.worked-solution summary{cursor:pointer;list-style:none;padding:1rem 1.1rem;font-weight:650;color:var(--text-color,#183b5b);display:flex;justify-content:space-between;gap:.75rem}.worked-solution summary::-webkit-details-marker{display:none}.worked-solution summary:after{content:"＋";color:var(--accent-color,#2d6cdf)}.worked-solution[open] summary:after{content:"−"}.solution-content{padding:0 1.1rem 1rem;overflow-wrap:anywhere}.solution-step{padding:.8rem 0;border-top:1px solid var(--border-color,#d7e0e8)}.solution-step h4{margin:0 0 .45rem;font-size:.96rem;color:var(--text-color,#183b5b)}.solution-step p{margin:.3rem 0;line-height:1.65}.solution-equation{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.94rem;white-space:normal;color:var(--text-color,#183b5b);background:var(--input-background,#f5f8fb);padding:.65rem .75rem;border-radius:8px}.solution-final{font-weight:750;font-size:1.05rem}.copy-solution{margin:0 1.1rem 1.1rem;width:calc(100% - 2.2rem)}.solution-placeholder{color:var(--muted-text,#687789);font-size:.92rem}
+
+/* Engineering formula reference and history tools */
+.formula-reference-section{padding:0 0 64px;scroll-margin-top:92px}
+.section-description{margin-top:8px;max-width:720px;color:var(--muted-text,#667085);font-size:.92rem}
+.formula-reference-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.formula-reference-card{display:flex;flex-direction:column;align-items:flex-start;gap:9px;padding:20px;border:1px solid var(--border-color,#e1e7ef);border-radius:13px;background:var(--card-background,#fff);min-width:0}
+.formula-reference-card h3{font-size:1rem;line-height:1.35}
+.formula-reference-card p{color:var(--muted-text,#667085);font-size:.82rem}
+.formula-reference-card .reference-equation{width:100%;padding:11px 12px;border-radius:8px;background:var(--input-background,#f5f8fb);color:var(--text-color,#183b5b);font:600 .95rem ui-monospace,SFMono-Regular,Consolas,monospace}
+.formula-category{color:var(--accent-color,#2d6cdf);font-size:.68rem;font-weight:750;text-transform:uppercase;letter-spacing:.07em}
+.formula-reference-card .reference-units{margin-top:auto;padding-top:5px}
+.reference-link{margin-top:4px;color:var(--accent-color,#174a7c);font-size:.82rem;font-weight:700}
+.reference-link:hover{text-decoration:underline}
+.history-actions,.history-item-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.history-item{grid-template-columns:minmax(120px,.8fr) minmax(160px,1.2fr) minmax(140px,.9fr) minmax(110px,auto) auto}
+.history-date{text-align:right;font-size:.7rem;color:#98a2b3}
+.history-item-actions .btn{white-space:nowrap}
+@media(max-width:980px){.formula-reference-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.history-item{grid-template-columns:repeat(2,minmax(0,1fr))}.history-date{text-align:left}}
+@media(max-width:560px){.formula-reference-grid{grid-template-columns:1fr}.history-heading{align-items:flex-start;gap:12px}.history-actions{flex-direction:column;align-items:stretch}.history-item{grid-template-columns:1fr}.history-item-actions .btn{flex:1}}
