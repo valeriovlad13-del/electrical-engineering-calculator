@@ -88,134 +88,84 @@ function isPositive(value) {
 
 const HISTORY_KEY = "electricalCalculatorHistory";
 const MAX_HISTORY = 20;
-
-
 function getHistory() {
-    try {
-        const saved = localStorage.getItem(HISTORY_KEY);
-
-        if (!saved) {
-            return [];
-        }
-
-        const parsed = JSON.parse(saved);
-
-        return Array.isArray(parsed) ? parsed : [];
-
-    } catch (error) {
-        console.warn(
-            "Unable to read calculation history.",
-            error
-        );
-
-        return [];
-    }
+    try { const saved = localStorage.getItem(HISTORY_KEY); if (!saved) return []; const parsed = JSON.parse(saved); return Array.isArray(parsed) ? parsed : []; }
+    catch (error) { console.warn("Unable to read calculation history.", error); return []; }
 }
-
-
-function saveHistory(title, calculation, result) {
+function captureInputs(ids) {
+    return Object.fromEntries(ids.map(id => { const element = document.getElementById(id); return [id, element ? element.value : ""]; }));
+}
+function saveHistory(title, calculation, result, inputs = {}) {
     const history = getHistory();
-
-    history.unshift({
-        title: title,
-        calculation: calculation,
-        result: result,
-        date: new Date().toLocaleString()
-    });
-
-    if (history.length > MAX_HISTORY) {
-        history.splice(MAX_HISTORY);
-    }
-
-    try {
-        localStorage.setItem(
-            HISTORY_KEY,
-            JSON.stringify(history)
-        );
-    } catch (error) {
-        console.warn(
-            "Unable to save calculation history.",
-            error
-        );
-    }
-
+    history.unshift({ id: (typeof crypto !== "undefined" && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now()) + "-" + Math.random().toString(36).slice(2), title, calculation, result, inputs, date: new Date().toLocaleString() });
+    if (history.length > MAX_HISTORY) history.splice(MAX_HISTORY);
+    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); }
+    catch (error) { console.warn("Unable to save calculation history.", error); }
     displayHistory();
 }
-
-
 function escapeHTML(value) {
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
-
-
 function displayHistory() {
     const list = document.getElementById("history-list");
-
-    if (!list) {
-        return;
-    }
-
+    if (!list) return;
     const history = getHistory();
-
-    if (history.length === 0) {
-
-        list.innerHTML = `
-            <div class="history-empty">
-                No calculations yet.
-            </div>
-        `;
-
-        return;
-    }
-
-    list.innerHTML = history.map(item => {
-
-        return `
-            <div class="history-item">
-                <strong>
-                    ${escapeHTML(item.title)}
-                </strong>
-
-                <span>
-                    ${escapeHTML(item.calculation)}
-                </span>
-
-                <span>
-                    Result: ${escapeHTML(item.result)}
-                </span>
-
-                <span>
-                    ${escapeHTML(item.date)}
-                </span>
-            </div>
-        `;
-
+    if (!history.length) { list.innerHTML = '<div class="history-empty">No calculations yet.</div>'; return; }
+    list.innerHTML = history.map((item, index) => {
+        const canRestore = item.inputs && Object.keys(item.inputs).length > 0;
+        return `<article class="history-item">
+            <strong>${escapeHTML(item.title)}</strong>
+            <span>${escapeHTML(item.calculation)}</span>
+            <span>Result: ${escapeHTML(item.result)}</span>
+            <span class="history-date">${escapeHTML(item.date || "")}</span>
+            <div class="history-item-actions">${canRestore ? `<button type="button" class="btn btn-secondary btn-small" data-history-restore="${index}">Restore</button>` : ""}
+            <button type="button" class="btn btn-secondary btn-small" data-history-delete="${index}" aria-label="Delete ${escapeHTML(item.title)} history item">Delete</button></div>
+        </article>`;
     }).join("");
 }
-
-
-const clearHistoryButton =
-    document.getElementById("clear-history");
-
-
-if (clearHistoryButton) {
-
-    clearHistoryButton.addEventListener(
-        "click",
-        () => {
-
-            localStorage.removeItem(HISTORY_KEY);
-
-            displayHistory();
-        }
-    );
-}
-
+const historyList = document.getElementById("history-list");
+if (historyList) historyList.addEventListener("click", event => {
+    const restoreButton = event.target.closest("[data-history-restore]");
+    const deleteButton = event.target.closest("[data-history-delete]");
+    if (!restoreButton && !deleteButton) return;
+    const index = Number((restoreButton || deleteButton).dataset[restoreButton ? "historyRestore" : "historyDelete"]);
+    const history = getHistory(), item = history[index];
+    if (!item) return;
+    if (deleteButton) {
+        history.splice(index, 1);
+        try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); } catch (error) { console.warn("Unable to update calculation history.", error); }
+        displayHistory(); return;
+    }
+    if (restoreButton && item.inputs) {
+        Object.entries(item.inputs).forEach(([id, value]) => { const input = document.getElementById(id); if (input) input.value = value; });
+        const destinations = {
+            "Ohm's Law": ["ohms-law", "calculate-ohms"], "Electrical Power": ["electrical-power", "calculate-power"],
+            "Energy": ["energy", "calculate-energy"], "Power Triangle": ["power-triangle", "calculate-triangle"],
+            "Three-Phase Power": ["three-phase", "calculate-three-phase"], "Transformer": ["transformer", "calculate-transformer"],
+            "Voltage Drop": ["voltage-drop", "calculate-voltage-drop"], "Unit Conversion": ["unit-converter", "calculate-conversion"]
+        };
+        const destination = destinations[item.title];
+        if (!destination) return;
+        document.getElementById(destination[0])?.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.getElementById(destination[1])?.click();
+    }
+});
+const exportHistoryButton = document.getElementById("export-history");
+if (exportHistoryButton) exportHistoryButton.addEventListener("click", () => {
+    const history = getHistory();
+    if (!history.length) { alert("There are no calculations to export yet."); return; }
+    const columns = ["title", "calculation", "result", "date", "inputs"];
+    const quote = value => '"' + String(value ?? "").replace(/"/g, '""') + '"';
+    const csv = [columns.join(","), ...history.map(item => columns.map(key => quote(key === "inputs" ? JSON.stringify(item.inputs || {}) : item[key])).join(","))].join("\r\n");
+    const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8;" }), url = URL.createObjectURL(blob), link = document.createElement("a");
+    link.href = url; link.download = "electrical-calculation-history.csv"; document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
+});
+const clearHistoryButton = document.getElementById("clear-history");
+if (clearHistoryButton) clearHistoryButton.addEventListener("click", () => {
+    if (!getHistory().length) return;
+    if (!confirm("Clear all saved calculation history? This cannot be undone.")) return;
+    localStorage.removeItem(HISTORY_KEY); displayHistory();
+});
 
 /* =========================================================
    3. OHM'S LAW
@@ -396,11 +346,7 @@ if (calculateOhms) {
             showResult("ohms-result");
 
 
-            saveHistory(
-                "Ohm's Law",
-                formula,
-                resultText
-            );
+            saveHistory("Ohm's Law", formula, resultText, captureInputs(["voltage", "current", "resistance"]));
         }
     );
 }
@@ -635,11 +581,7 @@ if (calculatePower) {
             showResult("power-result");
 
 
-            saveHistory(
-                "Electrical Power",
-                formula,
-                resultText
-            );
+            saveHistory("Electrical Power", formula, resultText, captureInputs(["power-mode", "power-voltage", "power-current", "power-pf"]));
         }
     );
 }
@@ -795,11 +737,7 @@ if (calculateEnergy) {
             );
 
 
-            saveHistory(
-                "Energy",
-                formula,
-                `${energyText} | Cost: ${costText}`
-            );
+            saveHistory("Energy", formula, `${energyText} | Cost: ${costText}`, captureInputs(["energy-power", "energy-time", "energy-rate"]));
         }
     );
 }
@@ -953,7 +891,7 @@ if(calculateTriangle)calculateTriangle.addEventListener("click",()=>{
   document.getElementById("triangle-theta-value").textContent="";
   document.getElementById("triangle-result-formula").textContent="S² = P² + Q² | PF = P / S | θ = cos⁻¹(PF)";
   renderPowerTriangle(v.P,v.Q,v.theta);showResult("triangle-result");
-  saveHistory("Power Triangle",`${t1} = ${v1} | ${t2} = ${v2}`,`P = ${formatNumber(v.P)} W | Q = ${formatNumber(v.Q)} VAR | S = ${formatNumber(v.S)} VA | PF = ${formatNumber(v.PF, 3)} | θ = ${formatNumber(v.theta, 3)}°`);
+  saveHistory("Power Triangle",`${t1} = ${v1} | ${t2} = ${v2}`,`P = ${formatNumber(v.P)} W | Q = ${formatNumber(v.Q)} VAR | S = ${formatNumber(v.S)} VA | PF = ${formatNumber(v.PF, 3)} | θ = ${formatNumber(v.theta, 3)}°`,captureInputs(["triangle-input-1","triangle-value-1","triangle-input-2","triangle-value-2"]));
  }catch(error){showMessage("triangle-message",error.message,"error")}
 });
 const resetTriangle=document.getElementById("reset-triangle");
@@ -1067,11 +1005,7 @@ if (calculateThreePhase) {
             );
 
 
-            saveHistory(
-                "Three-Phase Power",
-                formula,
-                resultText
-            );
+            saveHistory("Three-Phase Power", formula, resultText, captureInputs(["three-phase-voltage", "three-phase-current", "three-phase-pf"]));
         }
     );
 }
@@ -1241,11 +1175,7 @@ if (calculateTransformer) {
             );
 
 
-            saveHistory(
-                "Transformer",
-                formula,
-                `Secondary Voltage: ${formatNumber(v2)} V`
-            );
+            saveHistory("Transformer", formula, `Secondary Voltage: ${formatNumber(v2)} V`, captureInputs(["transformer-v1", "transformer-n1", "transformer-n2", "transformer-primary-current"]));
         }
     );
 }
@@ -1421,11 +1351,7 @@ if (calculateVoltageDrop) {
             );
 
 
-            saveHistory(
-                "Voltage Drop",
-                formula,
-                resultText
-            );
+            saveHistory("Voltage Drop", formula, resultText, captureInputs(["voltage-drop-current", "voltage-drop-resistance", "voltage-drop-system-voltage"]));
         }
     );
 }
@@ -1693,11 +1619,7 @@ if (calculateConversion) {
             );
 
 
-            saveHistory(
-                "Unit Conversion",
-                `${value} → ${unit}`,
-                resultText
-            );
+            saveHistory("Unit Conversion", `${value} → ${unit}`, resultText, captureInputs(["converter-type", "converter-value"]));
         }
     );
 }
