@@ -22,6 +22,9 @@ function formatNumber(number, decimals = 3) {
         return "—";
     }
 
+    // Keep every displayed numeric result to at most three decimal places.
+    decimals = Math.min(3, Math.max(0, Number.isFinite(decimals) ? Math.floor(decimals) : 3));
+
     return Number(number.toFixed(decimals)).toLocaleString(
         "en-US",
         {
@@ -1886,7 +1889,7 @@ updateThemeIcon();
 
 /* Step-by-step worked solutions */
 (function(){
-const fmt=n=>Number.isFinite(n)?Number(n.toFixed(6)).toLocaleString("en-US",{maximumFractionDigits:6}):"—";
+const fmt=n=>Number.isFinite(n)?Number(n.toFixed(3)).toLocaleString("en-US",{maximumFractionDigits:3}):"—";
 const get=id=>{const e=document.getElementById(id);if(!e||e.value.trim()==="")return null;const n=Number(e.value);return Number.isFinite(n)?n:null;};
 const eq=s=>'<p class="solution-equation">'+s+'</p>';
 const step=(title,body)=>'<section class="solution-step"><h4>'+title+'</h4>'+body+'</section>';
