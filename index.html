@@ -375,6 +375,11 @@
 
                     </a>
 
+                    <a href="#ac-impedance" class="nav-card">
+                        <span class="nav-icon" aria-hidden="true">∿</span>
+                        <span>AC Impedance</span>
+                    </a>
+
                 </nav>
 
             </div>
@@ -1931,6 +1936,47 @@
 
                 </article>
 
+                <article class="calculator-card" id="ac-impedance">
+                    <div class="calculator-header">
+                        <div class="calculator-title-wrap">
+                            <div class="calculator-icon" aria-hidden="true">∿</div>
+                            <div><span class="calculator-number">09</span><h2>AC Impedance</h2></div>
+                        </div>
+                    </div>
+                    <p class="calculator-description">Calculate series RLC reactance, impedance magnitude, and phase angle for a sinusoidal AC supply.</p>
+                    <div class="formula-box">
+                        <strong>Z = √(R² + (XL − XC)²)</strong>
+                        <p>XL = 2πfL &nbsp; | &nbsp; XC = 1 / (2πfC)</p>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group"><label for="ac-resistance">Resistance R (Ω)</label><input type="number" id="ac-resistance" min="0" step="any" value="10" inputmode="decimal"></div>
+                        <div class="input-group"><label for="ac-inductance">Inductance L (mH)</label><input type="number" id="ac-inductance" min="0" step="any" value="100" inputmode="decimal"></div>
+                        <div class="input-group"><label for="ac-capacitance">Capacitance C (µF)</label><input type="number" id="ac-capacitance" min="0" step="any" value="0" inputmode="decimal"></div>
+                        <div class="input-group"><label for="ac-frequency">Frequency f (Hz)</label><input type="number" id="ac-frequency" min="0" step="any" value="50" inputmode="decimal"></div>
+                    </div>
+                    <p class="field-help">Set L or C to 0 to exclude that component from this series-model calculation.</p>
+                    <div id="ac-impedance-message" class="message" role="status" aria-live="polite"></div>
+                    <div id="ac-impedance-result" class="result-panel hidden">
+                        <span class="result-label">AC IMPEDANCE RESULTS</span>
+                        <div class="result-grid">
+                            <div><span class="result-label">Inductive reactance</span><strong id="ac-xl-result">—</strong></div>
+                            <div><span class="result-label">Capacitive reactance</span><strong id="ac-xc-result">—</strong></div>
+                            <div><span class="result-label">Net reactance</span><strong id="ac-x-result">—</strong></div>
+                            <div><span class="result-label">Impedance magnitude</span><strong id="ac-z-result">—</strong></div>
+                            <div><span class="result-label">Phase angle</span><strong id="ac-theta-result">—</strong></div>
+                        </div>
+                        <p id="ac-impedance-formula" class="result-formula"></p>
+                        <details class="worked-solution" id="ac-impedance-worked-solution">
+                            <summary>Show step-by-step solution</summary>
+                            <div class="solution-content" aria-live="polite"><p class="solution-placeholder">Calculate to see the formula, substitution, and steps.</p></div>
+                        </details>
+                    </div>
+                    <div class="button-row">
+                        <button type="button" id="calculate-ac-impedance" class="btn btn-primary">Calculate</button>
+                        <button type="button" id="reset-ac-impedance" class="btn btn-secondary">Reset</button>
+                    </div>
+                </article>
+
             </div>
 
         </section>
@@ -1951,6 +1997,7 @@
                     <article class="formula-reference-card"><span class="formula-category">Three-phase systems</span><h3>Balanced three-phase power</h3><p class="reference-equation">P = √3 × VL × IL × PF</p><p>Uses line-to-line voltage and line current for a balanced system.</p><p class="reference-units"><strong>Units:</strong> VL (V), IL (A), P (W)</p><a href="#three-phase" class="reference-link">Open three-phase calculator →</a></article>
                     <article class="formula-reference-card"><span class="formula-category">Transformers</span><h3>Ideal transformer ratio</h3><p class="reference-equation">V₂ / V₁ = N₂ / N₁</p><p>Assumes an ideal transformer; real losses and voltage regulation are not included.</p><p class="reference-units"><strong>Units:</strong> Voltage (V), turns (N)</p><a href="#transformer" class="reference-link">Open transformer calculator →</a></article>
                     <article class="formula-reference-card"><span class="formula-category">Circuit estimation</span><h3>Basic voltage drop</h3><p class="reference-equation">VD = I × R</p><p>This simplified relationship uses entered circuit resistance and does not replace conductor-sizing methods.</p><p class="reference-units"><strong>Units:</strong> VD (V), I (A), R (Ω)</p><a href="#voltage-drop" class="reference-link">Open voltage-drop calculator →</a></article>
+                    <article class="formula-reference-card"><span class="formula-category">AC circuits</span><h3>Series RLC impedance</h3><p class="reference-equation">Z = √(R² + X²)</p><p>For a series circuit, X = XL − XC; the phase angle indicates inductive or capacitive behavior.</p><p class="reference-units"><strong>Units:</strong> R and X (Ω), L (H), C (F), f (Hz)</p><a href="#ac-impedance" class="reference-link">Open AC impedance calculator →</a></article>
                     <article class="formula-reference-card"><span class="formula-category">Units</span><h3>Metric prefixes</h3><p class="reference-equation">1 kW = 1,000 W</p><p>Convert between base units and kilo- or milli-units before combining quantities.</p><p class="reference-units"><strong>Reminder:</strong> Keep units consistent throughout a calculation.</p><a href="#unit-converter" class="reference-link">Open unit converter →</a></article>
                 </div>
             </div>
@@ -2083,6 +2130,7 @@
     </footer>
 
 
+    <script src="engineering-core.js"></script>
     <script src="script.js"></script>
 
 </body>
