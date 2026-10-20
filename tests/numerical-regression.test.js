@@ -59,4 +59,25 @@ const combined = core.acImpedance(3, 100, 0, 50);
 near(combined.impedanceMagnitude, Math.hypot(3, 2 * Math.PI * 50 * 0.1));
 throws(() => core.acImpedance(3, 0, 0, 0), "Frequency");
 
+
+/* Series and parallel resistor networks. */
+const series = core.resistorNetwork("series", [10, 20, 30], 12);
+near(series.equivalentResistance, 60);
+near(series.totalCurrent, 0.2);
+near(series.branches[0].voltage, 2);
+near(series.branches[1].voltage, 4);
+near(series.branches[2].voltage, 6);
+near(series.branches[0].current, 0.2);
+const parallel = core.resistorNetwork("parallel", [10, 20, 30], 12);
+near(parallel.equivalentResistance, 60 / 11);
+near(parallel.totalCurrent, 2.2);
+near(parallel.branches[0].voltage, 12);
+near(parallel.branches[0].current, 1.2);
+near(parallel.branches[1].current, 0.6);
+near(parallel.branches[2].current, 0.4);
+near(core.resistorNetwork("series", [10, 20, 30]).equivalentResistance, 60);
+throws(() => core.resistorNetwork("series", [10, 0, 30]), "positive");
+throws(() => core.resistorNetwork("parallel", [10, 20, 30], -1), "non-negative");
+throws(() => core.resistorNetwork("unknown", [10, 20, 30]), "Choose series or parallel");
+
 console.log("All numerical regression tests passed.");

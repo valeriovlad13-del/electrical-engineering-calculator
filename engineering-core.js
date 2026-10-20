@@ -88,7 +88,26 @@
         };
     }
 
-    const api = { ohmsLaw, electricalPower, energyCost, threePhaseRealPower, idealTransformer, voltageDrop, acImpedance };
+
+    function resistorNetwork(type, resistances, supplyVoltage = null) {
+        if (type !== "series" && type !== "parallel") throw new RangeError("Choose series or parallel.");
+        if (!Array.isArray(resistances) || resistances.length < 2 || resistances.some(value => !Number.isFinite(value) || value <= 0)) {
+            throw new RangeError("Enter at least two positive, finite resistor values.");
+        }
+        if (supplyVoltage !== null) finiteNonNegative(supplyVoltage, "Supply voltage");
+        const equivalentResistance = type === "series"
+            ? resistances.reduce((sum, value) => sum + value, 0)
+            : 1 / resistances.reduce((sum, value) => sum + 1 / value, 0);
+        const totalCurrent = supplyVoltage === null ? null : supplyVoltage / equivalentResistance;
+        const branches = resistances.map(resistance => ({
+            resistance,
+            voltage: supplyVoltage === null ? null : (type === "series" ? totalCurrent * resistance : supplyVoltage),
+            current: supplyVoltage === null ? null : (type === "series" ? totalCurrent : supplyVoltage / resistance)
+        }));
+        return { type, equivalentResistance, totalCurrent, branches };
+    }
+
+    const api = { ohmsLaw, electricalPower, energyCost, threePhaseRealPower, idealTransformer, voltageDrop, acImpedance, resistorNetwork };
     if (typeof module !== "undefined" && module.exports) module.exports = api;
     root.EngineeringCore = api;
 })(typeof globalThis !== "undefined" ? globalThis : this);
