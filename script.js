@@ -2148,3 +2148,56 @@ document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(
     new MutationObserver(draw).observe(list, { childList: true, subtree: true });
     draw();
 })();
+
+/* Beginner-friendly circuit presets with optional advanced node editing. */
+(function initMixedCircuitBuilder() {
+    const type = document.getElementById("mixed-circuit-type");
+    const advanced = document.getElementById("mixed-advanced-mode");
+    const list = document.getElementById("mixed-resistor-list");
+    const help = document.getElementById("mixed-circuit-type-help");
+    if (!type || !advanced || !list) return;
+    const helpText = {
+        series: "Series: resistors connect one after another, so the same current flows through each resistor.",
+        parallel: "Parallel: every resistor connects across the supply, so each branch has the same voltage.",
+        "series-parallel": "Series-parallel: R1 and R2 form one series branch, alongside the remaining parallel branches."
+    };
+    function rows() { return Array.from(list.querySelectorAll("[data-resistor-row]")); }
+    function configurePreset() {
+        const items = rows(), count = items.length;
+        if (advanced.checked) return;
+        items.forEach((row, index) => {
+            const selects = row.querySelectorAll(".mixed-node");
+            const a = row.querySelector(".mixed-node-a") || selects[0];
+            const b = row.querySelector(".mixed-node-b") || selects[1];
+            if (!a || !b) return;
+            let nodeA = 1, nodeB = 0;
+            if (type.value === "series") {
+                nodeA = index === 0 ? 1 : index + 1;
+                nodeB = index === count - 1 ? 0 : index + 2;
+            } else if (type.value === "parallel") {
+                nodeA = 1; nodeB = 0;
+            } else if (index === 0 && count > 1) {
+                nodeA = 1; nodeB = 2;
+            } else if (index === 1 && count > 1) {
+                nodeA = 2; nodeB = 0;
+            } else {
+                nodeA = 1; nodeB = 0;
+            }
+            a.value = String(nodeA); b.value = String(nodeB);
+        });
+    }
+    function updateMode() {
+        document.querySelectorAll("#mixed-resistor-network .mixed-node-field").forEach(field => { field.hidden = !advanced.checked; });
+        document.querySelectorAll("#mixed-resistor-network .mixed-advanced-explanation").forEach(field => { field.hidden = !advanced.checked; });
+        if (help) help.textContent = advanced.checked
+            ? "Advanced mode is on. Set Node A and Node B for each resistor; Node 0 is ground and Node 1 is the positive supply."
+            : helpText[type.value];
+        configurePreset();
+        list.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    type.addEventListener("change", updateMode);
+    advanced.addEventListener("change", updateMode);
+    const observer = new MutationObserver(() => { if (!advanced.checked) configurePreset(); updateMode(); });
+    observer.observe(list, { childList: true });
+    updateMode();
+})();
