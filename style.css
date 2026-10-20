@@ -1802,3 +1802,20 @@ body.dark-mode .network-branch-row span{color:#aab8c8}
 #resistor-network .network-resistor-controls .field-help{margin:0}
 #resistor-network .network-resistor-controls button:disabled{opacity:.45;cursor:not-allowed}
 @media(max-width:560px){#resistor-network .network-resistor-list{grid-template-columns:1fr}#resistor-network .network-resistor-controls button{flex:1}}
+
+/* Mixed resistor network editor and node-voltage results */
+#mixed-resistor-network .mixed-resistor-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;grid-column:1/-1}
+#mixed-resistor-network .mixed-resistor-controls>strong{width:100%}
+#mixed-resistor-network .mixed-resistor-controls .field-help{margin:0;flex:1 1 100%}
+#mixed-resistor-network .mixed-resistor-list{display:grid;gap:12px;grid-column:1/-1;min-width:0}
+#mixed-resistor-network .mixed-resistor-row{display:grid;grid-template-columns:38px repeat(3,minmax(0,1fr));align-items:end;gap:10px;padding:12px;border:1px solid var(--border-color,#dbe4ee);border-radius:10px;background:var(--input-background,#f8fafc);min-width:0}
+#mixed-resistor-network .mixed-resistor-title{align-self:center;color:var(--primary-color,#1d4f7a)}
+#mixed-resistor-network .mixed-resistor-row .input-group{min-width:0}
+#mixed-resistor-network .mixed-resistor-row input,#mixed-resistor-network .mixed-resistor-row select{width:100%;min-width:0}
+#mixed-resistor-network .mixed-node-results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
+#mixed-resistor-network .mixed-node-result{display:flex;flex-direction:column;gap:5px;padding:12px;border:1px solid var(--border-color,#dbe4ee);border-radius:9px;background:var(--input-background,#f8fafc);min-width:0}
+#mixed-resistor-network .mixed-node-result strong{overflow-wrap:anywhere}
+#mixed-resistor-network .mixed-resistor-controls button:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:700px){#mixed-resistor-network .mixed-resistor-row{grid-template-columns:32px minmax(0,1fr) minmax(0,1fr)}#mixed-resistor-network .mixed-resistor-title{grid-row:span 2}#mixed-resistor-network .mixed-node-results{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){#mixed-resistor-network .mixed-resistor-row{grid-template-columns:28px minmax(0,1fr)}#mixed-resistor-network .mixed-resistor-title{grid-row:auto}#mixed-resistor-network .mixed-node-results{grid-template-columns:1fr}}
+body.dark-mode #mixed-resistor-network .mixed-resistor-row,body.dark-mode #mixed-resistor-network .mixed-node-result{background:#162333;border-color:#2d3e4f}
