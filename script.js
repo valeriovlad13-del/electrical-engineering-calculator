@@ -1947,43 +1947,6 @@ document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(
 
 
 
-/* Printable calculation reports: use the browser's Save as PDF workflow. */
-(function initPrintableCalculationReports() {
-    const resultPanels = Array.from(document.querySelectorAll(".result-panel"));
-    if (!resultPanels.length) return;
-    let activeCard = null;
-
-    resultPanels.forEach(panel => {
-        if (panel.querySelector(".print-report-button")) return;
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "btn btn-secondary print-report-button";
-        button.textContent = "Print / Save as PDF";
-        button.addEventListener("click", () => {
-            activeCard = panel.closest(".calculator-card, article");
-            if (!activeCard) return;
-            document.querySelectorAll(".worked-solution").forEach(details => {
-                if (activeCard.contains(details)) details.open = true;
-            });
-            activeCard.classList.add("print-report-target");
-            document.body.classList.add("printing-calculation-report");
-            window.print();
-        });
-        panel.appendChild(button);
-    });
-
-    const cleanup = () => {
-        document.body.classList.remove("printing-calculation-report");
-        document.querySelectorAll(".print-report-target").forEach(card => card.classList.remove("print-report-target"));
-        activeCard = null;
-    };
-    window.addEventListener("afterprint", cleanup);
-    window.addEventListener("focus", () => {
-        if (document.body.classList.contains("printing-calculation-report")) cleanup();
-    });
-})();
-
-
 /* Visual aids for calculators where a physical circuit or relationship is easier to understand visually. */
 (function initCalculatorDiagrams() {
     const diagrams = {
