@@ -878,22 +878,13 @@ if(calculateTriangle)calculateTriangle.addEventListener("click",()=>{
   document.getElementById("triangle-result-s").textContent=`${formatNumber(v.S)} VA`;
   document.getElementById("triangle-result-pf").textContent=formatNumber(v.PF,3);
   document.getElementById("triangle-result-theta").textContent=`${formatNumber(v.theta, 3)}°`;
-  const pText=`P = ${formatNumber(v.P,3)} W`;
-  const qText=`Q = ${formatNumber(v.Q,3)} VAR`;
-  const sText=`S = ${formatNumber(v.S,3)} VA`;
-  const thetaText=`θ = ${formatNumber(v.theta,3)}°`;
-
-  document.getElementById("triangle-p-label").textContent=pText;
-  document.getElementById("triangle-q-label").textContent=qText;
-  document.getElementById("triangle-s-label").textContent=sText;
-  document.getElementById("triangle-angle-label").textContent=thetaText;
-
-  document.getElementById("triangle-p-value").textContent="";
-  document.getElementById("triangle-q-value").textContent="";
-  document.getElementById("triangle-s-value").textContent="";
-  document.getElementById("triangle-theta-value").textContent="";
+  // Keep the top diagram as a labeled reference only; numerical results stay in the results section.
+  document.getElementById("triangle-p-label").textContent="P";
+  document.getElementById("triangle-q-label").textContent="Q";
+  document.getElementById("triangle-s-label").textContent="S";
+  document.getElementById("triangle-angle-label").textContent="θ";
   document.getElementById("triangle-result-formula").textContent="S² = P² + Q² | PF = P / S | θ = cos⁻¹(PF)";
-  renderPowerTriangle(v.P,v.Q,v.theta);showResult("triangle-result");
+  showResult("triangle-result");
   saveHistory("Power Triangle",`${t1} = ${v1} | ${t2} = ${v2}`,`P = ${formatNumber(v.P)} W | Q = ${formatNumber(v.Q)} VAR | S = ${formatNumber(v.S)} VA | PF = ${formatNumber(v.PF, 3)} | θ = ${formatNumber(v.theta, 3)}°`,captureInputs(["triangle-input-1","triangle-value-1","triangle-input-2","triangle-value-2"]));
  }catch(error){showMessage("triangle-message",error.message,"error")}
 });
