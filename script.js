@@ -2058,3 +2058,93 @@ const builders={
 };
 const ids={"ohms-result":"calculate-ohms","power-result":"calculate-power","energy-result":"calculate-energy","triangle-result":"calculate-triangle","three-phase-result":"calculate-three-phase","transformer-result":"calculate-transformer","voltage-drop-result":"calculate-voltage-drop","converter-result":"calculate-conversion","ac-impedance-result":"calculate-ac-impedance","resistor-network-result":"calculate-resistor-network","mixed-resistor-result":"calculate-mixed-network"};
 document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(".result-panel"),content=d.querySelector(".solution-content"),button=document.getElementById(ids[panel.id]);if(button)button.addEventListener("click",()=>{if(panel.classList.contains("hidden"))return;const items=builders[panel.id]();content.innerHTML=items.length?items.join(""):'<p class="solution-placeholder">A worked solution is not available for these inputs.</p>';d.open=items.length>0;});});})();
+
+/* Interactive schematic for the mixed resistor network. */
+(function initMixedCircuitDiagram() {
+    const list = document.getElementById("mixed-resistor-list");
+    const target = document.getElementById("mixed-circuit-diagram");
+    const voltageInput = document.getElementById("mixed-supply-voltage");
+    if (!list || !target) return;
+
+    const nodePositions = {
+        0: [72, 278], 1: [72, 82], 2: [250, 180], 3: [430, 82],
+        4: [430, 278], 5: [610, 82], 6: [610, 278], 7: [250, 82],
+        8: [250, 278], 9: [430, 180], 10: [610, 180]
+    };
+    const ns = "http://www.w3.org/2000/svg";
+    const svgEl = (name, attrs = {}) => {
+        const el = document.createElementNS(ns, name);
+        Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, String(value)));
+        return el;
+    };
+    const addText = (svg, x, y, text, className, anchor = "middle") => {
+        const el = svgEl("text", { x, y, "text-anchor": anchor, class: className });
+        el.textContent = text;
+        svg.appendChild(el);
+        return el;
+    };
+    function draw() {
+        const rows = Array.from(list.querySelectorAll("[data-resistor-row]"));
+        const resistors = rows.map((row, index) => {
+            const selects = row.querySelectorAll(".mixed-node");
+            const a = Number((row.querySelector(".mixed-node-a") || selects[0])?.value ?? 1);
+            const b = Number((row.querySelector(".mixed-node-b") || selects[1])?.value ?? 0);
+            const raw = row.querySelector(".mixed-resistance")?.value ?? "";
+            return { id: index + 1, a, b, resistance: raw.trim() ? Number(raw) : NaN };
+        });
+        const usedNodes = [...new Set(resistors.flatMap(r => [r.a, r.b]))].filter(n => Number.isInteger(n) && nodePositions[n]);
+        const svg = svgEl("svg", { viewBox: "0 0 700 350", role: "presentation", focusable: "false", "aria-hidden": "true" });
+        const defs = svgEl("defs");
+        const marker = svgEl("marker", { id: "mixed-current-arrow", markerWidth: 7, markerHeight: 7, refX: 5, refY: 3, orient: "auto" });
+        marker.appendChild(svgEl("path", { d: "M0,0 L6,3 L0,6 Z", class: "mixed-arrowhead" }));
+        defs.appendChild(marker);
+        svg.appendChild(defs);
+
+        resistors.forEach(r => {
+            if (!nodePositions[r.a] || !nodePositions[r.b] || r.a === r.b) return;
+            const [x1, y1] = nodePositions[r.a], [x2, y2] = nodePositions[r.b];
+            const dx = x2 - x1, dy = y2 - y1, length = Math.hypot(dx, dy);
+            if (!length) return;
+            const ux = dx / length, uy = dy / length, px = -uy, py = ux;
+            const start = 24, end = length - 24, bodyLength = Math.min(54, Math.max(30, length * 0.3));
+            const mid = (start + end) / 2;
+            const bodyStart = mid - bodyLength / 2, bodyEnd = mid + bodyLength / 2;
+            const points = [[start,0],[bodyStart,0]];
+            const teeth = 6;
+            for (let k=1;k<=teeth;k++) points.push([bodyStart+(bodyLength*k/teeth), k===teeth ? 0 : (k%2 ? 8 : -8)]);
+            points.push([end,0]);
+            const d = points.map((p,i) => (i ? "L" : "M") + (x1+ux*p[0]+px*p[1]).toFixed(1) + "," + (y1+uy*p[0]+py*p[1]).toFixed(1)).join(" ");
+            svg.appendChild(svgEl("path", { d, class: "mixed-wire" }));
+            const labelX = (x1+x2)/2 + px*20, labelY = (y1+y2)/2 + py*20;
+            const resistanceText = Number.isFinite(r.resistance) && r.resistance > 0 ? formatNumber(r.resistance) + " Ω" : "Enter Ω";
+            const labelWidth = Math.max(64, (("R"+r.id+" · "+resistanceText).length)*6.5);
+            svg.appendChild(svgEl("rect", { x: labelX-labelWidth/2, y: labelY-12, width: labelWidth, height: 19, rx: 5, class: "mixed-resistor-label-bg" }));
+            addText(svg,labelX,labelY+1,"R"+r.id+" · "+resistanceText,"mixed-resistor-label");
+        });
+        usedNodes.forEach(n => {
+            const [x,y] = nodePositions[n];
+            svg.appendChild(svgEl("circle", { cx:x, cy:y, r:6, class: "mixed-node-dot" }));
+            addText(svg,x,y-13,"Node "+n,"mixed-node-label");
+        });
+        if (usedNodes.includes(1)) {
+            const [x,y]=nodePositions[1];
+            svg.appendChild(svgEl("path",{d:`M${x-10},${y} L${x-10},${y-22} L${x+10},${y-22} L${x+10},${y}`,class:"mixed-source-symbol"}));
+            addText(svg,x,y-31,(voltageInput && voltageInput.value.trim() ? formatNumber(Number(voltageInput.value))+" V source" : "Voltage source"),"mixed-source-label");
+        }
+        if (usedNodes.includes(0)) {
+            const [x,y]=nodePositions[0];
+            svg.appendChild(svgEl("path",{d:`M${x},${y+6} v8 m-14,0 h28 m-20,6 h12 m-8,6 h4`,class:"mixed-ground-symbol"}));
+            addText(svg,x+25,y+20,"Ground","mixed-node-label","start");
+        }
+        target.replaceChildren(svg);
+        const description = document.createElement("span");
+        description.className = "sr-only";
+        description.textContent = resistors.map(r => "R"+r.id+", "+(Number.isFinite(r.resistance)?r.resistance+" ohms":"resistance not entered")+", between node "+r.a+" and node "+r.b).join(". ");
+        target.appendChild(description);
+    }
+    list.addEventListener("input", draw);
+    list.addEventListener("change", draw);
+    if (voltageInput) voltageInput.addEventListener("input", draw);
+    new MutationObserver(draw).observe(list, { childList: true, subtree: true });
+    draw();
+})();

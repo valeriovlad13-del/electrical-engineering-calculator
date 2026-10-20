@@ -2079,6 +2079,16 @@
                     <span id="mixed-resistor-count" class="field-help">3 resistors · maximum 30</span>
                 </div>
             </div>
+            <section class="mixed-circuit-visual" aria-labelledby="mixed-circuit-visual-title">
+                <div class="mixed-circuit-visual-heading">
+                    <div><h3 id="mixed-circuit-visual-title">Circuit diagram</h3><p>Updates automatically as you change resistor values and node connections.</p></div>
+                    <span class="mixed-diagram-key"><span class="mixed-key-resistor"></span> Resistor connection</span>
+                </div>
+                <div id="mixed-circuit-diagram" class="mixed-circuit-diagram" role="img" aria-label="Circuit diagram based on the current resistor node connections">
+                    <p class="mixed-diagram-fallback">Your circuit connections will appear here.</p>
+                </div>
+                <p class="mixed-diagram-caption">Node 1 is the positive supply; node 0 is ground. Lines show electrical connections, and each resistor is labeled with its resistance.</p>
+            </section>
             <div class="field-help">Example default: R1 (10 Ω) and R2 (20 Ω) are in series from node 1 through node 2 to ground, in parallel with R3 (30 Ω). Every used node must be connected to the network.</div>
             <div id="mixed-network-message" class="message" role="status" aria-live="polite"></div>
             <div id="mixed-resistor-result" class="result-panel hidden">
