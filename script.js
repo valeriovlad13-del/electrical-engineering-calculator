@@ -1957,8 +1957,8 @@ function setMixedResistorCount(count, saved = null) {
         row.dataset.resistorRow = "";
         row.innerHTML = '<strong class="mixed-resistor-title">R' + i + '</strong>' +
             '<div class="input-group"><label for="mixed-r' + i + '">Resistance (Ω)</label><input type="number" id="mixed-r' + i + '" class="mixed-resistance" min="0" step="any" inputmode="decimal" placeholder="e.g. ' + (10 * i) + '"></div>' +
-            '<div class="input-group"><label for="mixed-a' + i + '">Node A</label><select id="mixed-a' + i + '" class="mixed-node mixed-node-a">' + mixedNodeOptions(aValue) + '</select></div>' +
-            '<div class="input-group"><label for="mixed-b' + i + '">Node B</label><select id="mixed-b' + i + '" class="mixed-node mixed-node-b">' + mixedNodeOptions(bValue) + '</select></div>';
+            '<div class="input-group mixed-node-field"><label for="mixed-a' + i + '">Node A</label><select id="mixed-a' + i + '" class="mixed-node mixed-node-a">' + mixedNodeOptions(aValue) + '</select></div>' +
+            '<div class="input-group mixed-node-field"><label for="mixed-b' + i + '">Node B</label><select id="mixed-b' + i + '" class="mixed-node mixed-node-b">' + mixedNodeOptions(bValue) + '</select></div>';
         mixedList.appendChild(row);
         row.querySelector(".mixed-resistance").value = rValue ?? "";
     }
