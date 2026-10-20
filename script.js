@@ -2059,89 +2059,106 @@ const builders={
 const ids={"ohms-result":"calculate-ohms","power-result":"calculate-power","energy-result":"calculate-energy","triangle-result":"calculate-triangle","three-phase-result":"calculate-three-phase","transformer-result":"calculate-transformer","voltage-drop-result":"calculate-voltage-drop","converter-result":"calculate-conversion","ac-impedance-result":"calculate-ac-impedance","resistor-network-result":"calculate-resistor-network","mixed-resistor-result":"calculate-mixed-network"};
 document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(".result-panel"),content=d.querySelector(".solution-content"),button=document.getElementById(ids[panel.id]);if(button)button.addEventListener("click",()=>{if(panel.classList.contains("hidden"))return;const items=builders[panel.id]();content.innerHTML=items.length?items.join(""):'<p class="solution-placeholder">A worked solution is not available for these inputs.</p>';d.open=items.length>0;});});})();
 
-/* Interactive schematic for the mixed resistor network. */
+/* Responsive, topology-aware schematic for mixed resistor networks. */
 (function initMixedCircuitDiagram() {
     const list = document.getElementById("mixed-resistor-list");
     const target = document.getElementById("mixed-circuit-diagram");
     const voltageInput = document.getElementById("mixed-supply-voltage");
     if (!list || !target) return;
 
-    const nodePositions = {
-        0: [72, 278], 1: [72, 82], 2: [250, 180], 3: [430, 82],
-        4: [430, 278], 5: [610, 82], 6: [610, 278], 7: [250, 82],
-        8: [250, 278], 9: [430, 180], 10: [610, 180]
+    const positions = {
+        0: [90, 300], 1: [90, 80], 2: [350, 190], 3: [570, 80],
+        4: [570, 300], 5: [730, 80], 6: [730, 300], 7: [350, 80],
+        8: [350, 300], 9: [570, 190], 10: [730, 190]
     };
     const ns = "http://www.w3.org/2000/svg";
-    const svgEl = (name, attrs = {}) => {
-        const el = document.createElementNS(ns, name);
-        Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, String(value)));
-        return el;
+    const el = (tag, attrs = {}) => {
+        const node = document.createElementNS(ns, tag);
+        Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, String(value)));
+        return node;
     };
-    const addText = (svg, x, y, text, className, anchor = "middle") => {
-        const el = svgEl("text", { x, y, "text-anchor": anchor, class: className });
-        el.textContent = text;
-        svg.appendChild(el);
-        return el;
+    const label = (svg, x, y, value, cls, anchor = "middle") => {
+        const t = el("text", { x, y, "text-anchor": anchor, class: cls });
+        t.textContent = value;
+        svg.appendChild(t);
     };
+
     function draw() {
         const rows = Array.from(list.querySelectorAll("[data-resistor-row]"));
         const resistors = rows.map((row, index) => {
             const selects = row.querySelectorAll(".mixed-node");
-            const a = Number((row.querySelector(".mixed-node-a") || selects[0])?.value ?? 1);
-            const b = Number((row.querySelector(".mixed-node-b") || selects[1])?.value ?? 0);
-            const raw = row.querySelector(".mixed-resistance")?.value ?? "";
-            return { id: index + 1, a, b, resistance: raw.trim() ? Number(raw) : NaN };
+            return {
+                id: index + 1,
+                a: Number((row.querySelector(".mixed-node-a") || selects[0])?.value ?? 1),
+                b: Number((row.querySelector(".mixed-node-b") || selects[1])?.value ?? 0),
+                resistance: (row.querySelector(".mixed-resistance")?.value ?? "").trim()
+            };
         });
-        const usedNodes = [...new Set(resistors.flatMap(r => [r.a, r.b]))].filter(n => Number.isInteger(n) && nodePositions[n]);
-        const svg = svgEl("svg", { viewBox: "0 0 700 350", role: "presentation", focusable: "false", "aria-hidden": "true" });
-        const defs = svgEl("defs");
-        const marker = svgEl("marker", { id: "mixed-current-arrow", markerWidth: 7, markerHeight: 7, refX: 5, refY: 3, orient: "auto" });
-        marker.appendChild(svgEl("path", { d: "M0,0 L6,3 L0,6 Z", class: "mixed-arrowhead" }));
-        defs.appendChild(marker);
-        svg.appendChild(defs);
+        const usedNodes = [...new Set(resistors.flatMap(r => [r.a, r.b]))]
+            .filter(n => Number.isInteger(n) && positions[n]);
+        const svg = el("svg", { viewBox: "0 0 820 390", role: "presentation", focusable: "false", "aria-hidden": "true" });
 
+        // Draw each branch separately, offsetting parallel resistors so none hide behind another.
+        const parallelCounts = new Map();
         resistors.forEach(r => {
-            if (!nodePositions[r.a] || !nodePositions[r.b] || r.a === r.b) return;
-            const [x1, y1] = nodePositions[r.a], [x2, y2] = nodePositions[r.b];
+            if (!positions[r.a] || !positions[r.b] || r.a === r.b) return;
+            const key = [Math.min(r.a, r.b), Math.max(r.a, r.b)].join("-");
+            const count = parallelCounts.get(key) || 0;
+            parallelCounts.set(key, count + 1);
+            const total = resistors.filter(other => other.a !== other.b &&
+                [Math.min(other.a, other.b), Math.max(other.a, other.b)].join("-") === key).length;
+            const [x1, y1] = positions[r.a], [x2, y2] = positions[r.b];
             const dx = x2 - x1, dy = y2 - y1, length = Math.hypot(dx, dy);
-            if (!length) return;
+            if (length < 50) return;
             const ux = dx / length, uy = dy / length, px = -uy, py = ux;
-            const start = 24, end = length - 24, bodyLength = Math.min(54, Math.max(30, length * 0.3));
-            const mid = (start + end) / 2;
-            const bodyStart = mid - bodyLength / 2, bodyEnd = mid + bodyLength / 2;
-            const points = [[start,0],[bodyStart,0]];
-            const teeth = 6;
-            for (let k=1;k<=teeth;k++) points.push([bodyStart+(bodyLength*k/teeth), k===teeth ? 0 : (k%2 ? 8 : -8)]);
-            points.push([end,0]);
-            const d = points.map((p,i) => (i ? "L" : "M") + (x1+ux*p[0]+px*p[1]).toFixed(1) + "," + (y1+uy*p[0]+py*p[1]).toFixed(1)).join(" ");
-            svg.appendChild(svgEl("path", { d, class: "mixed-wire" }));
-            const labelX = (x1+x2)/2 + px*20, labelY = (y1+y2)/2 + py*20;
-            const resistanceText = Number.isFinite(r.resistance) && r.resistance > 0 ? formatNumber(r.resistance) + " Ω" : "Enter Ω";
-            const labelWidth = Math.max(64, (("R"+r.id+" · "+resistanceText).length)*6.5);
-            svg.appendChild(svgEl("rect", { x: labelX-labelWidth/2, y: labelY-12, width: labelWidth, height: 19, rx: 5, class: "mixed-resistor-label-bg" }));
-            addText(svg,labelX,labelY+1,"R"+r.id+" · "+resistanceText,"mixed-resistor-label");
+            const offset = (count - (total - 1) / 2) * 26;
+            const ox = px * offset, oy = py * offset;
+            const sx = x1 + ux * 25 + ox, sy = y1 + uy * 25 + oy;
+            const ex = x2 - ux * 25 + ox, ey = y2 - uy * 25 + oy;
+            const midX = (sx + ex) / 2, midY = (sy + ey) / 2;
+            const body = Math.min(68, length * 0.24);
+            const bs = length / 2 - body / 2, be = length / 2 + body / 2;
+            const pts = [[25,0],[bs,0]];
+            for (let k=1;k<=8;k++) pts.push([bs + body*k/8, k===8 ? 0 : (k%2 ? 8 : -8)]);
+            pts.push([length-25,0]);
+            const d = pts.map((p,i) => (i ? "L" : "M") +
+                (x1 + ux*p[0] + px*(p[1]+offset)).toFixed(1) + "," +
+                (y1 + uy*p[0] + py*(p[1]+offset)).toFixed(1)).join(" ");
+            svg.appendChild(el("path", { d, class: "mixed-wire" }));
+            const text = r.resistance && Number.isFinite(Number(r.resistance)) && Number(r.resistance) > 0
+                ? formatNumber(Number(r.resistance)) + " Ω" : "Enter Ω";
+            const tx = midX + px * (22 + offset), ty = midY + py * (22 + offset);
+            const value = "R" + r.id + " · " + text;
+            const width = Math.max(76, value.length * 7);
+            svg.appendChild(el("rect", { x: tx-width/2, y: ty-13, width, height: 21, rx: 5, class: "mixed-resistor-label-bg" }));
+            label(svg, tx, ty+2, value, "mixed-resistor-label");
         });
+
         usedNodes.forEach(n => {
-            const [x,y] = nodePositions[n];
-            svg.appendChild(svgEl("circle", { cx:x, cy:y, r:6, class: "mixed-node-dot" }));
-            addText(svg,x,y-13,"Node "+n,"mixed-node-label");
+            const [x,y] = positions[n];
+            svg.appendChild(el("circle", { cx:x, cy:y, r:6, class:"mixed-node-dot" }));
+            const labelY = n === 1 || n === 3 || n === 5 || n === 7 ? y-18 : y+23;
+            label(svg,x,labelY,"Node "+n,"mixed-node-label");
         });
         if (usedNodes.includes(1)) {
-            const [x,y]=nodePositions[1];
-            svg.appendChild(svgEl("path",{d:`M${x-10},${y} L${x-10},${y-22} L${x+10},${y-22} L${x+10},${y}`,class:"mixed-source-symbol"}));
-            addText(svg,x,y-31,(voltageInput && voltageInput.value.trim() ? formatNumber(Number(voltageInput.value))+" V source" : "Voltage source"),"mixed-source-label");
+            const [x,y] = positions[1];
+            svg.appendChild(el("path",{d:`M${x-10},${y} v-22 h20 v22`,class:"mixed-source-symbol"}));
+            label(svg,x,y-34,voltageInput && voltageInput.value.trim()
+                ? formatNumber(Number(voltageInput.value))+" V source" : "Voltage source","mixed-source-label");
         }
         if (usedNodes.includes(0)) {
-            const [x,y]=nodePositions[0];
-            svg.appendChild(svgEl("path",{d:`M${x},${y+6} v8 m-14,0 h28 m-20,6 h12 m-8,6 h4`,class:"mixed-ground-symbol"}));
-            addText(svg,x+25,y+20,"Ground","mixed-node-label","start");
+            const [x,y] = positions[0];
+            svg.appendChild(el("path",{d:`M${x},${y+6} v12 m-16,0 h32 m-22,7 h12 m-7,6 h3`,class:"mixed-ground-symbol"}));
+            label(svg,x+28,y+22,"Ground","mixed-node-label","start");
         }
         target.replaceChildren(svg);
         const description = document.createElement("span");
         description.className = "sr-only";
-        description.textContent = resistors.map(r => "R"+r.id+", "+(Number.isFinite(r.resistance)?r.resistance+" ohms":"resistance not entered")+", between node "+r.a+" and node "+r.b).join(". ");
+        description.textContent = resistors.map(r => "R"+r.id+", "+(r.resistance || "resistance not entered")+
+            " ohms, between node "+r.a+" and node "+r.b).join(". ");
         target.appendChild(description);
     }
+
     list.addEventListener("input", draw);
     list.addEventListener("change", draw);
     if (voltageInput) voltageInput.addEventListener("input", draw);
