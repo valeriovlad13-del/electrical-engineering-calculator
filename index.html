@@ -1018,25 +1018,23 @@
                         </div>
                     </div>
                     <div class="triangle-visual triangle-visual-input">
-                        <div class="triangle-visual">
-                                <svg id="power-triangle-svg" class="power-triangle-svg" viewBox="0 0 520 340" role="img" aria-labelledby="power-triangle-svg-title">
-                                    <title id="power-triangle-svg-title">Power triangle</title>
-                                    <desc id="power-triangle-svg-desc">Power triangle diagram.</desc>
-                                    <line id="triangle-p-line" class="triangle-line triangle-p-line"/>
-                                    <line id="triangle-q-line" class="triangle-line triangle-q-line"/>
-                                    <line id="triangle-s-line" class="triangle-line triangle-s-line"/>
-                                    <path id="triangle-angle-arc" class="triangle-angle-arc"/>
-                                    <path id="triangle-right-angle" class="triangle-right-angle"/>
-                                    <text id="triangle-p-label" class="triangle-label">P</text>
-                                    <text id="triangle-q-label" class="triangle-label">Q</text>
-                                    <text id="triangle-s-label" class="triangle-label">S</text>
-                                    <text id="triangle-angle-label" class="triangle-angle-label">θ</text>
-                                    <text id="triangle-p-value" class="triangle-value-label">P</text>
-                                    <text id="triangle-q-value" class="triangle-value-label">Q</text>
-                                    <text id="triangle-s-value" class="triangle-value-label triangle-s-value">S</text>
-                                    <text id="triangle-theta-value" class="triangle-value-label triangle-theta-value">θ</text>
-                                </svg>
-                            </div>
+                        <svg id="power-triangle-svg" class="power-triangle-svg" viewBox="0 0 520 340" role="img" aria-labelledby="power-triangle-svg-title">
+                            <title id="power-triangle-svg-title">Power triangle</title>
+                            <desc id="power-triangle-svg-desc">Right triangle showing real power P on the base, reactive power Q on the vertical side, apparent power S on the hypotenuse, and phase angle theta.</desc>
+                            <line id="triangle-p-line" class="triangle-line triangle-p-line" x1="70" y1="285" x2="390" y2="285"/>
+                            <line id="triangle-q-line" class="triangle-line triangle-q-line" x1="390" y1="285" x2="390" y2="85"/>
+                            <line id="triangle-s-line" class="triangle-line triangle-s-line" x1="70" y1="285" x2="390" y2="85"/>
+                            <path id="triangle-angle-arc" class="triangle-angle-arc" d="M 112 285 A 42 42 0 0 0 103 260"/>
+                            <path id="triangle-right-angle" class="triangle-right-angle" d="M 370 285 L 370 265 L 390 265"/>
+                            <text id="triangle-p-label" class="triangle-label" x="230" y="312">P</text>
+                            <text id="triangle-q-label" class="triangle-label" x="430" y="190">Q</text>
+                            <text id="triangle-s-label" class="triangle-label" x="225" y="165" transform="rotate(-32 225 165)">S</text>
+                            <text id="triangle-angle-label" class="triangle-angle-label" x="123" y="268">θ</text>
+                            <text id="triangle-p-value" class="triangle-value-label"></text>
+                            <text id="triangle-q-value" class="triangle-value-label"></text>
+                            <text id="triangle-s-value" class="triangle-value-label"></text>
+                            <text id="triangle-theta-value" class="triangle-value-label"></text>
+                        </svg>
                     </div>
                     <div class="input-grid">
                         <div class="input-group">
