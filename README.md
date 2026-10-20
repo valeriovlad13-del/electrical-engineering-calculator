@@ -42,6 +42,10 @@ interface that works on desktop, tablet, and mobile devices.
 -   **Voltage Drop**
     -   Basic voltage drop: `VD = I × R`
     -   Optional percentage voltage drop
+-   **Series & Parallel Circuits**
+    -   Equivalent resistance for series and parallel resistor networks
+    -   Optional supply voltage to calculate total current and individual resistor voltage/current
+    -   Includes a worked solution and calculation history support
 -   **AC Impedance**
     -   Series RLC inductive and capacitive reactance
     -   Impedance magnitude and phase angle
@@ -71,7 +75,7 @@ interface that works on desktop, tablet, and mobile devices.
 -   SVG-based calculator icons
 -   Dynamic power triangle visualization
 -   Testable numerical core shared by key calculators
--   Automated numerical regression tests for formula and edge-case checks
+-   Automated numerical regression tests for formula and edge-case checks, including series/parallel networks
 -   No backend or database required
 
 ## Technologies Used
