@@ -380,6 +380,8 @@
                         <span>AC Impedance</span>
                     </a>
 
+                    <a href="#resistor-network" class="nav-card"><span class="nav-icon" aria-hidden="true">Ω</span><span>Series / Parallel</span></a>
+
                 </nav>
 
             </div>
@@ -1982,6 +1984,48 @@
         </section>
 
 
+        <article class="calculator-card" id="resistor-network">
+            <div class="calculator-header">
+                <div class="calculator-title-wrap">
+                    <div class="calculator-icon" aria-hidden="true">Ω</div>
+                    <div><span class="calculator-number">10</span><h2>Series &amp; Parallel Circuits</h2></div>
+                </div>
+            </div>
+            <p class="calculator-description">Find equivalent resistance for resistor networks. Enter a supply voltage to calculate total current and each resistor's voltage or branch current.</p>
+            <div class="formula-box">
+                <strong>Series: RT = R₁ + R₂ + R₃</strong>
+                <p>Parallel: 1 / RT = 1 / R₁ + 1 / R₂ + 1 / R₃</p>
+            </div>
+            <div class="input-grid">
+                <div class="input-group full-width"><label for="network-type">Circuit connection</label>
+                    <select id="network-type"><option value="series">Series</option><option value="parallel">Parallel</option></select>
+                </div>
+                <div class="input-group"><label for="network-r1">Resistor R₁ (Ω)</label><input type="number" id="network-r1" min="0" step="any" value="10" inputmode="decimal"></div>
+                <div class="input-group"><label for="network-r2">Resistor R₂ (Ω)</label><input type="number" id="network-r2" min="0" step="any" value="20" inputmode="decimal"></div>
+                <div class="input-group"><label for="network-r3">Resistor R₃ (Ω)</label><input type="number" id="network-r3" min="0" step="any" value="30" inputmode="decimal"></div>
+                <div class="input-group"><label for="network-voltage">Supply voltage (V) <span>optional</span></label><input type="number" id="network-voltage" min="0" step="any" placeholder="e.g. 12" inputmode="decimal"></div>
+            </div>
+            <p class="field-help">All three resistor values must be greater than zero. Supply voltage is optional; leave blank to calculate equivalent resistance only.</p>
+            <div id="network-message" class="message" role="status" aria-live="polite"></div>
+            <div id="resistor-network-result" class="result-panel hidden">
+                <span class="result-label">RESISTOR NETWORK RESULTS</span>
+                <div class="network-summary-grid">
+                    <div><span class="result-label">Equivalent resistance</span><strong id="network-equivalent-result">—</strong></div>
+                    <div><span class="result-label">Total current</span><strong id="network-total-current-result">Enter supply voltage</strong></div>
+                </div>
+                <div id="network-branch-results" class="network-branch-results"></div>
+                <p id="network-result-formula" class="result-formula"></p>
+                <details class="worked-solution" id="network-worked-solution">
+                    <summary>Show step-by-step solution</summary>
+                    <div class="solution-content" aria-live="polite"><p class="solution-placeholder">Calculate to see the formula, substitution, and steps.</p></div>
+                </details>
+            </div>
+            <div class="button-row">
+                <button type="button" id="calculate-resistor-network" class="btn btn-primary">Calculate</button>
+                <button type="button" id="reset-resistor-network" class="btn btn-secondary">Reset</button>
+            </div>
+        </article>
+
         <section class="formula-reference-section" id="formula-reference">
             <div class="container">
                 <div class="section-heading">
@@ -1997,6 +2041,7 @@
                     <article class="formula-reference-card"><span class="formula-category">Three-phase systems</span><h3>Balanced three-phase power</h3><p class="reference-equation">P = √3 × VL × IL × PF</p><p>Uses line-to-line voltage and line current for a balanced system.</p><p class="reference-units"><strong>Units:</strong> VL (V), IL (A), P (W)</p><a href="#three-phase" class="reference-link">Open three-phase calculator →</a></article>
                     <article class="formula-reference-card"><span class="formula-category">Transformers</span><h3>Ideal transformer ratio</h3><p class="reference-equation">V₂ / V₁ = N₂ / N₁</p><p>Assumes an ideal transformer; real losses and voltage regulation are not included.</p><p class="reference-units"><strong>Units:</strong> Voltage (V), turns (N)</p><a href="#transformer" class="reference-link">Open transformer calculator →</a></article>
                     <article class="formula-reference-card"><span class="formula-category">Circuit estimation</span><h3>Basic voltage drop</h3><p class="reference-equation">VD = I × R</p><p>This simplified relationship uses entered circuit resistance and does not replace conductor-sizing methods.</p><p class="reference-units"><strong>Units:</strong> VD (V), I (A), R (Ω)</p><a href="#voltage-drop" class="reference-link">Open voltage-drop calculator →</a></article>
+                    <article class="formula-reference-card"><span class="formula-category">Resistive circuits</span><h3>Series and parallel resistance</h3><p class="reference-equation">RT(series) = ΣR</p><p>Series resistances add directly. Parallel resistance is the reciprocal of the sum of reciprocal branch resistances.</p><p class="reference-units"><strong>Units:</strong> Resistance (Ω), voltage (V), current (A)</p><a href="#resistor-network" class="reference-link">Open resistor network calculator →</a></article>
                     <article class="formula-reference-card"><span class="formula-category">AC circuits</span><h3>Series RLC impedance</h3><p class="reference-equation">Z = √(R² + X²)</p><p>For a series circuit, X = XL − XC; the phase angle indicates inductive or capacitive behavior.</p><p class="reference-units"><strong>Units:</strong> R and X (Ω), L (H), C (F), f (Hz)</p><a href="#ac-impedance" class="reference-link">Open AC impedance calculator →</a></article>
                     <article class="formula-reference-card"><span class="formula-category">Units</span><h3>Metric prefixes</h3><p class="reference-equation">1 kW = 1,000 W</p><p>Convert between base units and kilo- or milli-units before combining quantities.</p><p class="reference-units"><strong>Reminder:</strong> Keep units consistent throughout a calculation.</p><a href="#unit-converter" class="reference-link">Open unit converter →</a></article>
                 </div>
