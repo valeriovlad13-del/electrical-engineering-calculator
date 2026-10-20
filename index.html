@@ -2000,12 +2000,19 @@
                 <div class="input-group full-width"><label for="network-type">Circuit connection</label>
                     <select id="network-type"><option value="series">Series</option><option value="parallel">Parallel</option></select>
                 </div>
-                <div class="input-group"><label for="network-r1">Resistor R₁ (Ω)</label><input type="number" id="network-r1" min="0" step="any" value="10" inputmode="decimal"></div>
-                <div class="input-group"><label for="network-r2">Resistor R₂ (Ω)</label><input type="number" id="network-r2" min="0" step="any" value="20" inputmode="decimal"></div>
-                <div class="input-group"><label for="network-r3">Resistor R₃ (Ω)</label><input type="number" id="network-r3" min="0" step="any" value="30" inputmode="decimal"></div>
+                <div id="network-resistor-list" class="network-resistor-list" aria-live="polite">
+                    <div class="input-group network-resistor-input"><label for="network-r1">Resistor R₁ (Ω)</label><input type="number" id="network-r1" class="network-resistance-input" min="0" step="any" value="10" inputmode="decimal"></div>
+                    <div class="input-group network-resistor-input"><label for="network-r2">Resistor R₂ (Ω)</label><input type="number" id="network-r2" class="network-resistance-input" min="0" step="any" value="20" inputmode="decimal"></div>
+                    <div class="input-group network-resistor-input"><label for="network-r3">Resistor R₃ (Ω)</label><input type="number" id="network-r3" class="network-resistance-input" min="0" step="any" value="30" inputmode="decimal"></div>
+                </div>
+                <div class="network-resistor-controls full-width">
+                    <button type="button" id="network-add-resistor" class="btn btn-secondary btn-small">+ Add resistor</button>
+                    <button type="button" id="network-remove-resistor" class="btn btn-secondary btn-small">− Remove last resistor</button>
+                    <span id="network-resistor-count" class="field-help">3 resistors · minimum 2</span>
+                </div>
                 <div class="input-group"><label for="network-voltage">Supply voltage (V) <span>optional</span></label><input type="number" id="network-voltage" min="0" step="any" placeholder="e.g. 12" inputmode="decimal"></div>
             </div>
-            <p class="field-help">All three resistor values must be greater than zero. Supply voltage is optional; leave blank to calculate equivalent resistance only.</p>
+            <p class="field-help">Use at least two resistors. Add or remove resistors as needed; every resistance must be greater than zero. Supply voltage is optional; leave blank to calculate equivalent resistance only.</p>
             <div id="network-message" class="message" role="status" aria-live="polite"></div>
             <div id="resistor-network-result" class="result-panel hidden">
                 <span class="result-label">RESISTOR NETWORK RESULTS</span>
