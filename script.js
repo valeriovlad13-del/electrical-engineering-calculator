@@ -270,8 +270,7 @@ if (calculateOhms) {
 
             if (voltage === null) {
 
-                result =
-                    current * resistance;
+                result = EngineeringCore.ohmsLaw({ voltage: null, current, resistance }).voltage;
 
                 resultText =
                     `${formatNumber(result)} V`;
@@ -296,8 +295,7 @@ if (calculateOhms) {
                     return;
                 }
 
-                result =
-                    voltage / resistance;
+                result = EngineeringCore.ohmsLaw({ voltage, current: null, resistance }).current;
 
                 resultText =
                     `${formatNumber(result)} A`;
@@ -322,8 +320,7 @@ if (calculateOhms) {
                     return;
                 }
 
-                result =
-                    voltage / current;
+                result = EngineeringCore.ohmsLaw({ voltage, current, resistance: null }).resistance;
 
                 resultText =
                     `${formatNumber(result)} Ω`;
@@ -488,7 +485,7 @@ if (calculatePower) {
             if (mode === "dc") {
 
                 result =
-                    voltage * current;
+                    EngineeringCore.electricalPower("dc", voltage, current);
 
                 resultText =
                     `${formatNumber(result)} W`;
@@ -521,9 +518,7 @@ if (calculatePower) {
 
 
                 result =
-                    voltage *
-                    current *
-                    pf;
+                    EngineeringCore.electricalPower("single-phase", voltage, current, pf);
 
 
                 resultText =
@@ -542,7 +537,7 @@ if (calculatePower) {
             ) {
 
                 result =
-                    voltage * current;
+                    EngineeringCore.electricalPower("apparent", voltage, current);
 
 
                 resultText =
@@ -694,12 +689,9 @@ if (calculateEnergy) {
             }
 
 
-            const energy =
-                power * time;
-
-
-            const cost =
-                energy * rate;
+            const energyCalculation = EngineeringCore.energyCost(power, time, rate);
+            const energy = energyCalculation.energyKWh;
+            const cost = energyCalculation.cost;
 
 
             const energyText =
@@ -969,15 +961,9 @@ if (calculateThreePhase) {
             }
 
 
-            const power =
-                Math.sqrt(3) *
-                voltage *
-                current *
-                pf;
-
-
-            const powerKW =
-                power / 1000;
+            const powerCalculation = EngineeringCore.threePhaseRealPower(voltage, current, pf);
+            const power = powerCalculation.watts;
+            const powerKW = powerCalculation.kilowatts;
 
 
             const resultText =
@@ -1127,9 +1113,8 @@ if (calculateTransformer) {
             }
 
 
-            const v2 =
-                v1 *
-                (n2 / n1);
+            const transformerCalculation = EngineeringCore.idealTransformer(v1, n1, n2, i1);
+            const v2 = transformerCalculation.secondaryVoltage;
 
 
             document.getElementById(
@@ -1144,9 +1129,7 @@ if (calculateTransformer) {
 
             if (i1 !== null) {
 
-                const i2 =
-                    i1 *
-                    (n1 / n2);
+                const i2 = transformerCalculation.secondaryCurrent;
 
 
                 currentText =
@@ -1295,9 +1278,8 @@ if (calculateVoltageDrop) {
             }
 
 
-            const voltageDrop =
-                current *
-                resistance;
+            const dropCalculation = EngineeringCore.voltageDrop(current, resistance, systemVoltage !== null ? systemVoltage : null);
+            const voltageDrop = dropCalculation.volts;
 
 
             const resultText =
@@ -1312,11 +1294,7 @@ if (calculateVoltageDrop) {
                 systemVoltage !== null
             ) {
 
-                const percentage =
-                    (
-                        voltageDrop /
-                        systemVoltage
-                    ) * 100;
+                const percentage = dropCalculation.percentage;
 
 
                 percentageText =
