@@ -2015,7 +2015,7 @@ document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(
         "ac-impedance": {
             title: "Series RLC circuit",
             description: "Resistance, inductance, and capacitance are connected in series in an AC circuit.",
-            svg: '<svg viewBox="0 0 560 160" role="img" aria-label="Series circuit containing a voltage source, resistor, inductor, and capacitor"><path class="diagram-wire" d="M76 42 H150 M220 42 H275 M355 42 H400 M455 42 H500 V120 H76 V42"/><circle class="diagram-symbol" cx="76" cy="81" r="25"/><path class="diagram-wire" d="M150 42 l8 -10 l8 20 l8 -20 l8 20 l8 -20 l8 10"/><path class="diagram-wire" d="M275 42 c0 -24 18 -24 18 0 c0 -24 18 -24 18 0 c0 -24 18 -24 18 0 c0 -24 18 -24 18 0"/><path class="diagram-wire" d="M400 28 V56 M414 28 V56"/><text x="185" y="22" text-anchor="middle" class="diagram-label">R</text><text x="320" y="22" text-anchor="middle" class="diagram-label">L</text><text x="407" y="22" text-anchor="middle" class="diagram-label">C</text><text x="76" y="85" text-anchor="middle" class="diagram-label">~</text><text x="280" y="147" text-anchor="middle" class="diagram-note">Z = √(R² + (XL − XC)²)</text></svg>'
+            svg: '<svg viewBox="0 0 560 160" role="img" aria-label="Series circuit containing a voltage source, resistor, inductor, and capacitor"><path class="diagram-wire" d="M76 42 H135 M205 42 H235 M315 42 H350 M364 42 H500 V120 H76 V106 M76 56 V42"/><circle class="diagram-symbol" cx="76" cy="81" r="25"/><path class="diagram-wire" d="M135 42 l8 -10 l8 20 l8 -20 l8 20 l8 -20 l8 10"/><path class="diagram-wire" d="M235 42 c0 -24 18 -24 18 0 c0 -24 18 -24 18 0 c0 -24 18 -24 18 0 c0 -24 18 -24 18 0"/><path class="diagram-wire" d="M350 28 V56 M364 28 V56"/><text x="185" y="22" text-anchor="middle" class="diagram-label">R</text><text x="320" y="22" text-anchor="middle" class="diagram-label">L</text><text x="407" y="22" text-anchor="middle" class="diagram-label">C</text><text x="76" y="85" text-anchor="middle" class="diagram-label">~</text><text x="280" y="147" text-anchor="middle" class="diagram-note">Z = √(R² + (XL − XC)²)</text></svg>'
         }
     };
 
@@ -2048,7 +2048,7 @@ document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(
                 const start = 40;
                 for (let i = 0; i < count; i++) {
                     const x = start + (i + 0.5) * 480 / count;
-                    svg += '<path class="diagram-wire" d="M' + x + ' 25 V48 M' + x + ' 88 V125"/><rect class="diagram-symbol" x="' + (x - width * .36) + '" y="48" width="' + (width * .72) + '" height="40" rx="3"/><text x="' + x + '" y="72" text-anchor="middle" class="diagram-label">R' + (i + 1) + '</text>';
+                    svg += '<path class="diagram-wire" d="M' + x + ' 25 V48 M' + x + ' 88 V125"/><rect class="diagram-symbol" x="' + (x - width * .36) + '" y="48" width="' + (width * .72) + '" height="40" rx="3"/>' + (count <= 12 ? '<text x="' + x + '" y="72" text-anchor="middle" class="diagram-label">R' + (i + 1) + '</text>' : '');
                 }
                 figure.querySelector("svg").setAttribute("aria-label", "Parallel circuit with " + count + " resistor branches");
                 figure.querySelector(".network-diagram-caption").textContent = "Each resistor is connected across the same two nodes; branch voltage is equal.";
@@ -2058,9 +2058,9 @@ document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(
                 for (let i = 0; i < count; i++) {
                     const x = 40 + gap * (i + .18);
                     const w = gap * .62;
-                    svg += '<rect class="diagram-symbol" x="' + x + '" y="57" width="' + w + '" height="36" rx="3"/><text x="' + (x + w / 2) + '" y="79" text-anchor="middle" class="diagram-label">R' + (i + 1) + '</text><path class="diagram-wire" d="M' + (x + w) + ' 75 H' + (40 + gap * (i + 1)) + '"/>';
+                    svg += '<rect class="diagram-symbol" x="' + x + '" y="57" width="' + w + '" height="36" rx="3"/>' + (count <= 12 ? '<text x="' + (x + w / 2) + '" y="79" text-anchor="middle" class="diagram-label">R' + (i + 1) + '</text>' : '') + '<path class="diagram-wire" d="M' + (x + w) + ' 75 H' + (40 + gap * (i + 1)) + '"/>';
                 }
-                svg += '<path class="diagram-wire" d="M40 75 V125 H520 V75"/>';
+                svg += '<circle class="diagram-symbol" cx="40" cy="75" r="3"/><circle class="diagram-symbol" cx="520" cy="75" r="3"/>';
                 figure.querySelector("svg").setAttribute("aria-label", "Series circuit with " + count + " resistors");
                 figure.querySelector(".network-diagram-caption").textContent = "The same current flows through each resistor; voltage drops add together.";
             }
