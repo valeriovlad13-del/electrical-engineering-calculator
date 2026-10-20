@@ -137,6 +137,10 @@ if (historyList) historyList.addEventListener("click", event => {
         displayHistory(); return;
     }
     if (restoreButton && item.inputs) {
+        if (item.title === "Series & Parallel Circuits") {
+            const resistorCount = Object.keys(item.inputs).filter(id => /^network-r\d+$/.test(id)).length;
+            if (typeof window.setNetworkResistorCount === "function" && resistorCount >= 2) window.setNetworkResistorCount(resistorCount);
+        }
         Object.entries(item.inputs).forEach(([id, value]) => { const input = document.getElementById(id); if (input) input.value = value; });
         const destinations = {
             "Ohm's Law": ["ohms-law", "calculate-ohms"], "Electrical Power": ["electrical-power", "calculate-power"],
@@ -1831,55 +1835,90 @@ if (resetAcImpedance) resetAcImpedance.addEventListener("click", () => {
 });
 
 /* Series and parallel resistor network calculator */
+const networkList = document.getElementById("network-resistor-list");
+const networkAddButton = document.getElementById("network-add-resistor");
+const networkRemoveButton = document.getElementById("network-remove-resistor");
+const networkCountLabel = document.getElementById("network-resistor-count");
+function setNetworkResistorCount(count, values = null) {
+    if (!networkList) return;
+    count = Math.max(2, Math.min(30, Math.floor(Number(count) || 2)));
+    const previous = Array.from(networkList.querySelectorAll(".network-resistance-input")).map(input => input.value);
+    const selectedValues = values || previous;
+    networkList.innerHTML = "";
+    for (let i = 0; i < count; i++) {
+        const group = document.createElement("div");
+        group.className = "input-group network-resistor-input";
+        const label = document.createElement("label");
+        label.htmlFor = "network-r" + (i + 1);
+        label.textContent = "Resistor R" + (i + 1) + " (Ω)";
+        const input = document.createElement("input");
+        input.type = "number"; input.id = label.htmlFor; input.className = "network-resistance-input";
+        input.min = "0"; input.step = "any"; input.inputMode = "decimal";
+        input.placeholder = "e.g. " + (10 * (i + 1));
+        input.value = selectedValues[i] ?? "";
+        group.append(label, input);
+        networkList.appendChild(group);
+    }
+    if (networkCountLabel) networkCountLabel.textContent = count + " resistors · minimum 2 · maximum 30";
+    if (networkAddButton) networkAddButton.disabled = count >= 30;
+    if (networkRemoveButton) networkRemoveButton.disabled = count <= 2;
+}
+window.setNetworkResistorCount = setNetworkResistorCount;
+if (networkAddButton) networkAddButton.addEventListener("click", () => {
+    const inputs = Array.from(networkList.querySelectorAll(".network-resistance-input"));
+    if (inputs.length >= 30) return;
+    const values = inputs.map(input => input.value);
+    values.push("");
+    setNetworkResistorCount(values.length, values);
+});
+if (networkRemoveButton) networkRemoveButton.addEventListener("click", () => {
+    const inputs = Array.from(networkList.querySelectorAll(".network-resistance-input"));
+    if (inputs.length <= 2) return;
+    const values = inputs.slice(0, -1).map(input => input.value);
+    setNetworkResistorCount(values.length, values);
+});
 const calculateResistorNetwork = document.getElementById("calculate-resistor-network");
 if (calculateResistorNetwork) {
     calculateResistorNetwork.addEventListener("click", () => {
         clearMessage("network-message");
         hideResult("resistor-network-result");
         const type = document.getElementById("network-type").value;
-        const resistances = ["network-r1", "network-r2", "network-r3"].map(getNumber);
+        const resistorInputs = Array.from(document.querySelectorAll("#network-resistor-list .network-resistance-input"));
+        const resistances = resistorInputs.map(input => input.value.trim() === "" ? null : Number(input.value));
         const voltage = getNumber("network-voltage");
-        if (resistances.some(value => value === null)) {
-            showMessage("network-message", "Enter a resistance for R₁, R₂, and R₃.", "error");
-            return;
-        }
-        if (resistances.some(value => value <= 0)) {
-            showMessage("network-message", "Each resistor must be greater than zero.", "error");
-            return;
-        }
-        if (voltage !== null && voltage < 0) {
-            showMessage("network-message", "Supply voltage cannot be negative.", "error");
-            return;
-        }
+        if (resistances.length < 2) { showMessage("network-message", "Add at least two resistors.", "error"); return; }
+        if (resistances.some(value => value === null || !Number.isFinite(value))) { showMessage("network-message", "Enter a valid resistance for every resistor.", "error"); return; }
+        if (resistances.some(value => value <= 0)) { showMessage("network-message", "Each resistor must be greater than zero.", "error"); return; }
+        if (voltage !== null && voltage < 0) { showMessage("network-message", "Supply voltage cannot be negative.", "error"); return; }
         try {
             const result = EngineeringCore.resistorNetwork(type, resistances, voltage);
             document.getElementById("network-equivalent-result").textContent = formatNumber(result.equivalentResistance) + " Ω";
             document.getElementById("network-total-current-result").textContent = result.totalCurrent === null ? "Enter supply voltage" : formatNumber(result.totalCurrent) + " A";
-            const branchContainer = document.getElementById("network-branch-results");
-            branchContainer.innerHTML = result.branches.map((branch, index) =>
+            document.getElementById("network-branch-results").innerHTML = result.branches.map((branch, index) =>
                 '<div class="network-branch-row"><strong>R' + (index + 1) + ' · ' + formatNumber(branch.resistance) + ' Ω</strong>' +
                 '<span>' + (branch.voltage === null ? "Voltage: —" : "Voltage: " + formatNumber(branch.voltage) + " V") + '</span>' +
                 '<span>' + (branch.current === null ? "Current: —" : "Current: " + formatNumber(branch.current) + " A") + '</span></div>'
             ).join("");
             document.getElementById("network-result-formula").textContent = type === "series"
-                ? "RT = R₁ + R₂ + R₃ = " + resistances.map(formatNumber).join(" + ") + " = " + formatNumber(result.equivalentResistance) + " Ω"
-                : "1 / RT = 1 / R₁ + 1 / R₂ + 1 / R₃; RT = " + formatNumber(result.equivalentResistance) + " Ω";
+                ? "RT = " + resistances.map((value, index) => "R" + (index + 1)).join(" + ") + " = " + resistances.map(formatNumber).join(" + ") + " = " + formatNumber(result.equivalentResistance) + " Ω"
+                : "1 / RT = " + resistances.map((value, index) => "1 / R" + (index + 1)).join(" + ") + "; RT = " + formatNumber(result.equivalentResistance) + " Ω";
             showResult("resistor-network-result");
+            const inputIds = ["network-type", ...resistorInputs.map(input => input.id), "network-voltage"];
             saveHistory("Series & Parallel Circuits", type + " network: " + resistances.map((value, i) => "R" + (i + 1) + "=" + formatNumber(value) + " Ω").join(", "),
                 "RT = " + formatNumber(result.equivalentResistance) + " Ω" + (result.totalCurrent === null ? "" : " | I = " + formatNumber(result.totalCurrent) + " A"),
-                captureInputs(["network-type", "network-r1", "network-r2", "network-r3", "network-voltage"]));
-        } catch (error) {
-            showMessage("network-message", error.message || "Check the entered values.", "error");
-        }
+                captureInputs(inputIds));
+        } catch (error) { showMessage("network-message", error.message || "Check the entered values.", "error"); }
     });
 }
 const resetResistorNetwork = document.getElementById("reset-resistor-network");
 if (resetResistorNetwork) resetResistorNetwork.addEventListener("click", () => {
     document.getElementById("network-type").value = "series";
-    ["network-r1", "network-r2", "network-r3", "network-voltage"].forEach(id => { document.getElementById(id).value = ""; });
+    setNetworkResistorCount(2, ["", ""]);
+    document.getElementById("network-voltage").value = "";
     clearMessage("network-message");
     hideResult("resistor-network-result");
 });
+setNetworkResistorCount(3, ["10", "20", "30"]);
 
 /* Step-by-step worked solutions */
 (function(){
@@ -1895,8 +1934,7 @@ const builders={
 "triangle-result":()=>{const t1=document.getElementById("triangle-input-1").value,t2=document.getElementById("triangle-input-2").value,v1=get("triangle-value-1"),v2=get("triangle-value-2");if(v1===null||v2===null)return[];const val={[t1]:v1,[t2]:v2};const computed=calculatePowerTriangleValues(t1,v1,t2,v2),P=computed.P,Q=computed.Q,S=computed.S,PF=computed.PF,theta=computed.theta;const steps=[step("Given values","<p>"+({P:"Real power (P)",Q:"Reactive power (Q)",S:"Apparent power (S)",PF:"Power factor (PF)",Theta:"Phase angle (θ)"})[t1]+" = "+fmt(v1)+(t1==="PF"?"":" "+({P:"W",Q:"VAR",S:"VA",Theta:"°"})[t1])+"</p><p>"+({P:"Real power (P)",Q:"Reactive power (Q)",S:"Apparent power (S)",PF:"Power factor (PF)",Theta:"Phase angle (θ)"})[t2]+" = "+fmt(v2)+(t2==="PF"?"":" "+({P:"W",Q:"VAR",S:"VA",Theta:"°"})[t2])+"</p>")];const rad=x=>x*Math.PI/180;const add=(title,formula,sub,result)=>steps.push(calc(title,formula,sub,result));if(val.P!==undefined&&val.PF!==undefined){add("Calculate apparent power","S = P / PF","S = "+fmt(val.P)+" W / "+fmt(val.PF),"S = "+fmt(S)+" VA");add("Calculate reactive power","Q = √(S² − P²)","Q = √(("+fmt(S)+" VA)² − ("+fmt(P)+" W)²)","Q = "+fmt(Q)+" VAR");add("Calculate phase angle","θ = cos⁻¹(PF)","θ = cos⁻¹("+fmt(PF)+")","θ = "+fmt(theta)+"°");}else if(val.P!==undefined&&val.S!==undefined){add("Calculate reactive power","Q = √(S² − P²)","Q = √(("+fmt(val.S)+" VA)² − ("+fmt(val.P)+" W)²)","Q = "+fmt(Q)+" VAR");add("Calculate power factor","PF = P / S","PF = "+fmt(val.P)+" W / "+fmt(val.S)+" VA","PF = "+fmt(PF));add("Calculate phase angle","θ = cos⁻¹(PF)","θ = cos⁻¹("+fmt(PF)+")","θ = "+fmt(theta)+"°");}else if(val.P!==undefined&&val.Q!==undefined){add("Calculate apparent power","S = √(P² + Q²)","S = √(("+fmt(val.P)+" W)² + ("+fmt(val.Q)+" VAR)²)","S = "+fmt(S)+" VA");add("Calculate power factor","PF = P / S","PF = "+fmt(val.P)+" W / "+fmt(S)+" VA","PF = "+fmt(PF));add("Calculate phase angle","θ = cos⁻¹(PF)","θ = cos⁻¹("+fmt(PF)+")","θ = "+fmt(theta)+"°");}else if(val.Q!==undefined&&val.S!==undefined){add("Calculate real power","P = √(S² − Q²)","P = √(("+fmt(val.S)+" VA)² − ("+fmt(val.Q)+" VAR)²)","P = "+fmt(P)+" W");add("Calculate power factor","PF = P / S","PF = "+fmt(P)+" W / "+fmt(val.S)+" VA","PF = "+fmt(PF));add("Calculate phase angle","θ = cos⁻¹(PF)","θ = cos⁻¹("+fmt(PF)+")","θ = "+fmt(theta)+"°");}else if(val.S!==undefined&&val.PF!==undefined){add("Calculate real power","P = S × PF","P = "+fmt(val.S)+" VA × "+fmt(val.PF),"P = "+fmt(P)+" W");add("Calculate reactive power","Q = S × √(1 − PF²)","Q = "+fmt(val.S)+" VA × √(1 − "+fmt(val.PF)+"²)","Q = "+fmt(Q)+" VAR");add("Calculate phase angle","θ = cos⁻¹(PF)","θ = cos⁻¹("+fmt(val.PF)+")","θ = "+fmt(theta)+"°");}else if(val.Q!==undefined&&val.PF!==undefined){add("Calculate apparent power","S = Q / √(1 − PF²)","S = "+fmt(val.Q)+" VAR / √(1 − "+fmt(val.PF)+"²)","S = "+fmt(S)+" VA");add("Calculate real power","P = S × PF","P = "+fmt(S)+" VA × "+fmt(val.PF),"P = "+fmt(P)+" W");add("Calculate phase angle","θ = cos⁻¹(PF)","θ = cos⁻¹("+fmt(val.PF)+")","θ = "+fmt(theta)+"°");}else if(val.P!==undefined&&val.Theta!==undefined){add("Calculate apparent power","S = P / cos(θ)","S = "+fmt(val.P)+" W / cos("+fmt(val.Theta)+"°)","S = "+fmt(S)+" VA");add("Calculate reactive power","Q = P × tan(θ)","Q = "+fmt(val.P)+" W × tan("+fmt(val.Theta)+"°)","Q = "+fmt(Q)+" VAR");add("Calculate power factor","PF = cos(θ)","PF = cos("+fmt(val.Theta)+"°)","PF = "+fmt(PF));}else if(val.S!==undefined&&val.Theta!==undefined){add("Calculate real power","P = S × cos(θ)","P = "+fmt(val.S)+" VA × cos("+fmt(val.Theta)+"°)","P = "+fmt(P)+" W");add("Calculate reactive power","Q = S × sin(θ)","Q = "+fmt(val.S)+" VA × sin("+fmt(val.Theta)+"°)","Q = "+fmt(Q)+" VAR");add("Calculate power factor","PF = cos(θ)","PF = cos("+fmt(val.Theta)+"°)","PF = "+fmt(PF));}else if(val.Q!==undefined&&val.Theta!==undefined){add("Calculate real power","P = Q / tan(θ)","P = "+fmt(val.Q)+" VAR / tan("+fmt(val.Theta)+"°)","P = "+fmt(P)+" W");add("Calculate apparent power","S = Q / sin(θ)","S = "+fmt(val.Q)+" VAR / sin("+fmt(val.Theta)+"°)","S = "+fmt(S)+" VA");add("Calculate power factor","PF = cos(θ)","PF = cos("+fmt(val.Theta)+"°)","PF = "+fmt(PF));}else{return[];}return steps;},"three-phase-result":()=>{const v=get("three-phase-voltage"),i=get("three-phase-current"),pf=get("three-phase-pf");if(v===null||i===null||pf===null)return[];const p=Math.sqrt(3)*v*i*pf;return[calc("Calculate real power","P = √3 × VL × IL × PF","P = √3 × "+fmt(v)+" V × "+fmt(i)+" A × "+fmt(pf),"P = "+fmt(p)+" W"),calc("Convert to kilowatts","P(kW) = P(W) / 1,000","P = "+fmt(p)+" / 1,000","P = "+fmt(p/1000)+" kW")];},
 "transformer-result":()=>{const v1=get("transformer-v1"),n1=get("transformer-n1"),n2=get("transformer-n2"),i1=get("transformer-primary-current");if(v1===null||n1===null||n2===null||n1===0||n2===0)return[];const out=[calc("Step 1 — Find secondary voltage","V₂ / V₁ = N₂ / N₁","V₂ = V₁ × (N₂ / N₁) = "+fmt(v1)+" V × ("+fmt(n2)+" / "+fmt(n1)+")","V₂ = "+fmt(v1*n2/n1)+" V")];if(i1!==null)out.push(calc("Step 2 — Find secondary current (ideal transformer)","I₂ / I₁ = N₁ / N₂","I₂ = I₁ × (N₁ / N₂) = "+fmt(i1)+" A × ("+fmt(n1)+" / "+fmt(n2)+")","I₂ = "+fmt(i1*n1/n2)+" A"));out.push(step("Assumption","<p>Assumes an ideal transformer. Winding losses, magnetizing current, and voltage regulation are not included.</p>"));return out;},
 "voltage-drop-result":()=>{const i=get("voltage-drop-current"),r=get("voltage-drop-resistance"),v=get("voltage-drop-system-voltage");if(i===null||r===null)return[];const d=i*r,out=[calc("Step 1 — Calculate voltage drop","V_D = I × R","V_D = "+fmt(i)+" A × "+fmt(r)+" Ω","V_D = "+fmt(d)+" V")];if(v!==null&&v>0)out.push(calc("Step 2 — Calculate percentage voltage drop","V_D% = (V_D / V_S) × 100","V_D% = ("+fmt(d)+" V / "+fmt(v)+" V) × 100","V_D% = "+fmt(d/v*100)+" %"));out.push(step("Note","<p>This solution uses the resistance value entered. For a real installation, conductor length, material, temperature, reactance, and circuit configuration may affect the voltage drop.</p>"));return out;},
-"resistor-network-result":()=>{const type=document.getElementById("network-type").value,rs=["network-r1","network-r2","network-r3"].map(get),v=get("network-voltage");if(rs.some(x=>x===null||x<=0)|| (v!==null&&v<0))return[];const result=EngineeringCore.resistorNetwork(type,rs,v);const steps=[];if(type==="series"){steps.push(calc("Calculate equivalent resistance","RT = R₁ + R₂ + R₃","RT = "+rs.map(fmt).join(" + "),"RT = "+fmt(result.equivalentResistance)+" Ω"));}else{steps.push(calc("Calculate equivalent resistance","1 / RT = 1 / R₁ + 1 / R₂ + 1 / R₃","1 / RT = 1 / "+fmt(rs[0])+" + 1 / "+fmt(rs[1])+" + 1 / "+fmt(rs[2]),"RT = "+fmt(result.equivalentResistance)+" Ω"));}if(v!==null){steps.push(calc("Calculate total current","I = V / RT","I = "+fmt(v)+" V / "+fmt(result.equivalentResistance)+" Ω","I = "+fmt(result.totalCurrent)+" A"));result.branches.forEach((b,i)=>{steps.push(type==="series"?calc("Find voltage across R"+(i+1),"V"+(i+1)+" = I × R"+(i+1),"V"+(i+1)+" = "+fmt(result.totalCurrent)+" A × "+fmt(b.resistance)+" Ω","V"+(i+1)+" = "+fmt(b.voltage)+" V"):calc("Find branch current through R"+(i+1),"I"+(i+1)+" = V / R"+(i+1),"I"+(i+1)+" = "+fmt(v)+" V / "+fmt(b.resistance)+" Ω","I"+(i+1)+" = "+fmt(b.current)+" A"));});}return steps;},
-"ac-impedance-result":()=>{const r=get("ac-resistance"),l=get("ac-inductance"),c=get("ac-capacitance"),f=get("ac-frequency");if([r,l,c,f].some(v=>v===null)||f<=0||r<0||l<0||c<0)return[];const z=EngineeringCore.acImpedance(r,l,c,f);const xl=2*Math.PI*f*l/1000;const xc=c===0?0:1/(2*Math.PI*f*c/1e6);return[calc("Step 1 — Calculate inductive reactance","XL = 2πfL","XL = 2π × "+fmt(f)+" Hz × "+fmt(l/1000)+" H","XL = "+fmt(xl)+" Ω"),...(c===0?[]:[calc("Step 2 — Calculate capacitive reactance","XC = 1 / (2πfC)","XC = 1 / (2π × "+fmt(f)+" Hz × "+fmt(c/1e6)+" F","XC = "+fmt(xc)+" Ω")]),calc("Calculate net reactance","X = XL − XC","X = "+fmt(xl)+" − "+fmt(xc),"X = "+fmt(z.netReactance)+" Ω"),calc("Calculate impedance magnitude","Z = √(R² + X²)","Z = √("+fmt(r)+"² + "+fmt(z.netReactance)+"²)","Z = "+fmt(z.impedanceMagnitude)+" Ω"),calc("Calculate phase angle","θ = atan2(X, R)","θ = atan2("+fmt(z.netReactance)+", "+fmt(r)+")","θ = "+fmt(z.phaseAngleDegrees)+"°")];},
+"resistor-network-result":()=>{const type=document.getElementById("network-type").value,rs=Array.from(document.querySelectorAll("#network-resistor-list .network-resistance-input")).map(input=>input.value.trim()===""?null:Number(input.value)),v=get("network-voltage");if(rs.length<2||rs.some(x=>x===null||!Number.isFinite(x)||x<=0)||(v!==null&&v<0))return[];const result=EngineeringCore.resistorNetwork(type,rs,v);const labels=rs.map((x,i)=>"R"+(i+1));const steps=[];if(type==="series"){steps.push(calc("Calculate equivalent resistance","RT = "+labels.join(" + "),"RT = "+rs.map(fmt).join(" + "),"RT = "+fmt(result.equivalentResistance)+" Ω"));}else{steps.push(calc("Calculate equivalent resistance","1 / RT = "+labels.map(label=>"1 / "+label).join(" + "),"1 / RT = "+rs.map(x=>"1 / "+fmt(x)).join(" + "),"RT = "+fmt(result.equivalentResistance)+" Ω"));}if(v!==null){steps.push(calc("Calculate total current","I = V / RT","I = "+fmt(v)+" V / "+fmt(result.equivalentResistance)+" Ω","I = "+fmt(result.totalCurrent)+" A"));result.branches.forEach((b,i)=>{steps.push(type==="series"?calc("Find voltage across R"+(i+1),"V"+(i+1)+" = I × R"+(i+1),"V"+(i+1)+" = "+fmt(result.totalCurrent)+" A × "+fmt(b.resistance)+" Ω","V"+(i+1)+" = "+fmt(b.voltage)+" V"):calc("Find branch current through R"+(i+1),"I"+(i+1)+" = V / R"+(i+1),"I"+(i+1)+" = "+fmt(v)+" V / "+fmt(b.resistance)+" Ω","I"+(i+1)+" = "+fmt(b.current)+" A"));});}return steps;},"ac-impedance-result":()=>{const r=get("ac-resistance"),l=get("ac-inductance"),c=get("ac-capacitance"),f=get("ac-frequency");if([r,l,c,f].some(v=>v===null)||f<=0||r<0||l<0||c<0)return[];const z=EngineeringCore.acImpedance(r,l,c,f);const xl=2*Math.PI*f*l/1000;const xc=c===0?0:1/(2*Math.PI*f*c/1e6);return[calc("Step 1 — Calculate inductive reactance","XL = 2πfL","XL = 2π × "+fmt(f)+" Hz × "+fmt(l/1000)+" H","XL = "+fmt(xl)+" Ω"),...(c===0?[]:[calc("Step 2 — Calculate capacitive reactance","XC = 1 / (2πfC)","XC = 1 / (2π × "+fmt(f)+" Hz × "+fmt(c/1e6)+" F","XC = "+fmt(xc)+" Ω")]),calc("Calculate net reactance","X = XL − XC","X = "+fmt(xl)+" − "+fmt(xc),"X = "+fmt(z.netReactance)+" Ω"),calc("Calculate impedance magnitude","Z = √(R² + X²)","Z = √("+fmt(r)+"² + "+fmt(z.netReactance)+"²)","Z = "+fmt(z.impedanceMagnitude)+" Ω"),calc("Calculate phase angle","θ = atan2(X, R)","θ = atan2("+fmt(z.netReactance)+", "+fmt(r)+")","θ = "+fmt(z.phaseAngleDegrees)+"°")];},
 "converter-result":()=>{const type=document.getElementById("converter-type").value,x=get("converter-value"),m={"w-kw":[1000,"W","kW",0],"kw-w":[1000,"kW","W",1],"wh-kwh":[1000,"Wh","kWh",0],"kwh-wh":[1000,"kWh","Wh",1],"va-kva":[1000,"VA","kVA",0],"kva-va":[1000,"kVA","VA",1],"v-kv":[1000,"V","kV",0],"kv-v":[1000,"kV","V",1],"a-ma":[1000,"A","mA",1],"ma-a":[1000,"mA","A",0],"ohm-kohm":[1000,"Ω","kΩ",0],"kohm-ohm":[1000,"kΩ","Ω",1]}[type];if(x===null||!m)return[];const n=m[3]?x*m[0]:x/m[0];return[calc("Apply conversion",m[2]+" = "+m[1]+" "+(m[3]?"×":"÷")+" 1,000",m[2]+" = "+fmt(x)+" "+(m[3]?"×":"÷")+" 1,000",fmt(n)+" "+m[2])];}
 };
 const ids={"ohms-result":"calculate-ohms","power-result":"calculate-power","energy-result":"calculate-energy","triangle-result":"calculate-triangle","three-phase-result":"calculate-three-phase","transformer-result":"calculate-transformer","voltage-drop-result":"calculate-voltage-drop","converter-result":"calculate-conversion","ac-impedance-result":"calculate-ac-impedance","resistor-network-result":"calculate-resistor-network"};
