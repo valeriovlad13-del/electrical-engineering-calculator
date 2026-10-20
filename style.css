@@ -1793,3 +1793,12 @@ body.dark-mode .network-summary-grid>div,body.dark-mode .network-branch-row{back
 body.dark-mode .network-summary-grid strong,body.dark-mode .network-branch-row strong{color:#c5def4}
 body.dark-mode .network-branch-row span{color:#aab8c8}
 @media(max-width:700px){.network-branch-results{grid-template-columns:1fr}.network-summary-grid{grid-template-columns:1fr}}
+
+/* Dynamic resistor-count controls */
+#resistor-network .network-resistor-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;grid-column:1/-1;min-width:0}
+#resistor-network .network-resistor-input{min-width:0}
+#resistor-network .network-resistor-input input{width:100%;min-width:0}
+#resistor-network .network-resistor-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;grid-column:1/-1}
+#resistor-network .network-resistor-controls .field-help{margin:0}
+#resistor-network .network-resistor-controls button:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:560px){#resistor-network .network-resistor-list{grid-template-columns:1fr}#resistor-network .network-resistor-controls button{flex:1}}
