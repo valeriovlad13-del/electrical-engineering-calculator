@@ -1925,3 +1925,9 @@ body.dark-mode .calculator-diagram .diagram-symbol { fill: #24384d; stroke: #8aa
 .triangle-visual-input .power-triangle-svg{max-height:300px;}
 #triangle-result .triangle-layout{display:block;}
 #triangle-result .triangle-visual{display:none;}
+
+
+/* Keep the initial Power Triangle visible and compact above its inputs. */
+.triangle-visual-input{margin:14px 0 20px;padding:0;}
+.triangle-visual-input .power-triangle-svg{display:block;width:100%;height:auto;min-height:0;max-height:300px;}
+@media(max-width:600px){.triangle-visual-input .power-triangle-svg{max-height:250px;}}
