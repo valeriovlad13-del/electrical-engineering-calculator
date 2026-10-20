@@ -1982,3 +1982,93 @@ document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(
         if (document.body.classList.contains("printing-calculation-report")) cleanup();
     });
 })();
+
+
+/* Visual aids for calculators where a physical circuit or relationship is easier to understand visually. */
+(function initCalculatorDiagrams() {
+    const diagrams = {
+        "ohms-law": {
+            title: "Basic circuit showing voltage, current, and resistance",
+            description: "A voltage source drives current through a resistor. Ohm's law relates these quantities.",
+            svg: '<svg viewBox="0 0 560 170" role="img" aria-label="A closed circuit with a battery, current arrow, and resistor"><path class="diagram-wire" d="M92 48 H220 M310 48 H468 V132 H92 V48"/><path class="diagram-wire" d="M220 48 l10 -12 l12 24 l12 -24 l12 24 l12 -24 l12 12"/><path class="diagram-wire" d="M92 75 V95 M78 95 H106 M83 105 H101 M92 105 V132"/><path class="diagram-current" d="M130 35 H185"/><path class="diagram-arrow" d="M177 29 L187 35 L177 41"/><text x="155" y="24" class="diagram-label">I</text><text x="265" y="25" class="diagram-label">R</text><text x="52" y="89" class="diagram-label">V</text><text x="280" y="157" class="diagram-note">V = I × R</text></svg>'
+        },
+        "electrical-power": {
+            title: "Electrical power in a load",
+            description: "Power is transferred to a load when voltage is applied and current flows through it.",
+            svg: '<svg viewBox="0 0 560 150" role="img" aria-label="Voltage source connected to a load with current flowing through the circuit"><path class="diagram-wire" d="M100 42 H220 M320 42 H460 V112 H100 V42"/><circle class="diagram-symbol" cx="100" cy="77" r="24"/><path class="diagram-wire" d="M90 77 H110 M100 67 V87"/><rect class="diagram-symbol" x="220" y="25" width="100" height="34" rx="5"/><path class="diagram-current" d="M135 29 H185"/><path class="diagram-arrow" d="M177 23 L187 29 L177 35"/><text x="158" y="20" class="diagram-label">I</text><text x="270" y="47" text-anchor="middle" class="diagram-label">Load</text><text x="270" y="81" text-anchor="middle" class="diagram-note">P = V × I</text><text x="58" y="121" class="diagram-label">Source</text></svg>'
+        },
+        "three-phase": {
+            title: "Three-phase voltage waveforms",
+            description: "The three phase voltages have the same frequency and are separated by 120 electrical degrees.",
+            svg: '<svg viewBox="0 0 560 190" role="img" aria-label="Three sinusoidal voltage waveforms separated by 120 degrees"><path class="diagram-axis" d="M44 90 H520 M44 24 V160"/><path class="diagram-phase-a" d="M44 90 C70 90 78 34 112 34 S154 146 188 146 S230 34 264 34 S306 146 340 146 S382 34 416 34 S458 146 492 146 S512 90 520 90"/><path class="diagram-phase-b" d="M44 42 C70 42 82 120 116 120 S158 42 192 42 S234 120 268 120 S310 42 344 42 S386 120 420 120 S462 42 496 42"/><path class="diagram-phase-c" d="M44 138 C70 138 82 60 116 60 S158 138 192 138 S234 60 268 60 S310 138 344 138 S386 60 420 60 S462 138 496 138"/><text x="480" y="22" class="diagram-label">A</text><text x="480" y="42" class="diagram-label">B</text><text x="480" y="62" class="diagram-label">C</text><text x="280" y="181" text-anchor="middle" class="diagram-note">120° phase separation</text></svg>'
+        },
+        "transformer": {
+            title: "Transformer primary and secondary windings",
+            description: "An alternating current in the primary winding creates changing magnetic flux in the core, inducing voltage in the secondary winding.",
+            svg: '<svg viewBox="0 0 560 170" role="img" aria-label="Transformer with primary winding, magnetic core, and secondary winding"><path class="diagram-wire" d="M50 40 H100 M50 130 H100 M460 40 H510 M460 130 H510"/><path class="diagram-wire" d="M100 40 c-28 0 -28 22 0 22 c-28 0 -28 22 0 22 c-28 0 -28 22 0 22 c-28 0 -28 22 0 22"/><path class="diagram-wire" d="M460 40 c28 0 28 22 0 22 c28 0 28 22 0 22 c28 0 28 22 0 22 c28 0 28 22 0 22"/><path class="diagram-core" d="M245 24 V146 M260 24 V146 M300 24 V146 M315 24 V146"/><text x="150" y="24" text-anchor="middle" class="diagram-label">Primary (N₁)</text><text x="410" y="24" text-anchor="middle" class="diagram-label">Secondary (N₂)</text><text x="280" y="162" text-anchor="middle" class="diagram-note">V₁ / V₂ = N₁ / N₂</text></svg>'
+        },
+        "voltage-drop": {
+            title: "Voltage drop along a conductor",
+            description: "Current flowing through conductor resistance causes the load voltage to be lower than the source voltage.",
+            svg: '<svg viewBox="0 0 560 170" role="img" aria-label="Source connected to a load through a resistive conductor with voltage drop"><circle class="diagram-symbol" cx="70" cy="85" r="28"/><path class="diagram-wire" d="M70 57 V30 H180 M70 113 V140 H470 V105 M470 65 V30 H390"/><path class="diagram-wire" d="M180 30 l10 -10 l10 20 l10 -20 l10 20 l10 -20 l10 10 H390"/><rect class="diagram-symbol" x="445" y="65" width="50" height="40" rx="4"/><path class="diagram-current" d="M120 18 H165"/><path class="diagram-arrow" d="M157 12 L167 18 L157 24"/><text x="142" y="12" class="diagram-label">I</text><text x="275" y="18" class="diagram-label">Conductor resistance</text><text x="470" y="90" text-anchor="middle" class="diagram-label">Load</text><text x="70" y="90" text-anchor="middle" class="diagram-label">Vₛ</text><text x="280" y="162" text-anchor="middle" class="diagram-note">Vdrop = I × Rwire</text></svg>'
+        },
+        "ac-impedance": {
+            title: "Series RLC circuit",
+            description: "Resistance, inductance, and capacitance are connected in series in an AC circuit.",
+            svg: '<svg viewBox="0 0 560 160" role="img" aria-label="Series circuit containing a voltage source, resistor, inductor, and capacitor"><path class="diagram-wire" d="M76 42 H150 M220 42 H275 M355 42 H400 M455 42 H500 V120 H76 V42"/><circle class="diagram-symbol" cx="76" cy="81" r="25"/><path class="diagram-wire" d="M150 42 l8 -10 l8 20 l8 -20 l8 20 l8 -20 l8 10"/><path class="diagram-wire" d="M275 42 c0 -24 18 -24 18 0 c0 -24 18 -24 18 0 c0 -24 18 -24 18 0 c0 -24 18 -24 18 0"/><path class="diagram-wire" d="M400 28 V56 M414 28 V56"/><text x="185" y="22" text-anchor="middle" class="diagram-label">R</text><text x="320" y="22" text-anchor="middle" class="diagram-label">L</text><text x="407" y="22" text-anchor="middle" class="diagram-label">C</text><text x="76" y="85" text-anchor="middle" class="diagram-label">~</text><text x="280" y="147" text-anchor="middle" class="diagram-note">Z = √(R² + (XL − XC)²)</text></svg>'
+        }
+    };
+
+    Object.entries(diagrams).forEach(([id, diagram]) => {
+        const card = document.getElementById(id);
+        if (!card || card.querySelector(".calculator-diagram")) return;
+        const figure = document.createElement("figure");
+        figure.className = "calculator-diagram";
+        figure.innerHTML = '<figcaption>' + diagram.title + '</figcaption>' + diagram.svg + '<p>' + diagram.description + '</p>';
+        const description = card.querySelector(".calculator-description");
+        if (description) description.insertAdjacentElement("afterend", figure);
+        else card.querySelector(".calculator-header")?.insertAdjacentElement("afterend", figure);
+    });
+
+    const networkCard = document.getElementById("resistor-network");
+    const typeSelect = document.getElementById("network-type");
+    const networkList = document.getElementById("network-resistor-list");
+    if (networkCard && typeSelect && networkList) {
+        const figure = document.createElement("figure");
+        figure.className = "calculator-diagram network-diagram";
+        figure.innerHTML = '<figcaption>Resistor connection</figcaption><svg viewBox="0 0 560 150" role="img" aria-label="Resistor circuit diagram"></svg><p class="network-diagram-caption"></p>';
+        const formula = networkCard.querySelector(".formula-box");
+        if (formula) formula.insertAdjacentElement("afterend", figure);
+        const renderNetwork = () => {
+            const count = Math.max(2, Math.min(30, networkList.querySelectorAll("input").length || 3));
+            const parallel = typeSelect.value === "parallel";
+            let svg = '<path class="diagram-wire" d="M40 25 H520 M40 125 H520"/>';
+            if (parallel) {
+                const width = Math.min(480 / count, 80);
+                const start = 40;
+                for (let i = 0; i < count; i++) {
+                    const x = start + (i + 0.5) * 480 / count;
+                    svg += '<path class="diagram-wire" d="M' + x + ' 25 V48 M' + x + ' 88 V125"/><rect class="diagram-symbol" x="' + (x - width * .36) + '" y="48" width="' + (width * .72) + '" height="40" rx="3"/><text x="' + x + '" y="72" text-anchor="middle" class="diagram-label">R' + (i + 1) + '</text>';
+                }
+                figure.querySelector("svg").setAttribute("aria-label", "Parallel circuit with " + count + " resistor branches");
+                figure.querySelector(".network-diagram-caption").textContent = "Each resistor is connected across the same two nodes; branch voltage is equal.";
+            } else {
+                const gap = 480 / count;
+                svg = '<path class="diagram-wire" d="M40 75 H' + (40 + gap * .18) + '"/>';
+                for (let i = 0; i < count; i++) {
+                    const x = 40 + gap * (i + .18);
+                    const w = gap * .62;
+                    svg += '<rect class="diagram-symbol" x="' + x + '" y="57" width="' + w + '" height="36" rx="3"/><text x="' + (x + w / 2) + '" y="79" text-anchor="middle" class="diagram-label">R' + (i + 1) + '</text><path class="diagram-wire" d="M' + (x + w) + ' 75 H' + (40 + gap * (i + 1)) + '"/>';
+                }
+                svg += '<path class="diagram-wire" d="M40 75 V125 H520 V75"/>';
+                figure.querySelector("svg").setAttribute("aria-label", "Series circuit with " + count + " resistors");
+                figure.querySelector(".network-diagram-caption").textContent = "The same current flows through each resistor; voltage drops add together.";
+            }
+            figure.querySelector("svg").innerHTML = svg;
+        };
+        typeSelect.addEventListener("change", renderNetwork);
+        networkList.addEventListener("input", renderNetwork);
+        networkList.addEventListener("click", renderNetwork);
+        renderNetwork();
+    }
+})();
