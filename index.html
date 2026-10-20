@@ -1936,6 +1936,26 @@
         </section>
 
 
+        <section class="formula-reference-section" id="formula-reference">
+            <div class="container">
+                <div class="section-heading">
+                    <span class="section-label">ENGINEERING REFERENCE</span>
+                    <h2>Essential Electrical Formulas</h2>
+                    <p class="section-description">Quick reference for common relationships, units, and the conditions under which each formula applies.</p>
+                </div>
+                <div class="formula-reference-grid">
+                    <article class="formula-reference-card"><span class="formula-category">Circuit fundamentals</span><h3>Ohm's Law</h3><p class="reference-equation">V = I × R</p><p>Voltage equals current multiplied by resistance.</p><p class="reference-units"><strong>Units:</strong> V (volts), I (amperes), R (ohms)</p><a href="#ohms-law" class="reference-link">Open Ohm's Law calculator →</a></article>
+                    <article class="formula-reference-card"><span class="formula-category">Electrical power</span><h3>DC / resistive power</h3><p class="reference-equation">P = V × I</p><p>For single-phase AC real power, use P = V × I × PF.</p><p class="reference-units"><strong>Units:</strong> P (watts), V (volts), I (amperes)</p><a href="#electrical-power" class="reference-link">Open power calculator →</a></article>
+                    <article class="formula-reference-card"><span class="formula-category">Energy</span><h3>Energy consumption</h3><p class="reference-equation">E = P × t</p><p>When power is in kW and time is in hours, energy is in kWh.</p><p class="reference-units"><strong>Cost:</strong> Energy (kWh) × rate (currency/kWh)</p><a href="#energy" class="reference-link">Open energy calculator →</a></article>
+                    <article class="formula-reference-card"><span class="formula-category">AC circuits</span><h3>Power triangle</h3><p class="reference-equation">S² = P² + Q²</p><p>For sinusoidal steady-state AC: PF = P / S and θ = cos⁻¹(PF).</p><p class="reference-units"><strong>Units:</strong> P (W), Q (var), S (VA)</p><a href="#power-triangle" class="reference-link">Open power triangle calculator →</a></article>
+                    <article class="formula-reference-card"><span class="formula-category">Three-phase systems</span><h3>Balanced three-phase power</h3><p class="reference-equation">P = √3 × VL × IL × PF</p><p>Uses line-to-line voltage and line current for a balanced system.</p><p class="reference-units"><strong>Units:</strong> VL (V), IL (A), P (W)</p><a href="#three-phase" class="reference-link">Open three-phase calculator →</a></article>
+                    <article class="formula-reference-card"><span class="formula-category">Transformers</span><h3>Ideal transformer ratio</h3><p class="reference-equation">V₂ / V₁ = N₂ / N₁</p><p>Assumes an ideal transformer; real losses and voltage regulation are not included.</p><p class="reference-units"><strong>Units:</strong> Voltage (V), turns (N)</p><a href="#transformer" class="reference-link">Open transformer calculator →</a></article>
+                    <article class="formula-reference-card"><span class="formula-category">Circuit estimation</span><h3>Basic voltage drop</h3><p class="reference-equation">VD = I × R</p><p>This simplified relationship uses entered circuit resistance and does not replace conductor-sizing methods.</p><p class="reference-units"><strong>Units:</strong> VD (V), I (A), R (Ω)</p><a href="#voltage-drop" class="reference-link">Open voltage-drop calculator →</a></article>
+                    <article class="formula-reference-card"><span class="formula-category">Units</span><h3>Metric prefixes</h3><p class="reference-equation">1 kW = 1,000 W</p><p>Convert between base units and kilo- or milli-units before combining quantities.</p><p class="reference-units"><strong>Reminder:</strong> Keep units consistent throughout a calculation.</p><a href="#unit-converter" class="reference-link">Open unit converter →</a></article>
+                </div>
+            </div>
+        </section>
+
         <section
             class="history-section"
             id="history"
@@ -1958,13 +1978,10 @@
                     </div>
 
 
-                    <button
-                        type="button"
-                        id="clear-history"
-                        class="btn btn-secondary btn-small"
-                    >
-                        Clear History
-                    </button>
+                    <div class="history-actions">
+                        <button type="button" id="export-history" class="btn btn-secondary btn-small">Export CSV</button>
+                        <button type="button" id="clear-history" class="btn btn-secondary btn-small">Clear History</button>
+                    </div>
 
                 </div>
 
