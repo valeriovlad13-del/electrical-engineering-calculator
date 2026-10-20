@@ -1780,3 +1780,16 @@ body.dark-mode .footer-content p {
 #ac-impedance .result-formula{margin:10px 0;color:var(--muted-text,#667085);font-size:.82rem;overflow-wrap:anywhere}
 #ac-impedance .field-help{margin-top:8px;color:var(--muted-text,#667085);font-size:.78rem}
 @media(max-width:560px){#ac-impedance .result-grid{grid-template-columns:1fr}.calculator-nav{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Series and parallel resistor network result styling */
+.network-summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+.network-summary-grid>div{padding:13px;border:1px solid #dbe4ee;border-radius:9px;background:#f8fafc;min-width:0}
+.network-summary-grid strong{display:block;font-size:1.15rem;overflow-wrap:anywhere;color:#173b63}
+.network-branch-results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
+.network-branch-row{display:flex;flex-direction:column;gap:6px;padding:12px;border:1px solid #dbe4ee;border-radius:9px;background:#fff;min-width:0;font-size:.78rem;overflow-wrap:anywhere}
+.network-branch-row strong{color:#173b63;font-size:.84rem}
+.network-branch-row span{color:#667085}
+body.dark-mode .network-summary-grid>div,body.dark-mode .network-branch-row{background:#162333;border-color:#2d3e4f}
+body.dark-mode .network-summary-grid strong,body.dark-mode .network-branch-row strong{color:#c5def4}
+body.dark-mode .network-branch-row span{color:#aab8c8}
+@media(max-width:700px){.network-branch-results{grid-template-columns:1fr}.network-summary-grid{grid-template-columns:1fr}}
