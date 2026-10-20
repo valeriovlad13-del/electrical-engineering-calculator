@@ -2064,7 +2064,7 @@
                         <strong class="mixed-resistor-title">R2</strong>
                         <div class="input-group"><label for="mixed-r2">Resistance (Ω)</label><input type="number" id="mixed-r2" class="mixed-resistance" min="0" step="any" value="20" inputmode="decimal"></div>
                         <div class="input-group"><label for="mixed-a2">Node A</label><select id="mixed-a2" class="mixed-node"><option value="0">0 (Ground)</option><option value="1">1 (Supply)</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select></div>
-                        <div class="input-group"><label for="mixed-b2">Node B</label><select id="mixed-b2" class="mixed-node"><option value="0">0 (Ground)</option><option value="1">1 (Supply)</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select></div>
+                        <div class="input-group"><label for="mixed-b2">Node B</label><select id="mixed-b2" class="mixed-node"><option value="0" selected>0 (Ground)</option><option value="1">1 (Supply)</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select></div>
                     </div>
                     <div class="mixed-resistor-row" data-resistor-row>
                         <strong class="mixed-resistor-title">R3</strong>
@@ -2079,7 +2079,7 @@
                     <span id="mixed-resistor-count" class="field-help">3 resistors · maximum 30</span>
                 </div>
             </div>
-            <div class="field-help">Example default: R2 and R1 form a path from supply to ground through node 2? Set node connections to model your own circuit. Every used node must be connected to the network.</div>
+            <div class="field-help">Example default: R1 (10 Ω) and R2 (20 Ω) are in series from node 1 through node 2 to ground, in parallel with R3 (30 Ω). Every used node must be connected to the network.</div>
             <div id="mixed-network-message" class="message" role="status" aria-live="polite"></div>
             <div id="mixed-resistor-result" class="result-panel hidden">
                 <span class="result-label">MIXED NETWORK RESULTS</span>
