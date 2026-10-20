@@ -1,0 +1,21 @@
+name: Validate calculator JavaScript
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  syntax-and-calculation-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check JavaScript syntax
+        run: |
+          node --check script.js
+          node --check engineering-core.js
+      - name: Run calculation regression tests
+        run: node --test tests/engineering-core.test.js
