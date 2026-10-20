@@ -1873,3 +1873,102 @@ body.dark-mode #mixed-resistor-network .mixed-resistor-row,body.dark-mode #mixed
     body.printing-calculation-report .print-report-target strong,
     body.printing-calculation-report .print-report-target span { color: #111 !important; }
 }
+
+
+/* Lightweight schematic diagrams shown only where they aid understanding. */
+.calculator-diagram {
+    margin: 18px 0 22px;
+    padding: 16px 18px 12px;
+    border: 1px solid #dce4ee;
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #243449;
+}
+.calculator-diagram figcaption {
+    margin-bottom: 8px;
+    font-size: .9rem;
+    font-weight: 700;
+    color: #1b3554;
+}
+.calculator-diagram svg {
+    display: block;
+    width: 100%;
+    max-height: 190px;
+    overflow: visible;
+}
+.calculator-diagram p {
+    margin: 8px 0 0;
+    color: #526174;
+    font-size: .82rem;
+    line-height: 1.5;
+}
+.calculator-diagram .diagram-wire {
+    fill: none;
+    stroke: #526b85;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.calculator-diagram .diagram-axis {
+    fill: none;
+    stroke: #9aa9ba;
+    stroke-width: 1;
+}
+.calculator-diagram .diagram-symbol {
+    fill: #e5edf6;
+    stroke: #426386;
+    stroke-width: 2;
+}
+.calculator-diagram .diagram-core {
+    fill: none;
+    stroke: #b7791f;
+    stroke-width: 4;
+}
+.calculator-diagram .diagram-current {
+    fill: none;
+    stroke: #16805d;
+    stroke-width: 2.5;
+}
+.calculator-diagram .diagram-arrow {
+    fill: none;
+    stroke: #16805d;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.calculator-diagram .diagram-label {
+    fill: #20354d;
+    font-size: 13px;
+    font-weight: 700;
+}
+.calculator-diagram .diagram-note {
+    fill: #526174;
+    font-size: 12px;
+    font-weight: 600;
+}
+.calculator-diagram .diagram-phase-a {
+    fill: none; stroke: #2563eb; stroke-width: 2.5;
+}
+.calculator-diagram .diagram-phase-b {
+    fill: none; stroke: #dc2626; stroke-width: 2.5;
+}
+.calculator-diagram .diagram-phase-c {
+    fill: none; stroke: #16805d; stroke-width: 2.5;
+}
+body.dark-mode .calculator-diagram {
+    background: #172333;
+    border-color: #34465a;
+    color: #e4edf7;
+}
+body.dark-mode .calculator-diagram figcaption,
+body.dark-mode .calculator-diagram .diagram-label { color: #e4edf7; fill: #e4edf7; }
+body.dark-mode .calculator-diagram p,
+body.dark-mode .calculator-diagram .diagram-note { color: #aebed0; fill: #aebed0; }
+body.dark-mode .calculator-diagram .diagram-wire { stroke: #9eb2c9; }
+body.dark-mode .calculator-diagram .diagram-symbol { fill: #24384d; stroke: #8aa6c4; }
+@media (max-width: 520px) {
+    .calculator-diagram { padding: 12px 10px; }
+    .calculator-diagram svg { max-height: 150px; }
+    .calculator-diagram figcaption { font-size: .84rem; }
+    .calculator-diagram p { font-size: .78rem; }
+}
