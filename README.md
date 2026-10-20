@@ -42,6 +42,10 @@ interface that works on desktop, tablet, and mobile devices.
 -   **Voltage Drop**
     -   Basic voltage drop: `VD = I × R`
     -   Optional percentage voltage drop
+-   **AC Impedance**
+    -   Series RLC inductive and capacitive reactance
+    -   Impedance magnitude and phase angle
+    -   Uses resistance (Ω), inductance (mH), capacitance (µF), and frequency (Hz)
 -   **Unit Converter**
     -   W ↔ kW
     -   Wh ↔ kWh
@@ -66,6 +70,8 @@ interface that works on desktop, tablet, and mobile devices.
 -   Reset buttons for each calculator
 -   SVG-based calculator icons
 -   Dynamic power triangle visualization
+-   Testable numerical core shared by key calculators
+-   Automated numerical regression tests for formula and edge-case checks
 -   No backend or database required
 
 ## Technologies Used
@@ -85,6 +91,7 @@ electrical-engineering-calculator/
 ├── index.html
 ├── style.css
 ├── script.js
+├── engineering-core.js
 ├── tests/
 │   └── test_calculator_structure.py
 ├── .github/
