@@ -56,7 +56,12 @@ interface that works on desktop, tablet, and mobile devices.
 -   Dark mode with persistent theme preference
 -   Quick navigation menu
 -   Formula and variable explanations
--   Calculation history using browser `localStorage`
+-   Calculation history using browser `localStorage` (up to 20 entries)
+-   Restore calculator inputs from recent history
+-   Delete individual history entries or export history as CSV
+-   Engineering formula reference with units and assumptions
+-   Three-decimal maximum display precision while retaining internal calculation precision
+-   Automated JavaScript syntax and structure regression checks in GitHub Actions
 -   Input validation and error messages
 -   Reset buttons for each calculator
 -   SVG-based calculator icons
@@ -80,6 +85,11 @@ electrical-engineering-calculator/
 ├── index.html
 ├── style.css
 ├── script.js
+├── tests/
+│   └── test_calculator_structure.py
+├── .github/
+│   └── workflows/
+│       └── validate.yml
 └── README.md
 ```
 
@@ -239,19 +249,17 @@ Engineering** and my continuing studies in **Computer Science**.
 
 ## Future Improvements
 
-Possible future enhancements include:
+Planned future enhancements include:
 
--   More electrical engineering formulas
+-   Interactive circuit diagrams for each applicable calculator
+-   A printable/PDF calculation report with formulas, inputs, assumptions, and results
+-   More comprehensive unit selection and automatic unit normalization
+-   Expanded regression tests for numerical results, invalid inputs, and edge cases
 -   Resistor and capacitor calculations
 -   Series and parallel circuit calculations
 -   Motor calculations
--   Cable/conductor calculations
--   More advanced voltage-drop calculations
--   Exporting calculation history
--   Calculation sharing
--   Additional unit conversions
--   Improved accessibility
--   Automated testing
+-   Cable/conductor sizing and more advanced voltage-drop calculations
+-   Further accessibility improvements and keyboard-navigation testing
 
 ## Author
 
