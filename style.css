@@ -1846,3 +1846,14 @@ body.dark-mode .mixed-circuit-diagram{background:#162333}
 body.dark-mode .mixed-circuit-diagram .mixed-resistor-label-bg{fill:#162333;stroke:#405469}
 body.dark-mode .mixed-circuit-diagram .mixed-node-dot{fill:#162333}
 @media(max-width:560px){.mixed-circuit-visual{padding:12px}.mixed-circuit-diagram svg{min-width:500px}}
+
+/* Beginner-first mixed circuit builder */
+.mixed-builder-mode{display:grid;gap:8px;padding:16px;margin:14px 0;border:1px solid var(--border-color,#dbe4ee);border-radius:12px;background:var(--input-background,#f8fafc)}
+.mixed-builder-mode>label:first-child{font-weight:700;font-size:.9rem}
+.mixed-builder-mode select{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--border-color,#cbd5e1);border-radius:8px;background:var(--card-background,#fff);color:var(--text-color,#172b42);font:inherit}
+.mixed-builder-mode .field-help{margin:0;line-height:1.5}
+.mixed-advanced-toggle{display:flex;align-items:center;gap:9px;margin-top:4px;font-size:.88rem;cursor:pointer}
+.mixed-advanced-toggle input{width:18px;height:18px;flex:0 0 auto}
+#mixed-resistor-network .mixed-node-field[hidden],#mixed-resistor-network .mixed-advanced-explanation[hidden]{display:none!important}
+body.dark-mode .mixed-builder-mode{background:#162333;border-color:#2d3e4f}
+body.dark-mode .mixed-builder-mode select{background:#101b29;color:#e4edf6;border-color:#405469}
