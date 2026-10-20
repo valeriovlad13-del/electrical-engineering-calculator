@@ -147,7 +147,7 @@ if (historyList) historyList.addEventListener("click", event => {
         const destination = destinations[item.title];
         if (!destination) return;
         document.getElementById(destination[0])?.scrollIntoView({ behavior: "smooth", block: "start" });
-        document.getElementById(destination[1])?.click();
+        document.getElementById(destination[1])?.focus();
     }
 });
 const exportHistoryButton = document.getElementById("export-history");
