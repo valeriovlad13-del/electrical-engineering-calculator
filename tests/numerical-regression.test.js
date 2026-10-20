@@ -84,4 +84,31 @@ throws(() => core.resistorNetwork("series", [10, 0, 30]), "positive");
 throws(() => core.resistorNetwork("parallel", [10, 20, 30], -1), "non-negative");
 throws(() => core.resistorNetwork("unknown", [10, 20, 30]), "Choose series or parallel");
 
+/* Mixed resistor networks solved using node-voltage analysis. */
+const mixed = core.mixedResistorNetwork([
+    {a: 1, b: 2, resistance: 10},
+    {a: 2, b: 0, resistance: 20},
+    {a: 1, b: 0, resistance: 30}
+], 12);
+near(mixed.equivalentResistance, 15);
+near(mixed.sourceCurrent, 0.8);
+near(mixed.nodeVoltages[2], 8);
+near(mixed.branches[0].current, 0.4);
+near(mixed.branches[1].current, 0.4);
+near(mixed.branches[2].current, 0.4);
+near(mixed.branches[0].power, 1.6);
+const bridge = core.mixedResistorNetwork([
+    {a: 1, b: 2, resistance: 100},
+    {a: 2, b: 0, resistance: 100},
+    {a: 1, b: 3, resistance: 100},
+    {a: 3, b: 0, resistance: 100},
+    {a: 2, b: 3, resistance: 100}
+], 10);
+near(bridge.equivalentResistance, 100);
+near(bridge.sourceCurrent, 0.1);
+throws(() => core.mixedResistorNetwork([{a:1,b:2,resistance:10},{a:0,b:0,resistance:20}], 12), "different node");
+throws(() => core.mixedResistorNetwork([{a:1,b:2,resistance:10},{a:3,b:0,resistance:20}], 12), "connected");
+throws(() => core.mixedResistorNetwork([{a:1,b:0,resistance:10},{a:1,b:2,resistance:0}], 12), "greater than zero");
+throws(() => core.mixedResistorNetwork([{a:1,b:0,resistance:10},{a:1,b:2,resistance:20}], 0), "greater than zero");
+
 console.log("All numerical regression tests passed.");
