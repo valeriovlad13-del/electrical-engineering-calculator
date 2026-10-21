@@ -66,9 +66,10 @@
             </a>
 
 
-            <button
-                type="button"
-                id="theme-toggle"
+            <div class="header-actions">
+                <button
+                    type="button"
+                    id="theme-toggle"
                 class="theme-toggle"
                 aria-label="Switch to dark mode"
                 title="Switch to dark mode"
@@ -85,9 +86,36 @@
                     />
                 </svg>
 
-            </button>
+                </button>
+
+                <button
+                    type="button"
+                    id="mobile-menu-toggle"
+                    class="mobile-menu-toggle"
+                    aria-label="Open calculator menu"
+                    aria-controls="mobile-calculator-menu"
+                    aria-expanded="false"
+                >
+                    <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
 
         </div>
+
+        <nav id="mobile-calculator-menu" class="mobile-calculator-menu" aria-label="Mobile calculator menu" hidden>
+            <a href="#ohms-law">Ohm's Law</a>
+            <a href="#electrical-power">Electrical Power</a>
+            <a href="#energy">Energy</a>
+            <a href="#power-triangle">Power Triangle</a>
+            <a href="#three-phase">Three-Phase Power</a>
+            <a href="#transformer">Transformer</a>
+            <a href="#voltage-drop">Voltage Drop</a>
+            <a href="#unit-converter">Unit Converter</a>
+            <a href="#ac-impedance">AC Impedance</a>
+            <a href="#resistor-network">Series / Parallel</a>
+        </nav>
 
     </header>
 
