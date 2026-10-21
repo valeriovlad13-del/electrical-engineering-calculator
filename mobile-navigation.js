@@ -52,7 +52,8 @@
       const selected=cards.find(c=>c.id===id); if(!selected)return false;
       if(!mobile.matches){if(push)location.hash=id;return true;}
       body.classList.add("mobile-calculator-active");
-      body.classList.remove("mobile-home-active");
+      body.classList.remove("mobile-home-active","mobile-section-active");
+      sections.forEach(section=>section.classList.remove("mobile-active-section"));
       cards.forEach(c=>c.classList.toggle("mobile-active-calculator",c===selected));
       close();
       if(push&&location.hash!=="#"+id)history.pushState({mobileCalculator:id},"","#"+id);
@@ -82,11 +83,11 @@
     });
     const breakpoint=()=>{
       close();
-      if(!mobile.matches){body.classList.remove("mobile-home-active","mobile-calculator-active");cards.forEach(c=>c.classList.remove("mobile-active-calculator"));return;}
+      if(!mobile.matches){body.classList.remove("mobile-home-active","mobile-calculator-active","mobile-section-active");sections.forEach(section=>section.classList.remove("mobile-active-section"));cards.forEach(c=>c.classList.remove("mobile-active-calculator"));return;}
       const id=location.hash.slice(1);if(id&&id!=="top"&&(sectionView(id,false)||calculator(id,false)))return;home(false);
     };
     if(mobile.addEventListener)mobile.addEventListener("change",breakpoint);else mobile.addListener(breakpoint);
-    if(mobile.matches){const id=location.hash.slice(1);if(!id||id==="top"||!calculator(id,false))home(false);}else close();
+    if(mobile.matches){const id=location.hash.slice(1);if(!id||id==="top"||(!sectionView(id,false)&&!calculator(id,false)))home(false);}else close();
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
