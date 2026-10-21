@@ -8,7 +8,7 @@
     const backdrop=document.getElementById("mobile-menu-backdrop");
     const cards=[...document.querySelectorAll(".calculator-card[id]")];
     const mobile=matchMedia("(max-width: 600px)");
-    if(!toggle||!menu||!cards.length)return;
+    if(!toggle||!menu)return;
     function close(){
       menu.hidden=true; menu.classList.remove("mobile-sidebar-open");
       if(backdrop)backdrop.hidden=true;
