@@ -2140,3 +2140,19 @@ body.dark-mode .mobile-calculator-menu a:hover { background: #24384d; }
   .mobile-menu-backdrop[hidden] { display: none !important; }
   body.mobile-sidebar-open { overflow: hidden !important; }
 }
+
+
+/* Critical mobile fallback: the home view is the default unless a calculator is selected. */
+@media screen and (max-width: 600px) {
+  body:not(.mobile-calculator-active) main > .calculators-section,
+  body:not(.mobile-calculator-active) main > .formula-reference-section,
+  body:not(.mobile-calculator-active) main > .history-section,
+  body:not(.mobile-calculator-active) main > .note-section { display: none !important; }
+  body.mobile-calculator-active main > .calculators-section { display: block !important; }
+  body.mobile-calculator-active main > .calculators-section .calculator-card { display: none !important; }
+  body.mobile-calculator-active main > .calculators-section .calculator-card.mobile-active-calculator { display: block !important; }
+  #mobile-menu-toggle { display: grid !important; position: relative; z-index: 1502; touch-action: manipulation; }
+  #mobile-calculator-menu { z-index: 1501 !important; pointer-events: auto !important; }
+  #mobile-calculator-menu[hidden], #mobile-menu-backdrop[hidden] { display: none !important; }
+  #mobile-menu-backdrop:not([hidden]) { display: block !important; position: fixed !important; inset: 0 !important; z-index: 1500 !important; width: 100vw; height: 100dvh; background: rgba(15,23,42,.45); border: 0; }
+}
