@@ -156,16 +156,6 @@ if (historyList) historyList.addEventListener("click", event => {
         document.getElementById(destination[1])?.focus();
     }
 });
-const exportHistoryButton = document.getElementById("export-history");
-if (exportHistoryButton) exportHistoryButton.addEventListener("click", () => {
-    const history = getHistory();
-    if (!history.length) { alert("There are no calculations to export yet."); return; }
-    const columns = ["title", "calculation", "result", "date", "inputs"];
-    const quote = value => '"' + String(value ?? "").replace(/"/g, '""') + '"';
-    const csv = [columns.join(","), ...history.map(item => columns.map(key => quote(key === "inputs" ? JSON.stringify(item.inputs || {}) : item[key])).join(","))].join("\r\n");
-    const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8;" }), url = URL.createObjectURL(blob), link = document.createElement("a");
-    link.href = url; link.download = "electrical-calculation-history.csv"; document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
-});
 const clearHistoryButton = document.getElementById("clear-history");
 if (clearHistoryButton) clearHistoryButton.addEventListener("click", () => {
     if (!getHistory().length) return;
