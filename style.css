@@ -2156,3 +2156,115 @@ body.dark-mode .mobile-calculator-menu a:hover { background: #24384d; }
   #mobile-calculator-menu[hidden], #mobile-menu-backdrop[hidden] { display: none !important; }
   #mobile-menu-backdrop:not([hidden]) { display: block !important; position: fixed !important; inset: 0 !important; z-index: 1500 !important; width: 100vw; height: 100dvh; background: rgba(15,23,42,.45); border: 0; }
 }
+
+
+/* Responsive mobile dashboard footer and polished drawer navigation. */
+@media screen and (max-width: 600px) {
+    body.mobile-home-active {
+        display: flex;
+        flex-direction: column;
+        height: auto !important;
+        min-height: 100dvh;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        overscroll-behavior-y: auto;
+    }
+    body.mobile-home-active main {
+        flex: 1 0 auto;
+        height: auto !important;
+        min-height: max(520px, calc(100dvh - var(--mobile-header-height, 66px) - 84px));
+        overflow: visible !important;
+        display: flex;
+        flex-direction: column;
+    }
+    body.mobile-home-active .hero { flex: 0 0 auto; }
+    body.mobile-home-active .quick-nav-section {
+        flex: 1 0 auto;
+        min-height: 0;
+        overflow: visible;
+    }
+    body.mobile-home-active .quick-nav-section .container {
+        height: auto;
+        min-height: 100%;
+    }
+    body.mobile-home-active .calculator-nav {
+        flex: 1 0 auto;
+        grid-template-rows: repeat(5, minmax(70px, 1fr));
+    }
+    body.mobile-home-active .site-footer {
+        display: block !important;
+        flex: 0 0 auto;
+        margin-top: auto;
+        padding: 16px 0 calc(16px + env(safe-area-inset-bottom, 0px));
+    }
+    body.mobile-home-active .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    body.mobile-home-active .footer-content p { margin: 0; }
+
+    .mobile-calculator-menu {
+        padding: 18px 12px 24px !important;
+        gap: 3px !important;
+    }
+    .drawer-heading {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 10px 8px 18px;
+        margin-bottom: 5px;
+        border-bottom: 1px solid #e1e7ef;
+    }
+    .drawer-brand-icon {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+        border-radius: 12px;
+        color: #fff;
+        background: #173f69;
+        font-size: 23px;
+    }
+    .drawer-heading-copy { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .drawer-heading-copy strong { font-size: .94rem; line-height: 1.2; color: #263b53; }
+    .drawer-heading-copy span { font-size: .78rem; color: #718096; }
+    .mobile-calculator-menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 46px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        text-decoration: none;
+        color: #263b53;
+        font-weight: 550;
+        font-size: .9rem;
+    }
+    .mobile-calculator-menu a[data-mobile-home] {
+        margin: 3px 0 7px;
+        border: 1px solid #dfe7f0;
+        border-radius: 10px;
+        font-weight: 700;
+    }
+    .drawer-link-icon {
+        width: 21px;
+        height: 21px;
+        flex: 0 0 21px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        color: #245b8f;
+    }
+    .mobile-calculator-menu a:active { background: #edf4fb; }
+    body.dark-mode .drawer-heading { border-bottom-color: #34465a; }
+    body.dark-mode .drawer-heading-copy strong,
+    body.dark-mode .mobile-calculator-menu a { color: #e2eaf3; }
+    body.dark-mode .drawer-heading-copy span { color: #a1afbf; }
+    body.dark-mode .mobile-calculator-menu a[data-mobile-home] { border-color: #34465a; }
+    body.dark-mode .mobile-calculator-menu a:active { background: #23364b; }
+}
