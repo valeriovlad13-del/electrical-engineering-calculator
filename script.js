@@ -832,13 +832,13 @@ function calculatePowerTriangleValues(t1,v1,t2,v2){
  if(v.P!==null&&v.P<0)throw new Error("Real power cannot be negative.");
  if(v.Q!==null&&v.Q<0)throw new Error("Reactive power cannot be negative.");
  if(v.S!==null&&v.S<=0)throw new Error("Apparent power must be greater than zero.");
- if(v.PF!==null&&(v.PF<=0||v.PF>1))throw new Error("Power factor must be greater than 0 and no greater than 1.");
+ if(v.PF!==null&&(v.PF<0||v.PF>1))throw new Error("Power factor must be between 0 and 1.");
  if(v.Theta!==null&&(v.Theta<0||v.Theta>=90))throw new Error("Phase angle must be at least 0° and less than 90°.");
  const hasP=v.P!==null,hasQ=v.Q!==null,hasS=v.S!==null,hasPF=v.PF!==null,hasTheta=v.Theta!==null,radTheta=hasTheta?v.Theta*Math.PI/180:null;
- if(hasP&&hasQ){v.S=Math.hypot(v.P,v.Q);v.PF=v.S===0?1:v.P/v.S}
+ if(hasP&&hasQ){if(v.P===0&&v.Q===0)throw new Error("Power factor is undefined when both real and reactive power are zero.");v.S=Math.hypot(v.P,v.Q);v.PF=v.P/v.S}
  else if(hasP&&hasS){if(v.P>v.S)throw new Error("Real power cannot be greater than apparent power.");v.Q=Math.sqrt(Math.max(0,v.S*v.S-v.P*v.P));v.PF=v.P/v.S}
  else if(hasQ&&hasS){if(v.Q>v.S)throw new Error("Reactive power cannot be greater than apparent power.");v.P=Math.sqrt(Math.max(0,v.S*v.S-v.Q*v.Q));v.PF=v.P/v.S}
- else if(hasP&&hasPF){if(v.P<=0)throw new Error("Real power must be greater than zero when power factor is provided.");v.S=v.P/v.PF;v.Q=Math.sqrt(Math.max(0,v.S*v.S-v.P*v.P))}
+ else if(hasP&&hasPF){if(v.P<=0||v.PF===0)throw new Error("Real power and power factor must both be greater than zero to calculate apparent power.");v.S=v.P/v.PF;v.Q=Math.sqrt(Math.max(0,v.S*v.S-v.P*v.P))}
  else if(hasS&&hasPF){v.P=v.S*v.PF;v.Q=v.S*Math.sqrt(Math.max(0,1-v.PF*v.PF))}
  else if(hasQ&&hasPF){if(v.Q<=0)throw new Error("Reactive power must be greater than zero when power factor is provided.");if(v.PF>=1)throw new Error("A power factor of 1 requires reactive power to be zero.");v.S=v.Q/Math.sqrt(1-v.PF*v.PF);v.P=v.S*v.PF}
  else if(hasP&&hasTheta){if(v.P<=0)throw new Error("Real power must be greater than zero when phase angle is provided.");v.S=v.P/Math.cos(radTheta);v.Q=v.P*Math.tan(radTheta);v.PF=Math.cos(radTheta)}
