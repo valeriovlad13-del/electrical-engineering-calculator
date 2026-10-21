@@ -2012,91 +2012,125 @@ document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(
 })();
 
 
-/* Mobile navigation and direction-aware sticky header */
+/* Mobile navigation, page-by-page dashboard, and direction-aware header */
 (() => {
     const header = document.querySelector(".site-header");
     const menuToggle = document.getElementById("mobile-menu-toggle");
-    const mobileMenu = document.getElementById("mobile-calculator-menu");
-    if (header && menuToggle && mobileMenu) {
-        const closeMenu = () => {
-            mobileMenu.classList.remove("mobile-sidebar-open");
-            mobileMenu.hidden = true;
-            const backdrop = document.getElementById("mobile-menu-backdrop");
-            if (backdrop) backdrop.hidden = true;
-            body.classList.remove("mobile-sidebar-open");
-            menuToggle.setAttribute("aria-expanded", "false");
-            menuToggle.setAttribute("aria-label", "Open calculator menu");
-            header.classList.remove("header-menu-open");
-            const icon = menuToggle.querySelector("svg");
-            if (icon) icon.innerHTML = '<path d="M4 6h16M4 12h16M4 18h16"></path>';
-        };
-        const backdrop = document.getElementById("mobile-menu-backdrop");
-        const closeDrawer = () => {
-            mobileMenu.classList.remove("mobile-sidebar-open");
-            mobileMenu.hidden = true;
-            if (backdrop) backdrop.hidden = true;
-            document.body.classList.remove("mobile-sidebar-open");
-            menuToggle.setAttribute("aria-expanded", "false");
-            menuToggle.setAttribute("aria-label", "Open calculator sidebar");
-            header.classList.remove("header-menu-open");
-            const icon = menuToggle.querySelector("svg");
-            if (icon) icon.innerHTML = '<path d="M4 6h16M4 12h16M4 18h16"></path>';
-        };
-        menuToggle.addEventListener("click", () => {
-            const opening = !mobileMenu.classList.contains("mobile-sidebar-open");
-            if (opening) {
-                mobileMenu.hidden = false;
-                if (backdrop) backdrop.hidden = false;
-                document.body.classList.add("mobile-sidebar-open");
-                requestAnimationFrame(() => mobileMenu.classList.add("mobile-sidebar-open"));
-            } else closeDrawer();
-            menuToggle.setAttribute("aria-expanded", String(opening));
-            menuToggle.setAttribute("aria-label", opening ? "Close calculator sidebar" : "Open calculator sidebar");
-            header.classList.toggle("header-menu-open", opening);
-            const icon = menuToggle.querySelector("svg");
-            if (icon) icon.innerHTML = opening
-                ? '<path d="m6 6 12 12M18 6 6 18"></path>'
-                : '<path d="M4 6h16M4 12h16M4 18h16"></path>';
-        });
-        if (backdrop) backdrop.addEventListener("click", closeDrawer);
-        mobileMenu.addEventListener("click", event => {
-            if (event.target.closest("a")) closeMenu();
-        });
-        document.addEventListener("keydown", event => {
-            if (event.key === "Escape" && !mobileMenu.hidden) {
-                closeMenu();
-                menuToggle.focus();
-            }
-        });
-        window.addEventListener("resize", () => {
-            if (window.innerWidth > 600) closeMenu();
-        });
+    const menu = document.getElementById("mobile-calculator-menu");
+    const backdrop = document.getElementById("mobile-menu-backdrop");
+    const body = document.body;
+    const mobileQuery = window.matchMedia("(max-width: 600px)");
+    const cards = Array.from(document.querySelectorAll(".calculator-card[id]"));
+    if (!header || !menuToggle || !menu) return;
 
-        let lastY = window.scrollY;
-        let ticking = false;
-        const updateHeader = () => {
-            const currentY = window.scrollY;
-            const delta = currentY - lastY;
-            if (!mobileMenu.hidden) {
-                header.classList.remove("header-hidden");
-            } else if (currentY < 80 || delta < -5) {
-                header.classList.remove("header-hidden");
-            } else if (delta > 5 && currentY > 140) {
-                header.classList.add("header-hidden");
+    const setDrawerOpen = open => {
+        menu.classList.toggle("mobile-sidebar-open", open);
+        menu.hidden = !open;
+        if (backdrop) backdrop.hidden = !open;
+        body.classList.toggle("mobile-sidebar-open", open);
+        header.classList.toggle("header-menu-open", open);
+        menuToggle.setAttribute("aria-expanded", String(open));
+        menuToggle.setAttribute("aria-label", open ? "Close calculator sidebar" : "Open calculator sidebar");
+        const icon = menuToggle.querySelector("svg");
+        if (icon) icon.innerHTML = open
+            ? '<path d="m6 6 12 12M18 6 6 18"></path>'
+            : '<path d="M4 6h16M4 12h16M4 18h16"></path>';
+    };
+
+    const showHome = (push = true) => {
+        body.classList.remove("mobile-calculator-active");
+        body.classList.toggle("mobile-home-active", mobileQuery.matches);
+        cards.forEach(card => card.classList.remove("mobile-active-calculator"));
+        setDrawerOpen(false);
+        if (push && location.hash !== "#top") history.pushState({ mobileHome: true }, "", "#top");
+        window.scrollTo({ top: 0, behavior: "auto" });
+    };
+
+    const showCalculator = (id, push = true) => {
+        const card = cards.find(item => item.id === id);
+        if (!card) return false;
+        if (!mobileQuery.matches) {
+            if (push) location.hash = id;
+            return true;
+        }
+        body.classList.add("mobile-calculator-active");
+        body.classList.remove("mobile-home-active");
+        cards.forEach(item => item.classList.toggle("mobile-active-calculator", item === card));
+        setDrawerOpen(false);
+        if (push && location.hash !== "#" + id) history.pushState({ mobileCalculator: id }, "", "#" + id);
+        window.scrollTo({ top: 0, behavior: "auto" });
+        return true;
+    };
+
+    menuToggle.addEventListener("click", () => setDrawerOpen(menu.hidden));
+    if (backdrop) backdrop.addEventListener("click", () => setDrawerOpen(false));
+    menu.addEventListener("click", event => {
+        const link = event.target.closest("a[href^='#']");
+        if (!link) return;
+        const target = link.getAttribute("href").slice(1);
+        if (target === "top" || link.hasAttribute("data-mobile-home")) {
+            if (mobileQuery.matches) { event.preventDefault(); showHome(); }
+        } else if (mobileQuery.matches && cards.some(card => card.id === target)) {
+            event.preventDefault();
+            showCalculator(target);
+        }
+    });
+    document.querySelectorAll(".calculator-nav a[href^='#']").forEach(link => {
+        link.addEventListener("click", event => {
+            const id = link.getAttribute("href").slice(1);
+            if (mobileQuery.matches && cards.some(card => card.id === id)) {
+                event.preventDefault();
+                showCalculator(id);
             }
-            lastY = currentY;
-            ticking = false;
-        };
-        window.addEventListener("scroll", () => {
-            if (!ticking) {
-                window.requestAnimationFrame(updateHeader);
-                ticking = true;
-            }
-        }, { passive: true });
+        });
+    });
+    const brand = document.querySelector(".brand");
+    if (brand) brand.addEventListener("click", event => {
+        if (mobileQuery.matches) { event.preventDefault(); showHome(); }
+    });
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && !menu.hidden) {
+            setDrawerOpen(false);
+            menuToggle.focus();
+        }
+    });
+    window.addEventListener("popstate", () => {
+        if (!mobileQuery.matches) return;
+        const id = location.hash.slice(1);
+        if (!id || id === "top") showHome(false);
+        else if (!showCalculator(id, false)) showHome(false);
+    });
+    const updateBreakpoint = () => {
+        setDrawerOpen(false);
+        if (!mobileQuery.matches) {
+            body.classList.remove("mobile-home-active", "mobile-calculator-active");
+            cards.forEach(card => card.classList.remove("mobile-active-calculator"));
+            return;
+        }
+        const id = location.hash.slice(1);
+        if (id && id !== "top" && showCalculator(id, false)) return;
+        showHome(false);
+    };
+    if (mobileQuery.addEventListener) mobileQuery.addEventListener("change", updateBreakpoint);
+    else mobileQuery.addListener(updateBreakpoint);
+    if (mobileQuery.matches) {
+        const id = location.hash.slice(1);
+        if (!id || id === "top" || !showCalculator(id, false)) showHome(false);
     }
+
+    let lastY = window.scrollY;
+    let ticking = false;
+    window.addEventListener("scroll", () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+            const y = window.scrollY, delta = y - lastY;
+            if (!menu.hidden || y < 80 || delta < -5) header.classList.remove("header-hidden");
+            else if (delta > 5 && y > 140) header.classList.add("header-hidden");
+            lastY = y; ticking = false;
+        });
+    }, { passive: true });
 })();
-
-
 /* Mobile page-by-page navigation. Desktop continues to show the full dashboard. */
 (() => {
     const mobileQuery = window.matchMedia("(max-width: 600px)");
