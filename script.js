@@ -2034,3 +2034,67 @@ document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(
         });
     }, { passive: true });
 })();
+
+
+/* Render division in displayed equations as stacked fractions, never inline slashes. */
+(() => {
+    const formulaSelector = [
+        ".result-formula",
+        "[id$='-result-formula']",
+        "[id$='-formula']",
+        ".solution-equation",
+        ".solution-final"
+    ].join(",");
+    const operand = String.raw`(?:\([^()]*\)|[A-Za-zΑ-ω0-9₀-₉θΘ²³√_%.,₱]+)`;
+    const divisionPattern = new RegExp("(" + operand + ")\\s*\\/\\s*(" + operand + ")", "g");
+
+    function escapeHTML(value) {
+        return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+
+    function formatFormula(element) {
+        if (!(element instanceof Element) || !element.matches(formulaSelector)) return;
+        const original = element.textContent || "";
+        if (!original.includes("/") || element.dataset.fractionSource === original) return;
+        let formatted = original;
+        // Several passes allow fractions nested in parentheses to be rendered first.
+        for (let pass = 0; pass < 4; pass++) {
+            const next = formatted.replace(divisionPattern, (match, numerator, denominator) =>
+                '<span class="math-fraction" role="math" aria-label="' +
+                escapeHTML(numerator.trim() + " divided by " + denominator.trim()) +
+                '"><span class="math-numerator">' + escapeHTML(numerator.trim()) +
+                '</span><span class="math-denominator">' + escapeHTML(denominator.trim()) +
+                '</span></span>');
+            if (next === formatted) break;
+            formatted = next;
+        }
+        if (formatted !== original) {
+            element.innerHTML = formatted;
+            element.dataset.fractionSource = original;
+        }
+    }
+
+    function scan(root) {
+        if (root instanceof Element) formatFormula(root);
+        if (root && root.querySelectorAll) root.querySelectorAll(formulaSelector).forEach(formatFormula);
+    }
+
+    scan(document);
+    const observer = new MutationObserver(records => {
+        records.forEach(record => {
+            if (record.type === "characterData") scan(record.target.parentElement);
+            record.addedNodes.forEach(node => {
+                if (node.nodeType === Node.ELEMENT_NODE) scan(node);
+            });
+            if (record.type === "childList" && record.target instanceof Element) {
+                const parent = record.target.closest(formulaSelector);
+                if (parent && !parent.querySelector(".math-fraction")) {
+                    delete parent.dataset.fractionSource;
+                    formatFormula(parent);
+                }
+            }
+        });
+    });
+    observer.observe(document.body, { childList: true, characterData: true, subtree: true });
+})();
