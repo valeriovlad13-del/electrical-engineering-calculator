@@ -28,10 +28,22 @@
     <!-- Critical mobile visibility rules must not depend on the main stylesheet loading. -->
     <style id="mobile-dashboard-critical">
         @media screen and (max-width: 600px) {
+            /* Dashboard mode: no calculator content may appear below Quick Navigation. */
             body:not(.mobile-calculator-active) .calculators-section,
             body:not(.mobile-calculator-active) .formula-reference-section,
             body:not(.mobile-calculator-active) .history-section,
-            body:not(.mobile-calculator-active) .note-section {
+            body:not(.mobile-calculator-active) .note-section,
+            body.mobile-home-active .calculators-section {
+                display: none !important;
+            }
+
+            /* Calculator mode: replace the dashboard with exactly one selected calculator. */
+            body.mobile-calculator-active .hero,
+            body.mobile-calculator-active .quick-nav-section,
+            body.mobile-calculator-active .formula-reference-section,
+            body.mobile-calculator-active .history-section,
+            body.mobile-calculator-active .note-section,
+            body.mobile-calculator-active .site-footer {
                 display: none !important;
             }
             body.mobile-calculator-active .calculators-section {
