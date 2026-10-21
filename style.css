@@ -2356,3 +2356,38 @@ body.dark-mode .result-panel > p[id$="-formula"] {
     .result-panel .secondary-result { gap: 8px; }
     .result-panel .secondary-result strong { text-align: left; }
 }
+
+
+/* Stacked fraction bars for every displayed equation and worked solution. */
+.math-fraction {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    vertical-align: middle;
+    text-align: center;
+    margin: 0 .12em;
+    line-height: 1.08;
+    white-space: nowrap;
+    font-size: .92em;
+}
+.math-numerator {
+    display: block;
+    padding: 0 .16em .12em;
+    border-bottom: 1.5px solid currentColor;
+}
+.math-denominator {
+    display: block;
+    padding: .12em .16em 0;
+}
+.solution-equation .math-fraction {
+    font-size: .95em;
+}
+.result-panel .result-formula .math-fraction,
+.result-panel [id$="-result-formula"] .math-fraction {
+    color: inherit;
+}
+@media (max-width: 420px) {
+    .math-fraction { margin: 0 .08em; font-size: .88em; }
+    .math-numerator, .math-denominator { padding-left: .08em; padding-right: .08em; }
+}
