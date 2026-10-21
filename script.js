@@ -2012,122 +2012,25 @@ document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(
 })();
 
 
-/* Mobile navigation, page-by-page dashboard, and direction-aware header */
+/* Direction-aware sticky header only. Mobile navigation is owned by mobile-navigation.js. */
 (() => {
     const header = document.querySelector(".site-header");
-    const menuToggle = document.getElementById("mobile-menu-toggle");
-    const menu = document.getElementById("mobile-calculator-menu");
-    const backdrop = document.getElementById("mobile-menu-backdrop");
-    const body = document.body;
-    const mobileQuery = window.matchMedia("(max-width: 600px)");
-    const cards = Array.from(document.querySelectorAll(".calculator-card[id]"));
-    if (!header || !menuToggle || !menu) return;
-
-    const setDrawerOpen = open => {
-        menu.classList.toggle("mobile-sidebar-open", open);
-        menu.hidden = !open;
-        if (backdrop) backdrop.hidden = !open;
-        body.classList.toggle("mobile-sidebar-open", open);
-        header.classList.toggle("header-menu-open", open);
-        menuToggle.setAttribute("aria-expanded", String(open));
-        menuToggle.setAttribute("aria-label", open ? "Close calculator sidebar" : "Open calculator sidebar");
-        const icon = menuToggle.querySelector("svg");
-        if (icon) icon.innerHTML = open
-            ? '<path d="m6 6 12 12M18 6 6 18"></path>'
-            : '<path d="M4 6h16M4 12h16M4 18h16"></path>';
-    };
-
-    const showHome = (push = true) => {
-        body.classList.remove("mobile-calculator-active");
-        body.classList.toggle("mobile-home-active", mobileQuery.matches);
-        cards.forEach(card => card.classList.remove("mobile-active-calculator"));
-        setDrawerOpen(false);
-        if (push && location.hash !== "#top") history.pushState({ mobileHome: true }, "", "#top");
-        window.scrollTo({ top: 0, behavior: "auto" });
-    };
-
-    const showCalculator = (id, push = true) => {
-        const card = cards.find(item => item.id === id);
-        if (!card) return false;
-        if (!mobileQuery.matches) {
-            if (push) location.hash = id;
-            return true;
-        }
-        body.classList.add("mobile-calculator-active");
-        body.classList.remove("mobile-home-active");
-        cards.forEach(item => item.classList.toggle("mobile-active-calculator", item === card));
-        setDrawerOpen(false);
-        if (push && location.hash !== "#" + id) history.pushState({ mobileCalculator: id }, "", "#" + id);
-        window.scrollTo({ top: 0, behavior: "auto" });
-        return true;
-    };
-
-    menuToggle.addEventListener("click", () => setDrawerOpen(menu.hidden));
-    if (backdrop) backdrop.addEventListener("click", () => setDrawerOpen(false));
-    menu.addEventListener("click", event => {
-        const link = event.target.closest("a[href^='#']");
-        if (!link) return;
-        const target = link.getAttribute("href").slice(1);
-        if (target === "top" || link.hasAttribute("data-mobile-home")) {
-            if (mobileQuery.matches) { event.preventDefault(); showHome(); }
-        } else if (mobileQuery.matches && cards.some(card => card.id === target)) {
-            event.preventDefault();
-            showCalculator(target);
-        }
-    });
-    document.querySelectorAll(".calculator-nav a[href^='#']").forEach(link => {
-        link.addEventListener("click", event => {
-            const id = link.getAttribute("href").slice(1);
-            if (mobileQuery.matches && cards.some(card => card.id === id)) {
-                event.preventDefault();
-                showCalculator(id);
-            }
-        });
-    });
-    const brand = document.querySelector(".brand");
-    if (brand) brand.addEventListener("click", event => {
-        if (mobileQuery.matches) { event.preventDefault(); showHome(); }
-    });
-    document.addEventListener("keydown", event => {
-        if (event.key === "Escape" && !menu.hidden) {
-            setDrawerOpen(false);
-            menuToggle.focus();
-        }
-    });
-    window.addEventListener("popstate", () => {
-        if (!mobileQuery.matches) return;
-        const id = location.hash.slice(1);
-        if (!id || id === "top") showHome(false);
-        else if (!showCalculator(id, false)) showHome(false);
-    });
-    const updateBreakpoint = () => {
-        setDrawerOpen(false);
-        if (!mobileQuery.matches) {
-            body.classList.remove("mobile-home-active", "mobile-calculator-active");
-            cards.forEach(card => card.classList.remove("mobile-active-calculator"));
-            return;
-        }
-        const id = location.hash.slice(1);
-        if (id && id !== "top" && showCalculator(id, false)) return;
-        showHome(false);
-    };
-    if (mobileQuery.addEventListener) mobileQuery.addEventListener("change", updateBreakpoint);
-    else mobileQuery.addListener(updateBreakpoint);
-    if (mobileQuery.matches) {
-        const id = location.hash.slice(1);
-        if (!id || id === "top" || !showCalculator(id, false)) showHome(false);
-    }
-
+    if (!header) return;
     let lastY = window.scrollY;
     let ticking = false;
     window.addEventListener("scroll", () => {
         if (ticking) return;
         ticking = true;
         requestAnimationFrame(() => {
-            const y = window.scrollY, delta = y - lastY;
-            if (!menu.hidden || y < 80 || delta < -5) header.classList.remove("header-hidden");
-            else if (delta > 5 && y > 140) header.classList.add("header-hidden");
-            lastY = y; ticking = false;
+            const y = window.scrollY;
+            const delta = y - lastY;
+            if (document.body.classList.contains("mobile-sidebar-open") || y < 80 || delta < -5) {
+                header.classList.remove("header-hidden");
+            } else if (delta > 5 && y > 140) {
+                header.classList.add("header-hidden");
+            }
+            lastY = y;
+            ticking = false;
         });
     }, { passive: true });
 })();
