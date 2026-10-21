@@ -2075,7 +2075,7 @@ body.dark-mode .mobile-calculator-menu a:hover { background: #24384d; }
         overscroll-behavior: contain; transform: translateX(105%);
         visibility: hidden; transition: transform .22s ease, visibility .22s ease;
     }
-    .mobile-calculator-menu[hidden] { display: flex; }
+    .mobile-calculator-menu[hidden] { display: none !important; }
     .mobile-calculator-menu.mobile-sidebar-open { transform: translateX(0); visibility: visible; }
     .mobile-calculator-menu a { flex: 0 0 auto; min-height: 44px; display: flex; align-items: center; padding: 11px 13px; font-size: .94rem; }
     .mobile-calculator-menu a[data-mobile-home] { border-bottom: 1px solid #e1e7ef; margin-bottom: 6px; border-radius: 8px; }
