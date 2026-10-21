@@ -1919,9 +1919,9 @@ const builders={
 "ac-impedance-result":()=>{
 const r=get("ac-resistance"),l=get("ac-inductance"),c=get("ac-capacitance"),f=get("ac-frequency");
 if(r===null||l===null||c===null||f===null||f<=0)return[];
-const xl=2*Math.PI*f*l,xc=c>0?1/(2*Math.PI*f*c):null,x=xl-(xc===null?0:xc),z=Math.hypot(r,x),theta=r===0?(x===0?0:Math.sign(x)*90):Math.atan(x/r)*180/Math.PI;
-const out=[calc("Step 1 — Calculate inductive reactance","X_L = 2πfL","X_L = 2π × "+fmt(f)+" Hz × "+fmt(l)+" H","X_L = "+fmt(xl)+" Ω")];
-if(c>0)out.push(step("Step 2 — Calculate capacitive reactance",eq("X_C = "+frac("1","2πfC"))+eq("X_C = "+frac("1","2π × "+fmt(f)+" × "+fmt(c))+" = "+fmt(xc)+" Ω")));
+const inductanceH=l/1000,capacitanceF=c/1e6,xl=2*Math.PI*f*inductanceH,xc=c>0?1/(2*Math.PI*f*capacitanceF):null,x=xl-(xc===null?0:xc),z=Math.hypot(r,x),theta=Math.atan2(x,r)*180/Math.PI;
+const out=[calc("Step 1 — Calculate inductive reactance","X_L = 2πfL","X_L = 2π × "+fmt(f)+" Hz × "+fmt(l)+" mH × 10⁻³","X_L = "+fmt(xl)+" Ω")];
+if(c>0)out.push(step("Step 2 — Calculate capacitive reactance",eq("X_C = "+frac("1","2πfC"))+eq("X_C = "+frac("1","2π × "+fmt(f)+" × "+fmt(c)+" × 10⁻⁶"))+eq("X_C = "+fmt(xc)+" Ω")));
 else out.push(step("Step 2 — Capacitive reactance","<p>Capacitance is 0, so the capacitive branch is excluded and X_C is treated as 0 Ω for this model.</p>"));
 out.push(calc("Step 3 — Find net reactance","X = X_L − X_C","X = "+fmt(xl)+" − "+fmt(xc===null?0:xc),"X = "+fmt(x)+" Ω"));
 out.push(calc("Step 4 — Find impedance magnitude","Z = √(R² + X²)","Z = √("+fmt(r)+"² + "+fmt(x)+"²)","Z = "+fmt(z)+" Ω"));
