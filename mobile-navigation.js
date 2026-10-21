@@ -7,6 +7,7 @@
     const menu=document.getElementById("mobile-calculator-menu");
     const backdrop=document.getElementById("mobile-menu-backdrop");
     const cards=[...document.querySelectorAll(".calculator-card[id]")];
+    const sections=[...document.querySelectorAll("main > section[id], main > section.note-section")];
     const mobile=matchMedia("(max-width: 600px)");
     if(!toggle||!menu)return;
     function close(){
@@ -26,18 +27,33 @@
       toggle.setAttribute("aria-label","Close calculator menu");
     }
     function home(push=true){
-      body.classList.remove("mobile-calculator-active");
+      body.classList.remove("mobile-calculator-active","mobile-section-active");
       body.classList.toggle("mobile-home-active",mobile.matches);
+      sections.forEach(section=>section.classList.remove("mobile-active-section"));
       cards.forEach(c=>c.classList.remove("mobile-active-calculator"));
       close();
       if(push&&location.hash!=="#top")history.pushState({mobileHome:true},"","#top");
       window.scrollTo(0,0);
     }
+    function sectionView(id,push=true){
+      const selected=sections.find(section=>section.id===id);
+      if(!selected)return false;
+      if(!mobile.matches){if(push)location.hash=id;return true;}
+      body.classList.remove("mobile-home-active","mobile-calculator-active");
+      body.classList.add("mobile-section-active");
+      cards.forEach(card=>card.classList.remove("mobile-active-calculator"));
+      sections.forEach(section=>section.classList.toggle("mobile-active-section",section===selected));
+      close();
+      if(push&&location.hash!=="#"+id)history.pushState({mobileSection:id},"","#"+id);
+      window.scrollTo(0,0);
+      return true;
+    }
     function calculator(id,push=true){
       const selected=cards.find(c=>c.id===id); if(!selected)return false;
       if(!mobile.matches){if(push)location.hash=id;return true;}
       body.classList.add("mobile-calculator-active");
-      body.classList.remove("mobile-home-active");
+      body.classList.remove("mobile-home-active","mobile-section-active");
+      sections.forEach(section=>section.classList.remove("mobile-active-section"));
       cards.forEach(c=>c.classList.toggle("mobile-active-calculator",c===selected));
       close();
       if(push&&location.hash!=="#"+id)history.pushState({mobileCalculator:id},"","#"+id);
@@ -50,7 +66,9 @@
       const id=a.getAttribute("href").slice(1);
       if(!mobile.matches){close();return;}
       e.preventDefault();e.stopPropagation();
-      if(id==="top"||a.hasAttribute("data-mobile-home"))home();else calculator(id);
+      if(id==="top"||a.hasAttribute("data-mobile-home"))home();
+      else if(a.hasAttribute("data-mobile-section"))sectionView(id);
+      else calculator(id);
     });
     document.querySelectorAll(".calculator-nav a[href^='#']").forEach(a=>a.addEventListener("click",e=>{
       const id=a.getAttribute("href").slice(1);
@@ -61,15 +79,15 @@
     document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!menu.hidden){close();toggle.focus();}});
     addEventListener("popstate",()=>{
       if(!mobile.matches)return;const id=location.hash.slice(1);
-      if(!id||id==="top")home(false);else if(!calculator(id,false))home(false);
+      if(!id||id==="top")home(false);else if(!sectionView(id,false)&&!calculator(id,false))home(false);
     });
     const breakpoint=()=>{
       close();
-      if(!mobile.matches){body.classList.remove("mobile-home-active","mobile-calculator-active");cards.forEach(c=>c.classList.remove("mobile-active-calculator"));return;}
-      const id=location.hash.slice(1);if(id&&id!=="top"&&calculator(id,false))return;home(false);
+      if(!mobile.matches){body.classList.remove("mobile-home-active","mobile-calculator-active","mobile-section-active");sections.forEach(section=>section.classList.remove("mobile-active-section"));cards.forEach(c=>c.classList.remove("mobile-active-calculator"));return;}
+      const id=location.hash.slice(1);if(id&&id!=="top"&&(sectionView(id,false)||calculator(id,false)))return;home(false);
     };
     if(mobile.addEventListener)mobile.addEventListener("change",breakpoint);else mobile.addListener(breakpoint);
-    if(mobile.matches){const id=location.hash.slice(1);if(!id||id==="top"||!calculator(id,false))home(false);}else close();
+    if(mobile.matches){const id=location.hash.slice(1);if(!id||id==="top"||(!sectionView(id,false)&&!calculator(id,false)))home(false);}else close();
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();

@@ -2391,3 +2391,37 @@ body.dark-mode .result-panel > p[id$="-formula"] {
     .math-fraction { margin: 0 .08em; font-size: .88em; }
     .math-numerator, .math-denominator { padding-left: .08em; padding-right: .08em; }
 }
+
+
+/* Keep the mobile drawer usable on short screens and expose reference sections. */
+@media screen and (max-width: 600px) {
+    #mobile-calculator-menu {
+        max-height: 100vh !important;
+        max-height: 100dvh !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        overscroll-behavior-y: contain;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+        touch-action: pan-y;
+    }
+    #mobile-calculator-menu .drawer-heading {
+        flex: 0 0 auto;
+    }
+    #mobile-calculator-menu a {
+        flex-shrink: 0;
+    }
+    body.mobile-section-active main > section {
+        display: none !important;
+    }
+    body.mobile-section-active main > section.mobile-active-section {
+        display: block !important;
+    }
+    body.mobile-section-active main > section.mobile-active-section .container {
+        display: block;
+    }
+    body.mobile-section-active .footer-content {
+        display: flex;
+    }
+}
