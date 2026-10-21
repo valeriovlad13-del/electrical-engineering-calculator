@@ -24,6 +24,28 @@
         rel="stylesheet"
         href="style.css?v=mobile-nav-fix-3"
     >
+
+    <!-- Critical mobile visibility rules must not depend on the main stylesheet loading. -->
+    <style id="mobile-dashboard-critical">
+        @media screen and (max-width: 600px) {
+            body:not(.mobile-calculator-active) .calculators-section,
+            body:not(.mobile-calculator-active) .formula-reference-section,
+            body:not(.mobile-calculator-active) .history-section,
+            body:not(.mobile-calculator-active) .note-section {
+                display: none !important;
+            }
+            body.mobile-calculator-active .calculators-section {
+                display: block !important;
+            }
+            body.mobile-calculator-active .calculators-section .calculator-card {
+                display: none !important;
+            }
+            body.mobile-calculator-active .calculators-section .calculator-card.mobile-active-calculator {
+                display: block !important;
+            }
+            #mobile-menu-toggle { display: grid !important; }
+        }
+    </style>
 </head>
 
 <body>
