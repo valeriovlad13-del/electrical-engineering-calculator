@@ -2014,3 +2014,48 @@ body.dark-mode .mobile-calculator-menu a:hover { background: #24384d; }
 @media (prefers-reduced-motion: reduce) {
     .site-header { transition: none; }
 }
+
+
+/* Mobile app mode: show the dashboard or one calculator at a time. */
+@media (max-width: 600px) {
+    body.mobile-calculator-active .hero,
+    body.mobile-calculator-active .quick-nav-section,
+    body.mobile-calculator-active .formula-reference-section,
+    body.mobile-calculator-active .history-section,
+    body.mobile-calculator-active .note-section {
+        display: none !important;
+    }
+    body.mobile-calculator-active .calculators-section {
+        padding-top: 14px;
+    }
+    body.mobile-calculator-active .calculator-grid {
+        display: block;
+    }
+    body.mobile-calculator-active .calculator-card {
+        display: none !important;
+        margin: 0;
+    }
+    body.mobile-calculator-active .calculator-card.mobile-active-calculator {
+        display: block !important;
+        width: 100%;
+        max-width: 100%;
+    }
+    body.mobile-calculator-active .calculator-card.mobile-active-calculator .calculator-description {
+        margin-bottom: 14px;
+    }
+    body.mobile-calculator-active .calculator-card.mobile-active-calculator .calculator-diagram,
+    body.mobile-calculator-active .calculator-card.mobile-active-calculator .triangle-visual-input {
+        max-width: 100%;
+    }
+    body.mobile-calculator-active .mobile-home-link { display: inline-flex; }
+    .mobile-home-link { display: none; }
+    .mobile-calculator-menu a[data-mobile-home] {
+        grid-column: 1 / -1;
+        font-weight: 700;
+        border-bottom: 1px solid #e1e7ef;
+        border-radius: 6px 6px 0 0;
+    }
+    body.dark-mode .mobile-calculator-menu a[data-mobile-home] {
+        border-bottom-color: #34465a;
+    }
+}
