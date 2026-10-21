@@ -2045,7 +2045,7 @@ document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(
         ".solution-equation",
         ".solution-final"
     ].join(",");
-    const operand = String.raw`(?:\\([^()]*\\)|[A-Za-zΑ-ω0-9₀-₉θΘ²³√_%.,₱]+)`;
+    const operand = String.raw`(?:\([^()]*\)|[A-Za-zΑ-ω0-9₀-₉θΘ²³√_%.,₱]+)`;
     const divisionPattern = new RegExp("(" + operand + ")\\s*\\/\\s*(" + operand + ")", "g");
 
     function escapeHTML(value) {
