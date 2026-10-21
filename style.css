@@ -2268,3 +2268,91 @@ body.dark-mode .mobile-calculator-menu a:hover { background: #24384d; }
     body.dark-mode .mobile-calculator-menu a[data-mobile-home] { border-color: #34465a; }
     body.dark-mode .mobile-calculator-menu a:active { background: #23364b; }
 }
+
+
+/* Consistent result hierarchy shared by all calculator modules. */
+.result-panel {
+    position: relative;
+    padding: clamp(14px, 2.4vw, 22px);
+    border-left: 4px solid #2d6cdf;
+    box-shadow: 0 3px 12px rgba(20, 48, 78, 0.045);
+    min-width: 0;
+}
+.result-panel > .result-label:first-child {
+    margin-bottom: 9px;
+}
+.result-panel > .result-primary-value,
+.result-panel > strong.result-primary-value {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0;
+    padding: 10px 13px;
+    border-radius: 9px;
+    background: #eaf2fc;
+    color: #123c69;
+    font-size: clamp(1.55rem, 4vw, 2rem);
+    font-weight: 800;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+    font-variant-numeric: tabular-nums;
+}
+.result-panel > .result-formula,
+.result-panel > p[id$="-result-formula"],
+.result-panel > p[id$="-formula"] {
+    margin: 12px 0 0;
+    padding-top: 10px;
+    border-top: 1px solid #dce5ef;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+.result-panel .secondary-result {
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+.result-panel .secondary-result strong {
+    overflow-wrap: anywhere;
+    font-variant-numeric: tabular-nums;
+}
+.result-panel .result-grid,
+.result-panel .network-summary-grid {
+    align-items: stretch;
+}
+.result-panel .result-grid > div,
+.result-panel .network-summary-grid > div {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+.result-panel .result-grid strong,
+.result-panel .network-summary-grid strong,
+.result-panel .triangle-result-item strong {
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+.result-panel .worked-solution {
+    margin-top: 14px;
+}
+body.dark-mode .result-panel {
+    border-left-color: #79aef2;
+    box-shadow: 0 3px 14px rgba(0,0,0,.12);
+}
+body.dark-mode .result-panel > .result-primary-value,
+body.dark-mode .result-panel > strong.result-primary-value {
+    background: #203a54;
+    color: #c4e1ff;
+}
+body.dark-mode .result-panel > .result-formula,
+body.dark-mode .result-panel > p[id$="-result-formula"],
+body.dark-mode .result-panel > p[id$="-formula"] {
+    border-top-color: #34495d;
+}
+@media (max-width: 420px) {
+    .result-panel { padding: 14px; }
+    .result-panel > .result-primary-value,
+    .result-panel > strong.result-primary-value {
+        padding: 9px 11px;
+        font-size: 1.45rem;
+    }
+    .result-panel .secondary-result { gap: 8px; }
+    .result-panel .secondary-result strong { text-align: left; }
+}
