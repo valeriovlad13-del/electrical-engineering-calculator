@@ -2019,24 +2019,46 @@ document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(
     const mobileMenu = document.getElementById("mobile-calculator-menu");
     if (header && menuToggle && mobileMenu) {
         const closeMenu = () => {
+            mobileMenu.classList.remove("mobile-sidebar-open");
             mobileMenu.hidden = true;
+            const backdrop = document.getElementById("mobile-menu-backdrop");
+            if (backdrop) backdrop.hidden = true;
+            body.classList.remove("mobile-sidebar-open");
             menuToggle.setAttribute("aria-expanded", "false");
             menuToggle.setAttribute("aria-label", "Open calculator menu");
             header.classList.remove("header-menu-open");
             const icon = menuToggle.querySelector("svg");
             if (icon) icon.innerHTML = '<path d="M4 6h16M4 12h16M4 18h16"></path>';
         };
+        const backdrop = document.getElementById("mobile-menu-backdrop");
+        const closeDrawer = () => {
+            mobileMenu.classList.remove("mobile-sidebar-open");
+            mobileMenu.hidden = true;
+            if (backdrop) backdrop.hidden = true;
+            document.body.classList.remove("mobile-sidebar-open");
+            menuToggle.setAttribute("aria-expanded", "false");
+            menuToggle.setAttribute("aria-label", "Open calculator sidebar");
+            header.classList.remove("header-menu-open");
+            const icon = menuToggle.querySelector("svg");
+            if (icon) icon.innerHTML = '<path d="M4 6h16M4 12h16M4 18h16"></path>';
+        };
         menuToggle.addEventListener("click", () => {
-            const opening = mobileMenu.hidden;
-            mobileMenu.hidden = !opening;
+            const opening = !mobileMenu.classList.contains("mobile-sidebar-open");
+            if (opening) {
+                mobileMenu.hidden = false;
+                if (backdrop) backdrop.hidden = false;
+                document.body.classList.add("mobile-sidebar-open");
+                requestAnimationFrame(() => mobileMenu.classList.add("mobile-sidebar-open"));
+            } else closeDrawer();
             menuToggle.setAttribute("aria-expanded", String(opening));
-            menuToggle.setAttribute("aria-label", opening ? "Close calculator menu" : "Open calculator menu");
+            menuToggle.setAttribute("aria-label", opening ? "Close calculator sidebar" : "Open calculator sidebar");
             header.classList.toggle("header-menu-open", opening);
             const icon = menuToggle.querySelector("svg");
             if (icon) icon.innerHTML = opening
                 ? '<path d="m6 6 12 12M18 6 6 18"></path>'
                 : '<path d="M4 6h16M4 12h16M4 18h16"></path>';
         });
+        if (backdrop) backdrop.addEventListener("click", closeDrawer);
         mobileMenu.addEventListener("click", event => {
             if (event.target.closest("a")) closeMenu();
         });
@@ -2098,6 +2120,7 @@ document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(
 
     const showHome = (updateHistory = true) => {
         body.classList.remove("mobile-calculator-active");
+        body.classList.toggle("mobile-home-active", mobileQuery.matches);
         calculatorCards.forEach(card => card.classList.remove("mobile-active-calculator"));
         closeMobileMenu();
         if (updateHistory && location.hash !== "#top") history.pushState({ mobileHome: true }, "", "#top");
@@ -2112,6 +2135,7 @@ document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(
             return true;
         }
         body.classList.add("mobile-calculator-active");
+        body.classList.remove("mobile-home-active");
         calculatorCards.forEach(item => item.classList.toggle("mobile-active-calculator", item === card));
         closeMobileMenu();
         if (updateHistory && location.hash !== "#" + id) history.pushState({ mobileCalculator: id }, "", "#" + id);
@@ -2153,7 +2177,7 @@ document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(
 
     const onBreakpointChange = () => {
         if (!mobileQuery.matches) {
-            body.classList.remove("mobile-calculator-active");
+            body.classList.remove("mobile-calculator-active", "mobile-home-active");
             calculatorCards.forEach(card => card.classList.remove("mobile-active-calculator"));
             closeMobileMenu();
         } else {
