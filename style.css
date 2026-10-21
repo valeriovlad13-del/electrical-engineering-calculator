@@ -2061,18 +2061,18 @@ body.dark-mode .mobile-calculator-menu a:hover { background: #24384d; }
 }
 
 
-/* Mobile left sidebar drawer and fixed, non-scrolling dashboard */
+/* Mobile right sidebar drawer and fixed, non-scrolling dashboard */
 .mobile-menu-backdrop { display: none; }
 @media (max-width: 600px) {
     .mobile-menu-toggle { display: grid; }
     .mobile-calculator-menu {
-        position: fixed; z-index: 1200; top: 0; bottom: 0; left: 0;
+        position: fixed; z-index: 1200; top: 0; bottom: 0; right: 0; left: auto;
         width: min(82vw, 320px); max-width: calc(100vw - 52px); height: 100dvh;
         margin: 0; padding: 88px 12px 20px; border: 0;
-        border-right: 1px solid #dce4ed; border-radius: 0 18px 18px 0;
-        box-shadow: 18px 0 44px rgba(15,23,42,.2); display: flex;
+        border-left: 1px solid #dce4ed; border-radius: 18px 0 0 18px;
+        box-shadow: -18px 0 44px rgba(15,23,42,.2); display: flex;
         flex-direction: column; gap: 4px; overflow-y: auto;
-        overscroll-behavior: contain; transform: translateX(-105%);
+        overscroll-behavior: contain; transform: translateX(105%);
         visibility: hidden; transition: transform .22s ease, visibility .22s ease;
     }
     .mobile-calculator-menu[hidden] { display: flex; }
@@ -2082,7 +2082,7 @@ body.dark-mode .mobile-calculator-menu a:hover { background: #24384d; }
     .mobile-menu-backdrop { display: block; position: fixed; inset: 0; z-index: 1100; background: rgba(15,23,42,.46); opacity: 0; visibility: hidden; transition: opacity .22s ease, visibility .22s ease; }
     .mobile-menu-backdrop:not([hidden]) { opacity: 1; visibility: visible; }
     body.mobile-sidebar-open { overflow: hidden; }
-    body.dark-mode .mobile-calculator-menu { background: #172333; border-right-color: #34465a; }
+    body.dark-mode .mobile-calculator-menu { background: #172333; border-left-color: #34465a; }
     body.dark-mode .mobile-calculator-menu a[data-mobile-home] { border-bottom-color: #34465a; }
 
     body.mobile-home-active { height: 100dvh; min-height: 100dvh; overflow: hidden; overscroll-behavior: none; }
