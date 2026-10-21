@@ -2425,3 +2425,13 @@ body.dark-mode .result-panel > p[id$="-formula"] {
         display: flex;
     }
 }
+
+/* Clear, responsive worked-solution layout for the newer AC and resistor-network tools. */
+.solution-content { min-width: 0; }
+.solution-step { min-width: 0; }
+.solution-equation { display:block; width:fit-content; max-width:100%; box-sizing:border-box; line-height:1.8; overflow-wrap:anywhere; margin:.45rem 0; }
+.solution-final { display:block; margin:.55rem 0 .2rem !important; padding:.65rem .8rem; border-left:3px solid var(--accent-color,#2d6cdf); border-radius:0 8px 8px 0; background:var(--result-background,#eef5fc); overflow-wrap:anywhere; }
+.math-fraction { vertical-align:middle; margin:0 .12em; }
+.math-fraction .math-numerator,.math-fraction .math-denominator { padding:.12em .3em; line-height:1.3; }
+.solution-equation .math-fraction { font-size:.95em; }
+@media (max-width:600px) { .solution-content { padding-left:.8rem; padding-right:.8rem; } .solution-equation { width:100%; font-size:.88rem; padding:.6rem; } .solution-step h4 { line-height:1.4; } }
