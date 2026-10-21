@@ -2010,3 +2010,66 @@ document.querySelectorAll(".worked-solution").forEach(d=>{const panel=d.closest(
         renderNetwork();
     }
 })();
+
+
+/* Mobile navigation and direction-aware sticky header */
+(() => {
+    const header = document.querySelector(".site-header");
+    const menuToggle = document.getElementById("mobile-menu-toggle");
+    const mobileMenu = document.getElementById("mobile-calculator-menu");
+    if (header && menuToggle && mobileMenu) {
+        const closeMenu = () => {
+            mobileMenu.hidden = true;
+            menuToggle.setAttribute("aria-expanded", "false");
+            menuToggle.setAttribute("aria-label", "Open calculator menu");
+            header.classList.remove("header-menu-open");
+            const icon = menuToggle.querySelector("svg");
+            if (icon) icon.innerHTML = '<path d="M4 6h16M4 12h16M4 18h16"></path>';
+        };
+        menuToggle.addEventListener("click", () => {
+            const opening = mobileMenu.hidden;
+            mobileMenu.hidden = !opening;
+            menuToggle.setAttribute("aria-expanded", String(opening));
+            menuToggle.setAttribute("aria-label", opening ? "Close calculator menu" : "Open calculator menu");
+            header.classList.toggle("header-menu-open", opening);
+            const icon = menuToggle.querySelector("svg");
+            if (icon) icon.innerHTML = opening
+                ? '<path d="m6 6 12 12M18 6 6 18"></path>'
+                : '<path d="M4 6h16M4 12h16M4 18h16"></path>';
+        });
+        mobileMenu.addEventListener("click", event => {
+            if (event.target.closest("a")) closeMenu();
+        });
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape" && !mobileMenu.hidden) {
+                closeMenu();
+                menuToggle.focus();
+            }
+        });
+        window.addEventListener("resize", () => {
+            if (window.innerWidth > 600) closeMenu();
+        });
+
+        let lastY = window.scrollY;
+        let ticking = false;
+        const updateHeader = () => {
+            const currentY = window.scrollY;
+            const delta = currentY - lastY;
+            if (!mobileMenu.hidden) {
+                header.classList.remove("header-hidden");
+            } else if (currentY < 80 || delta < -5) {
+                header.classList.remove("header-hidden");
+            } else if (delta > 5 && currentY > 140) {
+                header.classList.add("header-hidden");
+            }
+            lastY = currentY;
+            ticking = false;
+        };
+        window.addEventListener("scroll", () => {
+            if (!ticking) {
+                window.requestAnimationFrame(updateHeader);
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+})();
