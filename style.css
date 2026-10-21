@@ -1931,3 +1931,131 @@ body.dark-mode .calculator-diagram .diagram-symbol { fill: #24384d; stroke: #8aa
 .triangle-visual-input{margin:14px 0 20px;padding:0;}
 .triangle-visual-input .power-triangle-svg{display:block;width:100%;height:auto;min-height:0;max-height:300px;}
 @media(max-width:600px){.triangle-visual-input .power-triangle-svg{max-height:250px;}}
+
+
+/* Responsive header controls and mobile calculator menu */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 0 0 auto;
+}
+.mobile-menu-toggle {
+    display: none;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    place-items: center;
+    border: 1px solid #dbe1e8;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #334155;
+}
+.mobile-menu-toggle svg {
+    width: 21px;
+    height: 21px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+.mobile-menu-toggle:focus-visible,
+.mobile-calculator-menu a:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.25);
+    outline-offset: 2px;
+}
+.mobile-calculator-menu {
+    width: min(100% - 24px, 760px);
+    margin: 0 auto 12px;
+    padding: 8px;
+    border: 1px solid #e1e7ef;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+}
+.mobile-calculator-menu[hidden] { display: none; }
+.mobile-calculator-menu a {
+    display: block;
+    padding: 11px 10px;
+    border-radius: 8px;
+    color: #26364d;
+    font-size: .88rem;
+    font-weight: 600;
+}
+.mobile-calculator-menu a:hover { background: #eef4fb; }
+.site-header {
+    transition: transform .22s ease;
+    will-change: transform;
+}
+.site-header.header-hidden { transform: translateY(-110%); }
+body.dark-mode .mobile-menu-toggle {
+    background: #172333;
+    border-color: #34465a;
+    color: #e4edf7;
+}
+body.dark-mode .mobile-calculator-menu {
+    background: #172333;
+    border-color: #34465a;
+}
+body.dark-mode .mobile-calculator-menu a { color: #e4edf7; }
+body.dark-mode .mobile-calculator-menu a:hover { background: #24384d; }
+@media (max-width: 600px) {
+    .mobile-menu-toggle { display: grid; width: 38px; height: 38px; flex-basis: 38px; }
+    .header-actions { gap: 8px; }
+    .theme-toggle { width: 38px; height: 38px; flex-basis: 38px; }
+    .site-header.header-menu-open { transform: none !important; }
+    .calculator-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .nav-card { min-height: 64px; padding: 10px; gap: 9px; font-size: .82rem; }
+    .nav-icon { width: 34px; height: 34px; flex-basis: 34px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .site-header { transition: none; }
+}
+
+
+/* Mobile app mode: show the dashboard or one calculator at a time. */
+@media (max-width: 600px) {
+    body.mobile-calculator-active .hero,
+    body.mobile-calculator-active .quick-nav-section,
+    body.mobile-calculator-active .formula-reference-section,
+    body.mobile-calculator-active .history-section,
+    body.mobile-calculator-active .note-section {
+        display: none !important;
+    }
+    body.mobile-calculator-active .calculators-section {
+        padding-top: 14px;
+    }
+    body.mobile-calculator-active .calculator-grid {
+        display: block;
+    }
+    body.mobile-calculator-active .calculator-card {
+        display: none !important;
+        margin: 0;
+    }
+    body.mobile-calculator-active .calculator-card.mobile-active-calculator {
+        display: block !important;
+        width: 100%;
+        max-width: 100%;
+    }
+    body.mobile-calculator-active .calculator-card.mobile-active-calculator .calculator-description {
+        margin-bottom: 14px;
+    }
+    body.mobile-calculator-active .calculator-card.mobile-active-calculator .calculator-diagram,
+    body.mobile-calculator-active .calculator-card.mobile-active-calculator .triangle-visual-input {
+        max-width: 100%;
+    }
+    body.mobile-calculator-active .mobile-home-link { display: inline-flex; }
+    .mobile-home-link { display: none; }
+    .mobile-calculator-menu a[data-mobile-home] {
+        grid-column: 1 / -1;
+        font-weight: 700;
+        border-bottom: 1px solid #e1e7ef;
+        border-radius: 6px 6px 0 0;
+    }
+    body.dark-mode .mobile-calculator-menu a[data-mobile-home] {
+        border-bottom-color: #34465a;
+    }
+}
